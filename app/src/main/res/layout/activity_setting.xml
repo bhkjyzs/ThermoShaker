@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.setting.SettingActivity">
+    <include layout="@layout/inclub_titile_tabar"
+        android:id="@+id/mViewTop"
+        ></include>
+
+    <RelativeLayout
+        android:id="@+id/mViewBtm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mViewTop"
+        android:layout_width="match_parent"
+        android:background="@drawable/main_btm_bg_shape"
+        android:layout_height="0dp"
+        android:gravity="center"
+        tools:ignore="MissingConstraints">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_list"
+            android:layout_marginLeft="@dimen/sp_50"
+            android:layout_marginRight="@dimen/sp_50"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </RelativeLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

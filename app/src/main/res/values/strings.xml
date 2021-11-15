@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">震荡混匀仪</string>
+
+    <string name="welcome_main">欢迎使用本产品</string>
+    <string name="file">文件</string>
+    <string name="setting">设置</string>
+    <string name="run">运行</string>
+    <string name="inching">点动</string>
+    <string name="addfile">添加</string>
+    <string name="edit">编辑</string>
+    <string name="del">删除</string>
+    <string name="returnname">返回</string>
+
+    <string name="changlanguage">中英文切换</string>
+    <string name="voice_setting">声音设置</string>
+    <string name="firmwareupdate">固件升级</string>
+    <string name="softwareupgrade">软件升级</string>
+    <string name="nativeinformation">本机信息</string>
+    <string name="cancel">取消</string>
+    <string name="sure">确定</string>
+    <string name="chinese">中文</string>
+    <string name="english">英文</string>
+    <string name="calibration">校准</string>
+    <string name="pause">暂停</string>
+    <string name="nextSection">下一节</string>
+    <string name="stopit">停止</string>
+    <string name="details">详情</string>
+    <string name="save">保存</string>
+    <string name="temperature">温度(℃)</string>
+    <string name="speed">速度(C/min)</string>
+    <string name="time">时间(hh:mm)</string>
+    <string name="revolution">转速(rpm)</string>
+    <string name="direction">方向</string>
+    <string name="shock">震荡(mm:ss)</string>
+    <string name="blank">间歇(mm:ss)</string>
+    <string name="temperatures">温度：</string>
+    <string name="speeds">速度：(℃/min)</string>
+    <string name="times">时间：</string>
+    <string name="revolutions">转速：</string>
+    <string name="ForwardRotation">正转</string>
+    <string name="reversal">反转</string>
+    <string name="Intermittent">间歇正转</string>
+    <string name="Intermittentinversion">间歇反转</string>
+    <string name="shocktime">震荡时间：</string>
+    <string name="pausetime">暂停时间：</string>
+    <string name="msgdialog">消息框</string>
+    <string name="savefilesdialog">确定保存文件</string>
+    <string name="isdelete">确定要删除吗</string>
+    <string name="upperlimit">步骤超过上限</string>
+    <string name="nostepdelfile">没有创建步骤，文件自动删除</string>
+    <string name="issave">是否保存</string>
+    <string name="setting_factory">出厂设置</string>
+    <string name="clear">清除</string>
+    <string name="success">完成</string>
+</resources>

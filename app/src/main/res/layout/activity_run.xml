@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.run.RunActivity">
+    <include layout="@layout/inclub_titile_tabar"
+        android:id="@+id/mViewTop"></include>
+
+    <View
+        android:id="@+id/mViewBtm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mViewTop"
+        android:layout_width="match_parent"
+        android:background="@drawable/main_btm_bg_shape"
+        android:layout_height="0dp"
+        tools:ignore="MissingConstraints">
+
+    </View>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dip_50"
+        app:layout_constraintTop_toTopOf="@+id/mViewBtm"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:id="@+id/ll_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/ll_edit"
+            android:background="@drawable/btn_selector_bg"
+            android:layout_width="@dimen/dip_164"
+            android:gravity="center"
+            android:layout_height="@dimen/dip_60">
+            <ImageView
+                android:src="@drawable/calibration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </ImageView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/calibration"
+                android:layout_marginLeft="@dimen/dip_12"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_25"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_edit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/ll_add"
+            app:layout_constraintRight_toLeftOf="@+id/ll_run"
+            android:background="@drawable/btn_selector_bg"
+            android:layout_width="@dimen/dip_164"
+            android:gravity="center"
+            android:layout_height="@dimen/dip_60">
+            <ImageView
+                android:src="@drawable/pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </ImageView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pause"
+                android:layout_marginLeft="@dimen/dip_12"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_25"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_run"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/ll_edit"
+            app:layout_constraintRight_toLeftOf="@id/ll_del"
+            android:background="@drawable/btn_selector_bg"
+            android:layout_width="@dimen/dip_164"
+            android:gravity="center"
+            android:layout_height="@dimen/dip_60">
+            <ImageView
+                android:src="@drawable/next_jie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </ImageView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nextSection"
+                android:layout_marginLeft="@dimen/dip_12"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_25"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_del"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/ll_run"
+            app:layout_constraintRight_toLeftOf="@+id/ll_return"
+            android:background="@drawable/btn_selector_bg"
+            android:layout_width="@dimen/dip_164"
+            android:gravity="center"
+            android:layout_height="@dimen/dip_60">
+            <ImageView
+                android:src="@drawable/stop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </ImageView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stopit"
+                android:layout_marginLeft="@dimen/dip_12"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_25"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_return"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="@dimen/dip_12"
+            android:background="@drawable/btn_selector_bg"
+            android:layout_width="@dimen/dip_164"
+            android:gravity="center"
+            android:layout_height="@dimen/dip_60">
+            <ImageView
+                android:src="@drawable/details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </ImageView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/details"
+                android:layout_marginLeft="@dimen/dip_12"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_25"
+                />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mViewBtm"
+        android:layout_marginTop="@dimen/dip_140"
+        android:layout_width="match_parent"
+        android:background="@drawable/file_bg_shape"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="@dimen/dip_30"
+        android:layout_marginRight="@dimen/dip_30"
+        android:layout_marginBottom="@dimen/dip_30"
+        tools:ignore="MissingConstraints">
+
+
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

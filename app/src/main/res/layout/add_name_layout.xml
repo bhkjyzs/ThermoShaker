@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:keyboard="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/dip_800"
+
+        android:background="@drawable/setting_dialog_bg"
+        android:layout_height="@dimen/dip_400">
+
+        <EditText
+            android:id="@+id/ed_name"
+            android:singleLine="true"
+            android:background="@drawable/selector_edit_background"
+            android:inputType="none"
+            android:selectAllOnFocus="true"
+            android:textCursorDrawable="@drawable/bg_cursor"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dip_50"
+            tools:ignore="MissingConstraints">
+
+        </EditText>
+
+        <android.inputmethodservice.KeyboardView
+            android:id="@+id/keyboardView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:keyTextColor="#000000"
+            android:keyBackground="@drawable/btn_keyboard_key"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:background="#C8C5C5"
+            android:textStyle="normal"
+            android:shadowRadius="0.0"
+            android:layout_height="@dimen/dip_320"
+            tools:ignore="MissingConstraints,MissingPrefix">
+
+        </android.inputmethodservice.KeyboardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+</LinearLayout>
