@@ -8,16 +8,11 @@ import android.inputmethodservice.KeyboardView;
 import android.text.Editable;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.thermoshaker.R;
-import com.example.thermoshaker.model.Event;
 import com.example.thermoshaker.ui.file.FileActivity;
 import com.example.thermoshaker.util.BroadcastManager;
-import com.example.thermoshaker.util.CustomDialog;
-import com.example.thermoshaker.util.EventBusUtils;
-
-import org.greenrobot.eventbus.EventBus;
+import com.example.thermoshaker.util.dialog.CustomkeyDialog;
 
 import java.util.List;
 
@@ -27,14 +22,14 @@ public class KeyBoardUtil {
     private KeyboardView keyboardView;
     private Keyboard k1; //小写键盘
     private EditText editText;
-    private CustomDialog dialogInfo;
-    private CustomDialog.Builder Layout;
+    private CustomkeyDialog dialogInfo;
+    private CustomkeyDialog.Builder Layout;
     private Context context;
     public boolean isUpper = false;// 是否大写
     public boolean isShift = false;// 是否切换
 
     @SuppressLint("ResourceAsColor")
-    public KeyBoardUtil(Context context, KeyboardView view, CustomDialog dialogInfo, EditText edit) {
+    public KeyBoardUtil(Context context, KeyboardView view, CustomkeyDialog dialogInfo, EditText edit) {
         this.editText = edit;
         keyboardView = view;
         this.context = context;
@@ -75,10 +70,14 @@ public class KeyBoardUtil {
             int start = editText.getSelectionStart();
             switch (primaryCode){
                 case Keyboard.KEYCODE_DONE:
-                    BroadcastManager.getInstance(context).sendBroadcast(FileActivity.ACTION_RECEIVE_MESSAGE,editText.getText().toString()+"");
+                    if(!editText.getText().toString().trim().equals("")){
+                        BroadcastManager.getInstance(context).sendBroadcast(FileActivity.ACTION_RECEIVE_MESSAGE,editText.getText().toString().trim()+"");
+                        Log.d(TAG,"KEYCODE_DONEin"+editText.getText().toString().trim()+"");
+
+                    }
 //                    Layout.infoDone();
                     hideKeyboard();
-                    Log.d(TAG,"KEYCODE_DONE");
+                    Log.d(TAG,"KEYCODE_DONE"+editText.getText().toString().trim()+"");
 
                     break;
                 case Keyboard.KEYCODE_DELETE:

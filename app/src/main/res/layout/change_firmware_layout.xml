@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="@dimen/dip_700"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/dip_700"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:background="@drawable/setting_dialog_bg"
     android:layout_height="@dimen/dip_350"
@@ -19,7 +21,7 @@
 
     </TextView>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="@dimen/dip_600"
         android:layout_marginLeft="@dimen/dip_50"
         android:layout_marginRight="@dimen/dip_50"
@@ -27,8 +29,44 @@
         android:gravity="center"
         android:orientation="vertical">
 
+        <TextView
 
-    </LinearLayout>
+            android:id="@+id/tv_tool"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/dip_50"
+            android:text=""
+            android:textColor="@color/black"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:max="100"
+            android:progress="40"
+            android:secondaryProgress="100"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="@dimen/dip_20"
+            android:layout_marginRight="@dimen/dip_20"
+            android:layout_marginTop="@dimen/dip_70"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressDrawable="@drawable/progressbar_color"
+            android:id="@+id/pB_Level_up"
+            app:layout_constraintTop_toBottomOf="@+id/tv_tool"
+            android:layout_height="@dimen/dip_12"
+            android:background="@drawable/progressbar_color"
+            tools:ignore="MissingConstraints">
+
+        </ProgressBar>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <LinearLayout

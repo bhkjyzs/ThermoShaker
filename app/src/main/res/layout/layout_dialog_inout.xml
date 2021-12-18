@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/setting_dialog_bg"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:id="@+id/tv_title"
+            android:gravity="center"
+            android:text="@string/ImportExport"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_25"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/app_bg"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+
+        <TextView
+            android:text="@string/local"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            android:layout_marginTop="@dimen/dip_12"
+            android:textSize="@dimen/sp_20"
+            app:layout_constraintLeft_toLeftOf="@+id/cl_local"
+            app:layout_constraintRight_toRightOf="@+id/cl_local"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+        <TextView
+            android:text="@string/udrive"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            android:layout_marginTop="@dimen/dip_12"
+            android:textSize="@dimen/sp_20"
+            app:layout_constraintLeft_toLeftOf="@+id/cl_usb"
+            app:layout_constraintRight_toRightOf="@+id/cl_usb"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_local"
+            android:layout_width="@dimen/dip_400"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            android:layout_marginTop="@dimen/dip_50"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/dip_40"
+            android:background="@drawable/input_bg_shape"
+            android:layout_height="@dimen/dip_400"
+            tools:ignore="MissingConstraints">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/dialog_inout_local_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageButton
+            app:layout_constraintLeft_toLeftOf="@+id/cl_local"
+            app:layout_constraintRight_toRightOf="@+id/cl_usb"
+            app:layout_constraintTop_toTopOf="@+id/cl_usb"
+            app:layout_constraintBottom_toBottomOf="@+id/cl_usb"
+            android:id="@+id/dialog_inout_btn_right"
+            android:layout_width="40px"
+            android:layout_height="30px"
+            android:layout_marginBottom="50px"
+
+            android:background="@drawable/selector_btn_right"
+            tools:ignore="MissingConstraints,NotSibling" />
+        <ImageButton
+            android:id="@+id/dialog_inout_btn_left"
+            android:layout_width="40px"
+            android:layout_height="30px"
+            app:layout_constraintLeft_toLeftOf="@+id/cl_local"
+            app:layout_constraintRight_toRightOf="@+id/cl_usb"
+            app:layout_constraintTop_toTopOf="@+id/cl_usb"
+            app:layout_constraintBottom_toBottomOf="@+id/cl_usb"
+            android:layout_marginTop="50px"
+            android:background="@drawable/selector_btn_left"
+            tools:ignore="MissingConstraints" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_usb"
+            android:layout_width="@dimen/dip_400"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            android:layout_marginTop="@dimen/dip_50"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="@dimen/dip_40"
+            android:background="@drawable/input_bg_shape"
+            android:layout_height="@dimen/dip_400"
+            tools:ignore="MissingConstraints">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/dialog_inout_usb_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/dialog_inout_return"
+            android:text="@string/returnname"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_35"
+            android:background="@drawable/btn_selector_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginBottom="@dimen/dip_12"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="@dimen/dip_400"
+            android:layout_height="@dimen/dip_70"
+            tools:ignore="MissingConstraints">
+
+        </Button>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

@@ -1,17 +1,13 @@
 package com.example.thermoshaker.ui.setting;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.text.Editable;
+import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,25 +15,30 @@ import android.widget.Toast;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.example.thermoshaker.MainActivity;
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.base.BaseActivity;
+import com.example.thermoshaker.base.Content;
 import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.SettingListBean;
 import com.example.thermoshaker.util.AppManager;
-import com.example.thermoshaker.util.CustomDialog;
+import com.example.thermoshaker.util.dialog.CustomDialog;
 import com.example.thermoshaker.util.LanguageUtil;
+import com.example.thermoshaker.util.PayPassView;
 import com.example.thermoshaker.util.Utils;
-import com.example.thermoshaker.util.key.KeyBoardActionListener;
-import com.example.thermoshaker.util.key.SystemKeyboard;
+import com.example.thermoshaker.util.dialog.DialogInout;
 
+import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class SettingActivity extends BaseActivity {
+    private static final String TAG = "SettingActivity";
     private RecyclerView rv_list;
     private TextView tv_times;
     private RVSettingListAdapter rvSettingListAdapter;
@@ -67,6 +68,7 @@ public class SettingActivity extends BaseActivity {
         listNames.add(getString(R.string.setting_factory));
 
         listNames.add(getString(R.string.returnname)+"");
+        listNames.add(getString(R.string.ImportExport)+"");
 
         listImgs.add(R.drawable.echangec);
         listImgs.add(R.drawable.voicesetting);
@@ -75,6 +77,8 @@ public class SettingActivity extends BaseActivity {
         listImgs.add(R.drawable.nativeinformation);
         listImgs.add(R.drawable.factory_img);
         listImgs.add(R.drawable.return_img);
+        listImgs.add(R.drawable.input);
+
         tv_times = findViewById(R.id.tv_times);
         rv_list = findViewById(R.id.rv_list);
         updateSystemTime(tv_times);
@@ -94,6 +98,10 @@ public class SettingActivity extends BaseActivity {
                         showLanguage();
                         break;
                     case 1:
+//                        setCompanyLogo("bio_gener/bootanimation.zip", "/td/bio_gener/bootanimation.zip", "biologo",
+//                                 0);
+//                        setCompanyLogo("Labyeah/bootanimation.zip", "/td/Labyeah/bootanimation.zip", "Labyeahlogo",
+//                                 0);
                         voice();
                         break;
                     case 2:
@@ -113,6 +121,11 @@ public class SettingActivity extends BaseActivity {
                     case 6:
 
                         finish();
+                        overridePendingTransition(0, 0);
+
+                        break;
+                    case 7:
+                        inout();
                         break;
 
                 }
@@ -120,7 +133,20 @@ public class SettingActivity extends BaseActivity {
         });
 
     }
+    private void inout() {
+        Log.i(TAG, Content.usb_path);
+        Log.i(TAG, Content.usb_state);
+        if (!Content.usb_state.equals(Intent.ACTION_MEDIA_MOUNTED)) {
+            Toast.makeText(this, getText(R.string.setting_dialog_usb_no), Toast.LENGTH_SHORT).show();
+        }
+        if (Content.usb_path.length() == 0) {
+            return;
+        }
+        DialogInout dialogInout = new DialogInout.Builder(this, MyApplication.getInstance()).create();
+        dialogInout.show();
 
+
+    }
     private void factoryDialog() {
         CustomDialog factoryDialog = new CustomDialog.Builder(this)
                 .view(R.layout.factory_layout)
@@ -128,14 +154,11 @@ public class SettingActivity extends BaseActivity {
                 .cancelTouchout(true)
                 .build();
         factoryDialog.show();
-        SystemKeyboard customNumKeyView  = factoryDialog.findViewById(R.id.customNumKeyView);
-        EditText dialog_keyboard_textview = factoryDialog.findViewById(R.id.dialog_keyboard_textview);
-
-        customNumKeyView.setEditText(dialog_keyboard_textview);
-        customNumKeyView.setOnKeyboardActionListener(new KeyBoardActionListener() {
+        PayPassView payPassView = factoryDialog.findViewById(R.id.pay_View);
+        payPassView.setPassInpntClickListener(new PayPassView.OnPassInputClickListener() {
             @Override
-            public void onComplete() {
-                switch (dialog_keyboard_textview.getText().toString()){
+            public void onPassFinish(String password) {
+                switch (password){
                     case "159357":
                         Utils.startDeskLaunch();
                         Toast.makeText(SettingActivity.this, "密码正确", Toast.LENGTH_SHORT).show();
@@ -143,28 +166,18 @@ public class SettingActivity extends BaseActivity {
                         break;
                     default:
                         Toast.makeText(SettingActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
-
+                        payPassView.cleanAllTv();
                         break;
                 }
             }
 
             @Override
-            public void onTextChange(Editable editable) {
+            public void onPayClose() {
 
             }
 
-            @Override
-            public void onClear() {
 
-            }
-
-            @Override
-            public void onClearAll() {
-
-            }
         });
-
-
     }
 
     /**
@@ -283,6 +296,8 @@ public class SettingActivity extends BaseActivity {
                 AppManager.getAppManager().finishActivity();
                 startActivity(new Intent(SettingActivity.this, SettingActivity.class));
                 LanguageDialog.cancel();
+                overridePendingTransition(0, 0);
+
             }
         });
         DialogDisMiss(LanguageDialog);
@@ -290,7 +305,28 @@ public class SettingActivity extends BaseActivity {
 
     }
 
+    /* 设置公司logo,动画源路径，动画目标路径，公司名称，公司枚举，公司图标 */
+    private void setCompanyLogo(String stris, String strpath, String name, int companyRes) {
+        MyApplication app =  MyApplication.getInstance();
+        try {
+            InputStream is = app.getAssets().open(stris);
+            String path = app.getFilesDir().getPath() + strpath;
+            File file = new File(path);
 
+            /* 判断文件是否存在或是否为空 */
+            if (!file.exists() || file.length() < 100)
+                FileUtils.copyInputStreamToFile(is, file);
+
+            boolean bool = app.exec("mount -o remount,rw /system;cp " + path
+                    +" /system/media/bootanimation.zip;mount -o remount,ro /system");
+            Log.d(TAG,bool+"");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d(TAG,e.getMessage()+"");
+        }
+
+    }
 
 
 

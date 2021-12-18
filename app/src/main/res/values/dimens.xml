@@ -22,6 +22,9 @@
     <dimen name="sp_15">15sp</dimen>
     <dimen name="sp_23">23sp</dimen>
     <dimen name="sp_25">25sp</dimen>
+    <dimen name="sp_28">28sp</dimen>
+    <dimen name="sp_35">35sp</dimen>
+
     <dimen name="dip_164">164dp</dimen>
     <dimen name="dip_70">70dp</dimen>
 
@@ -62,5 +65,12 @@
     <dimen name="dip_170">170dp</dimen>
     <dimen name="dip_160">160dp</dimen>
     <dimen name="dip_36">36dp</dimen>
+    <dimen name="dip_250">250dp</dimen>
+    <dimen name="dip_230">230dp</dimen>
+    <dimen name="sp_18">18sp</dimen>
+    <dimen name="sp_42">42sp</dimen>
+    <dimen name="sp_26">26sp</dimen>
+    <dimen name="dip_360">360dp</dimen>
 
+    <item name="dip__5" type="dimen" format="float">0.5</item>
 </resources>

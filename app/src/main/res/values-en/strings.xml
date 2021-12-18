@@ -10,6 +10,11 @@
     <string name="edit">edit</string>
     <string name="del">delete</string>
     <string name="returnname">return</string>
+    <string name="ImportExport">Import/export</string>
+    <string name="mounting_u_disk">Succeeded in mounting the U disk</string>
+    <string name="removed_u_disk">U disk removed successfully</string>
+    <string name="setting_dialog_usb_no">no usb</string>
+
     <string name="changlanguage">language</string>
     <string name="voice_setting">Sound settings</string>
     <string name="firmwareupdate">Firmware update</string>
@@ -28,6 +33,7 @@
     <string name="temperature">Temperature(℃)</string>
     <string name="speed">Speed(C/min)</string>
     <string name="time">Time(hh:mm)</string>
+    <string name="file_existed">Already exists</string>
     <string name="revolution">Revolution(rpm)</string>
     <string name="direction">Direction</string>
     <string name="shock">Shock(mm:ss)</string>
@@ -51,4 +57,12 @@
     <string name="setting_factory">Factory</string>
     <string name="clear">Clear</string>
     <string name="success">OK</string>
+    <string name="dialog_inout_info_1">no select usb program</string>
+    <string name="dialog_inout_info_2">no select local program</string>
+    <string name="export_succeeded">Export Succeeded</string>
+    <string name="import_succeeded">Import Succeeded</string>
+    <string name="deviceno">Equipment Number:</string>
+    <string name="udrive">USB drive</string>
+    <string name="local">Local</string>
+    <string name="pleasechoosefile">Please select a program</string>
 </resources>

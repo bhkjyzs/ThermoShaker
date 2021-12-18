@@ -1,11 +1,8 @@
-package com.example.thermoshaker.serial;
+package com.example.thermoshaker.serial.message;
 
 import android.os.SystemClock;
-import android.util.Log;
 
-
-import com.example.thermoshaker.serial.message.LogManager;
-import com.example.thermoshaker.serial.message.RecvMessage;
+import com.licheedev.myutils.LogPlus;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -29,7 +26,7 @@ public class SerialReadThread extends Thread {
         byte[] received = new byte[1024];
         int size;
 
-        Log.e(TAG,"开始读线程");
+        LogPlus.e("开始读线程");
 
         while (true) {
 
@@ -50,12 +47,12 @@ public class SerialReadThread extends Thread {
                     SystemClock.sleep(1);
                 }
             } catch (IOException e) {
-                Log.e(TAG,"读取数据失败", e);
+                LogPlus.e("读取数据失败", e);
             }
             //Thread.yield();
         }
 
-        Log.e(TAG,"结束读进程");
+        LogPlus.e("结束读进程");
     }
 
     /**
@@ -66,10 +63,28 @@ public class SerialReadThread extends Thread {
      */
     private void onDataReceive(byte[] received, int size) {
         // TODO: 2018/3/22 解决粘包、分包等
-        String hexStr = ByteUtil.bytes2HexStr(received, 0, size);
-        LogManager.instance().post(new RecvMessage(hexStr));
-    }
+//        String hexStr = ByteUtil.bytes2HexStr(received, 0, size);
+        String hexStr = bytes2HexString(received,size);
 
+        LogManager.instance().post(new RecvMessage(hexStr));
+
+    }
+    /*
+     * 字节数组转16进制字符串显示
+     */
+    public String bytes2HexString(byte[] b,int length) {
+        String r = "";
+
+        for (int i = 0; i < length; i++) {
+            String hex = Integer.toHexString(b[i] & 0xFF);
+            if (hex.length() == 1) {
+                hex = "0" + hex;
+            }
+            r += hex.toUpperCase();
+        }
+
+        return r;
+    }
     /**
      * 停止读线程
      */
@@ -78,7 +93,7 @@ public class SerialReadThread extends Thread {
         try {
             mInputStream.close();
         } catch (IOException e) {
-            Log.e(TAG,"异常"+e);
+            LogPlus.e("异常", e);
         } finally {
             super.interrupt();
         }

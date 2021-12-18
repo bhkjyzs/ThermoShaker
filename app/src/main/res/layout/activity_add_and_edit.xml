@@ -41,6 +41,7 @@
             android:layout_height="@dimen/dip_60">
             <ImageView
                 android:src="@drawable/add_file"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -49,9 +50,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/addfile"
-                android:layout_marginLeft="@dimen/dip_12"
+
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_25"
+                android:textSize="@dimen/sp_28"
                 />
         </LinearLayout>
         <LinearLayout
@@ -66,6 +67,7 @@
             android:layout_height="@dimen/dip_60">
             <ImageView
                 android:src="@drawable/save"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -74,9 +76,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/save"
-                android:layout_marginLeft="@dimen/dip_12"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_25"
+                android:textSize="@dimen/sp_28"
                 />
         </LinearLayout>
         <LinearLayout
@@ -91,6 +92,7 @@
             android:layout_height="@dimen/dip_60">
             <ImageView
                 android:src="@drawable/run_file"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -99,9 +101,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/run"
-                android:layout_marginLeft="@dimen/dip_12"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_25"
+                android:textSize="@dimen/sp_28"
                 />
         </LinearLayout>
         <LinearLayout
@@ -116,6 +117,7 @@
             android:layout_height="@dimen/dip_60">
             <ImageView
                 android:src="@drawable/del_img"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -124,9 +126,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/del"
-                android:layout_marginLeft="@dimen/dip_12"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_25"
+                android:textSize="@dimen/sp_28"
                 />
         </LinearLayout>
         <LinearLayout
@@ -143,6 +144,7 @@
             <ImageView
                 android:src="@drawable/return_img"
                 android:layout_width="wrap_content"
+                android:visibility="gone"
                 android:layout_height="wrap_content">
 
             </ImageView>
@@ -150,9 +152,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/returnname"
-                android:layout_marginLeft="@dimen/dip_12"
+
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_25"
+                android:textSize="@dimen/sp_28"
                 />
         </LinearLayout>
 

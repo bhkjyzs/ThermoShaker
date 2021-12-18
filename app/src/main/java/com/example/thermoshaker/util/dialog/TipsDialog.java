@@ -1,4 +1,4 @@
-package com.example.thermoshaker.util;
+package com.example.thermoshaker.util.dialog;
 
 import android.app.Dialog;
 import android.content.Context;

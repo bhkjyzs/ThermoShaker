@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.setting.SettingActivity">
     <include layout="@layout/inclub_titile_tabar"
-        android:id="@+id/mViewTop"
-        ></include>
+        android:id="@+id/mViewTop"></include>
 
     <RelativeLayout
         android:id="@+id/mViewBtm"
@@ -21,10 +20,10 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_list"
-            android:layout_marginLeft="@dimen/sp_50"
-            android:layout_marginRight="@dimen/sp_50"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/sp_50"
+            android:layout_marginRight="@dimen/sp_50">
 
         </androidx.recyclerview.widget.RecyclerView>
 

@@ -10,7 +10,13 @@
     <string name="edit">编辑</string>
     <string name="del">删除</string>
     <string name="returnname">返回</string>
-
+    <string name="ImportExport">导入/导出</string>
+    <string name="mounting_u_disk">挂载U盘成功</string>
+    <string name="removed_u_disk">U盘移除成功</string>
+    <string name="setting_dialog_usb_no">usb 未插入</string>
+    <string name="file_existed">已存在</string>
+    <string name="export_succeeded">导出成功</string>
+    <string name="import_succeeded">导入成功</string>
     <string name="changlanguage">中英文切换</string>
     <string name="voice_setting">声音设置</string>
     <string name="firmwareupdate">固件升级</string>
@@ -51,5 +57,11 @@
     <string name="issave">是否保存</string>
     <string name="setting_factory">出厂设置</string>
     <string name="clear">清除</string>
+    <string name="dialog_inout_info_1">未选择外设程序</string>
+    <string name="dialog_inout_info_2">未选择本地程序</string>
     <string name="success">完成</string>
+    <string name="deviceno">设备编号:</string>
+    <string name="udrive">U盘</string>
+    <string name="local">本地</string>
+    <string name="pleasechoosefile">请选择程序</string>
 </resources>

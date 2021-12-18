@@ -1,13 +1,13 @@
 package com.example.thermoshaker.ui.file;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
-import android.inputmethodservice.KeyboardView;
 import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,17 +29,17 @@ import com.example.thermoshaker.base.BaseActivity;
 import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.ProgramInfo;
 import com.example.thermoshaker.model.ProgramStep;
-import com.example.thermoshaker.util.CustomDialog;
+import com.example.thermoshaker.util.ToastUtil;
+import com.example.thermoshaker.util.dialog.CustomkeyDialog;
 import com.example.thermoshaker.util.DataUtil;
 import com.example.thermoshaker.util.MyTableTextView;
-import com.example.thermoshaker.util.TipsDialog;
+import com.example.thermoshaker.util.dialog.TipsDialog;
 import com.example.thermoshaker.util.key.KeyBoardActionListener;
 import com.example.thermoshaker.util.key.SystemKeyboard;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddAndEditActivity extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
@@ -169,6 +169,7 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                 showAdd();
                 break;
             case R.id.ll_save:
+
                 TipsDialog tipsDialog = new TipsDialog(AddAndEditActivity.this,getString(R.string.savefilesdialog));
                 tipsDialog.show();
                 tipsDialog.setOnDialogLister(new TipsDialog.onDialogLister() {
@@ -180,10 +181,18 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                     @Override
                     public void onConfirm() {
                         if(!isEdit){
+                            if(programInfo.getStepList().size()!=0){
+
                             Log.d(TAG,JSON.toJSON(programInfo)+"");
 
-                            DataUtil.writeData(JSON.toJSON(programInfo)+"", DataUtil.data_path+ DataUtil.data_name, programInfo.getFileName() + ".Naes", false);
+                            DataUtil.writeData(JSON.toJSON(programInfo)+"", DataUtil.data_path+ DataUtil.data_name, programInfo.getFileName() + ".Tso", false);
                             finish();
+                            overridePendingTransition(0, 0);
+
+                            }else {
+                                finish();
+                            }
+
                             return;
                         }
                         String path = programInfo.getFilePath();
@@ -199,6 +208,8 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                             }
                         }
                         finish();
+                        overridePendingTransition(0, 0);
+
                     }
                 });
 
@@ -208,6 +219,7 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.ll_del:
                 if(ChoosePos==-1){
+                    ToastUtil.show(this,getString(R.string.pleasechoosefile));
                     return;
                 }
                 programInfo.getStepList().remove(ChoosePos);
@@ -216,11 +228,7 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                 ChoosePos = -1;
                 break;
             case R.id.ll_return:
-                if(programInfo.getStepList().size()==0){
-                    Toast.makeText(this, getString(R.string.nostepdelfile)+"", Toast.LENGTH_SHORT).show();
-                    finish();
-                    return;
-                }
+
                 if(!compareList(MyApplication.programsSteps,programInfo.getStepList())){
                     TipsDialog tipsDialogReturn = new TipsDialog(AddAndEditActivity.this,getString(R.string.issave));
                     tipsDialogReturn.show();
@@ -228,6 +236,8 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                         @Override
                         public void onCancel() {
                             finish();
+                            overridePendingTransition(0, 0);
+
                         }
 
                         @Override
@@ -235,8 +245,10 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                             if(!isEdit){
                                 Log.d(TAG,JSON.toJSON(programInfo)+"");
 
-                                DataUtil.writeData(JSON.toJSON(programInfo)+"", DataUtil.data_path+ DataUtil.data_name, programInfo.getFileName() + ".Naes", false);
+                                DataUtil.writeData(JSON.toJSON(programInfo)+"", DataUtil.data_path+ DataUtil.data_name, programInfo.getFileName() + ".Tso", false);
                                 finish();
+                                overridePendingTransition(0, 0);
+
                                 return;
                             }
                             String path = programInfo.getFilePath();
@@ -252,6 +264,8 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                                 }
                             }
                             finish();
+                            overridePendingTransition(0, 0);
+
 
                         }
                     });
@@ -260,12 +274,31 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                     return;
                 }
                 finish();
+                overridePendingTransition(0, 0);
+
                 break;
 
         }
     }
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(compareList(MyApplication.programsSteps,programInfo.getStepList()) && programInfo.getStepList().size()==0){
+            String path = programInfo.getFilePath();
+            if (null != path) {//已经存在本地的文件进行删除，路径不为空
+                File file = new File(path);
+                boolean exists = file.exists();
+                boolean isSuccess = file.delete();
+                if (isSuccess) {
+                    Log.d(TAG,JSON.toJSON(programInfo)+"");
+                }
+            }
+            Toast.makeText(this, getString(R.string.nostepdelfile)+"", Toast.LENGTH_SHORT).show();
+            finish();
+            overridePendingTransition(0, 0);
+            return;
+        }
+    }
 
     //判断实体类的数据是否一致，需要重写equals方法
     public static boolean compareList(List<?> list1, List<?> list2) {
@@ -293,7 +326,7 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
 
 
     public void showAdd(){
-        CustomDialog AddFileDialog = new CustomDialog.Builder(this)
+        CustomkeyDialog AddFileDialog = new CustomkeyDialog.Builder(this)
                 .view(R.layout.add_step_layout)
                 .style(R.style.CustomDialog)
                 .build();
@@ -305,6 +338,10 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
         RadioButton rbBtmOne = AddFileDialog.findViewById(R.id.rbBtmOne);
         RadioButton rbBtmTwo = AddFileDialog.findViewById(R.id.rbBtmTwo);
         Button btnSure = AddFileDialog.findViewById(R.id.btnSure);
+        ConstraintLayout cl_shock = AddFileDialog.findViewById(R.id.cl_shock);
+        ConstraintLayout clPause = AddFileDialog.findViewById(R.id.clPause);
+//        cl_shock.setVisibility(View.GONE);
+//        clPause.setVisibility(View.GONE);
         btnSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -322,14 +359,21 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                         rg_btm.clearCheck();
                         Direction = getString(R.string.ForwardRotation);
                         DirectionType=0;
+//                        cl_shock.setVisibility(View.GONE);
+//                        clPause.setVisibility(View.GONE);
+                        editShockTime.setEnabled(false);
+                        editPauseTime.setEnabled(false);
                         break;
                     case R.id.rbTopTwo:
                         if(rbTopTwo.isChecked())
 
-                            rg_btm.clearCheck();
+                        rg_btm.clearCheck();
                         Direction = getString(R.string.reversal);
                         DirectionType=0;
-
+//                        cl_shock.setVisibility(View.GONE);
+//                        clPause.setVisibility(View.GONE);
+                        editShockTime.setEnabled(false);
+                        editPauseTime.setEnabled(false);
                         break;
                 }
             }
@@ -343,14 +387,20 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                         rg_v.clearCheck();
                         Direction = getString(R.string.Intermittent);
                         DirectionType=1;
-
+//                        cl_shock.setVisibility(View.VISIBLE);
+//                        clPause.setVisibility(View.VISIBLE);
+                        editShockTime.setEnabled(true);
+                        editPauseTime.setEnabled(true);
                         break;
                     case R.id.rbBtmTwo:
                         if(rbBtmTwo.isChecked())
                         rg_v.clearCheck();
                         Direction = getString(R.string.Intermittentinversion);
                         DirectionType=1;
-
+//                        cl_shock.setVisibility(View.VISIBLE);
+//                        clPause.setVisibility(View.VISIBLE);
+                        editShockTime.setEnabled(true);
+                        editPauseTime.setEnabled(true);
                         break;
                 }
             }

@@ -28,26 +28,29 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical">
+        <com.example.thermoshaker.util.PayPassView
+            android:id="@+id/pay_View"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+<!--        <EditText-->
+<!--            android:id="@+id/dialog_keyboard_textview"-->
+<!--            android:layout_width="@dimen/dip_150"-->
+<!--            android:layout_height="@dimen/dip_50"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:gravity="center"-->
+<!--            android:inputType="number"-->
+<!--            android:textSize="28sp" />-->
 
-        <EditText
-            android:id="@+id/dialog_keyboard_textview"
-            android:layout_width="@dimen/dip_150"
-            android:layout_height="@dimen/dip_50"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:inputType="number"
-            android:textSize="28sp" />
+<!--        <com.example.thermoshaker.util.key.SystemKeyboard-->
+<!--            android:id="@+id/customNumKeyView"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            keyboard:keyDrawable="@drawable/btn_keyboard_key"-->
+<!--            keyboard:xmlLayoutResId="@xml/keyboard_numbers_factory"-->
+<!--            android:layout_height="370dp"-->
+<!--            tools:ignore="MissingConstraints">-->
 
-        <com.example.thermoshaker.util.key.SystemKeyboard
-            android:id="@+id/customNumKeyView"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            keyboard:keyDrawable="@drawable/btn_keyboard_key"
-            keyboard:xmlLayoutResId="@xml/keyboard_numbers_factory"
-            android:layout_height="370dp"
-            tools:ignore="MissingConstraints">
-
-        </com.example.thermoshaker.util.key.SystemKeyboard>
+<!--        </com.example.thermoshaker.util.key.SystemKeyboard>-->
 
     </LinearLayout>
 

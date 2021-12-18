@@ -1,7 +1,11 @@
 package com.example.thermoshaker;
 
+import static com.example.thermoshaker.serial.DataUtils.byteMergerAll;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -21,11 +25,25 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.example.thermoshaker.base.BaseActivity;
+import com.example.thermoshaker.base.Content;
+import com.example.thermoshaker.base.MyApplication;
+import com.example.thermoshaker.model.ProgramInfo;
+import com.example.thermoshaker.serial.ControlParam;
+import com.example.thermoshaker.serial.DataUtils;
+import com.example.thermoshaker.serial.message.SerialPortManager;
 import com.example.thermoshaker.ui.file.FileActivity;
 import com.example.thermoshaker.ui.setting.SettingActivity;
 import com.example.thermoshaker.util.LanguageUtil;
+import com.example.thermoshaker.util.ToastUtil;
 import com.example.thermoshaker.util.Utils;
+import com.example.thermoshaker.util.dialog.CustomkeyDialog;
+import com.licheedev.hwutils.ByteUtil;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -38,6 +56,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "MainActivity";
     private int update_system_time=1;
     private int update_system=1000;
+    private int ChooseFilePos = -1;
 
 
     private LinearLayout ll_file,ll_setting,ll_run,ll_inching;
@@ -121,19 +140,88 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         switch (v.getId()){
             case R.id.ll_file:
                 startActivity(new Intent(MainActivity.this, FileActivity.class));
+                overridePendingTransition(0, 0);
+
                 break;
             case R.id.ll_setting:
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));
-
+                overridePendingTransition(0, 0);
                 break;
             case R.id.ll_run:
+                ChoosePrograms();
+
 
                 break;
             case R.id.ll_inching:
+                byte b2 = ControlParam.head_order;
+                byte b3 = ControlParam.OT_RUN;
+                byte[] temp = {b2, b3};
+                byte[] b5 = DataUtils.HexToByteArr(DataUtils.crc16(temp));
+                byte[] All =  byteMergerAll(b1, temp, b5, b7);
+
+                SerialPortManager.instance().sendCommand(All);
+
+
+
 
                 break;
 
         }
+
+
+    }
+    //起始符
+    static byte[] b1 = {(byte) 0xAA};
+    //b2 通讯体类型
+    //b3 通讯命令
+    //b4 数据长度
+    //b5 具体数据
+    //b6 校验码
+    static byte[] b7 = {(byte) 0x55};
+    /**
+     * 选择运行程序
+     */
+    private void ChoosePrograms() {
+
+        CustomkeyDialog customkeyDialog = new CustomkeyDialog.Builder(this)
+                .view(R.layout.choose_programs_layout)
+                .style(R.style.CustomDialog)
+                .build();
+        customkeyDialog.show();
+        RecyclerView rv_list = customkeyDialog.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new GridLayoutManager(MainActivity.this,6));
+        RVListFileAdapter rvListFileAdapter = new RVListFileAdapter(R.layout.file_list_item);
+        customkeyDialog.findViewById(R.id.dialog_inout_run).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ChooseFilePos==-1){
+                    ToastUtil.show(MainActivity.this,getString(R.string.pleasechoosefile));
+
+                    return;
+                }
+
+
+            }
+        });
+        customkeyDialog.findViewById(R.id.dialog_inout_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customkeyDialog.dismiss();
+            }
+        });
+
+        List<ProgramInfo> dataRefre = MyApplication.getInstance().getDataRefre();
+        rvListFileAdapter.setList(dataRefre);
+//        tv_number.setText(rvListFileAdapter.getData().size()+"/"+ Content.FileNumberNum);
+        rv_list.setAdapter(rvListFileAdapter);
+        rvListFileAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                ChooseFilePos = position;
+                rvListFileAdapter.notifyDataSetChanged();
+            }
+        });
+
 
 
     }
@@ -214,6 +302,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onDestroy();
         if(handler!=null){
             handler.removeCallbacks(null);
+        }
+    }
+
+
+    class RVListFileAdapter extends BaseQuickAdapter<ProgramInfo, BaseViewHolder> {
+
+
+        public RVListFileAdapter(int layoutResId) {
+            super(layoutResId);
+        }
+
+        @Override
+        protected void convert(@NotNull BaseViewHolder baseViewHolder, ProgramInfo s) {
+            LinearLayout mll_ = baseViewHolder.getView(R.id.mll_);
+            baseViewHolder.setText(R.id.tv_fileName,s.getFileName()+"");
+            if(ChooseFilePos == baseViewHolder.getAdapterPosition()){
+                mll_.setBackground(getResources().getDrawable(R.drawable.file_bg_shape_true));
+
+            }else {
+                mll_.setBackground(getResources().getDrawable(R.drawable.file_bg_shape));
+            }
+
+
         }
     }
 }

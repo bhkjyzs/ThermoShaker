@@ -2,8 +2,13 @@ package com.example.thermoshaker.base;
 
 import android.app.Activity;
 import android.app.StatusBarManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,11 +22,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.thermoshaker.R;
 import com.example.thermoshaker.model.Event;
 import com.example.thermoshaker.util.AppManager;
 import com.example.thermoshaker.util.BindEventBus;
@@ -35,12 +42,16 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+
 public abstract class BaseActivity extends Activity {
     private static final String TAG = "BaseActivity";
     private int update_system_time=1;
     private int update_system=1000;
     private TextView tv_times;
+    USBBroadcastReceiver usbBroadcastReceiver;
 
     private Handler handler =  new Handler(Looper.myLooper()){
         @Override
@@ -87,8 +98,45 @@ public abstract class BaseActivity extends Activity {
             InputMethodManager inputmanger = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+        initUsb();
 
     }
+
+    private void initUsb(){
+        /* 检查usb */
+        UsbManager usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+        HashMap<String, UsbDevice> deviceHashMap = usbManager.getDeviceList();
+        for (Map.Entry<String, UsbDevice> entry : deviceHashMap.entrySet()) {
+            if (entry.getValue().getInterface(0).getInterfaceClass() == 8) {
+                Log.d(TAG, "USB准备就绪");
+                Content.usb_state = Intent.ACTION_MEDIA_MOUNTED;
+                Content.usb_path = "/storage/usbhost1";
+            }
+        }
+        Log.i(TAG, "init usbBroadcastReceiver");
+        usbBroadcastReceiver = new USBBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.hardware.usb.action.USB_STATE");
+        intentFilter.addAction("android.hardware.action.USB_DISCONNECTED");
+        intentFilter.addAction("android.hardware.action.USB_CONNECTED");
+        intentFilter.addAction("android.intent.action.UMS_CONNECTED");
+        intentFilter.addAction("android.intent.action.UMS_DISCONNECTED");
+        intentFilter.addAction(Intent.ACTION_MEDIA_CHECKING);
+        intentFilter.addAction(Intent.ACTION_MEDIA_MOUNTED);
+        intentFilter.addAction(Intent.ACTION_MEDIA_EJECT);
+        intentFilter.addAction(Intent.ACTION_MEDIA_REMOVED);
+        intentFilter.addDataScheme("file");
+
+        registerReceiver(usbBroadcastReceiver, intentFilter);
+    };
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+
     /**
      * 是否注册事件分发
      *
@@ -123,6 +171,9 @@ public abstract class BaseActivity extends Activity {
         if (isRegisterEventBus()) {
             EventBusUtils.unregister(this);
         }
+        if (null != usbBroadcastReceiver) {
+            unregisterReceiver(usbBroadcastReceiver);
+        }
 
         if(handler!=null){
             handler.removeCallbacks(null);
@@ -156,5 +207,41 @@ public abstract class BaseActivity extends Activity {
         tv.setText(simpleDateFormatDate.format(date));
 
     }
+
+    // 继承BroadcastReceivre基类
+    public class USBBroadcastReceiver extends BroadcastReceiver {
+        // 接收到广播后，则自动调用该方法
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Intent.ACTION_MEDIA_CHECKING:
+                    Content.usb_state = Intent.ACTION_MEDIA_CHECKING;
+                    //Toast.makeText(context,R.string.usb_info_mounting,Toast.LENGTH_SHORT);
+                    Content.usb_path = "";
+                    Log.i(TAG, "正在挂载U盘");
+                    break;
+                case Intent.ACTION_MEDIA_MOUNTED:
+                    Content.usb_state = Intent.ACTION_MEDIA_MOUNTED;
+                    //Toast.makeText(context,R.string.usb_info_mount_success,Toast.LENGTH_SHORT);
+                    Log.i(TAG, getString(R.string.mounting_u_disk));
+                    Uri uri = intent.getData();
+                    if (uri != null) {
+                        Content.usb_path = uri.getPath();
+                    }
+                    Log.i(TAG, Content.usb_path);
+
+                    Toast.makeText(BaseActivity.this, getString(R.string.mounting_u_disk), Toast.LENGTH_SHORT).show();
+                    break;
+                case Intent.ACTION_MEDIA_EJECT:
+                    //Toast.makeText(context,R.string.usb_info_umount_success,Toast.LENGTH_SHORT);
+                    Content.usb_state = Intent.ACTION_MEDIA_EJECT;
+                    Content.usb_path = "";
+                    Log.i(TAG, getString(R.string.removed_u_disk));
+                    Toast.makeText(BaseActivity.this, getString(R.string.removed_u_disk), Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    }
+
 
 }

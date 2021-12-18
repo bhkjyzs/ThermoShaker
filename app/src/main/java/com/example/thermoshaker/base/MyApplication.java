@@ -1,6 +1,7 @@
 package com.example.thermoshaker.base;
 
 import android.app.Application;
+import android.os.Build;
 import android.serialport.SerialPortFinder;
 import android.util.Log;
 
@@ -8,7 +9,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.thermoshaker.model.Device;
 import com.example.thermoshaker.model.ProgramInfo;
 import com.example.thermoshaker.model.ProgramStep;
-import com.example.thermoshaker.serial.SerialPortManager;
+import com.example.thermoshaker.serial.message.SerialPortManager;
 import com.example.thermoshaker.util.DataUtil;
 import com.example.thermoshaker.util.ToastUtil;
 
@@ -39,31 +40,26 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-
-        OpenSerialPort(new Device("","115200"));
-
+        initData();
+        OpenSerialPort(new Device("/dev/ttyS3", "57600"));
     }
+
     /**
      * 打开串口
      */
     private void OpenSerialPort(Device device) {
-
-
-
-            mOpened = SerialPortManager.instance().open(device) != null;
-            if (mOpened) {
-                ToastUtil.showOne(this, "成功打开串口");
-            } else {
-                ToastUtil.showOne(this, "打开串口失败");
-            }
-
-
+        mOpened = SerialPortManager.instance().open(device) != null;
+        if (mOpened) {
+            ToastUtil.showOne(this, "成功打开串口");
+        } else {
+            ToastUtil.showOne(this, "打开串口失败");
+        }
     }
 
     /**
      * 关闭串口
      */
-    public void CloseSerialPort(){
+    public void CloseSerialPort() {
         SerialPortManager.instance().close();
         mOpened = false;
     }
@@ -86,16 +82,45 @@ public class MyApplication extends Application {
             }
             Log.d("===", data.toString() + "");
         } catch (Exception e) {
-            Log.i(TAG, e.toString()+"");
+            Log.i(TAG, e.toString() + "");
         }
     }
 
     public List<ProgramInfo> getData() {
         return data;
     }
+
     public List<ProgramInfo> getDataRefre() {
         initData();
         return data;
     }
+
+
+    /**
+     * LiJ 根据主板型号运行系统命令
+     */
+    public boolean exec(String cmd) {
+
+        Log.d(TAG, cmd);
+        try {
+            if (cmd != null && !cmd.equals("")) {
+                Process su = Runtime.getRuntime().exec("su");
+                String string = cmd + ";exit\n";
+                su.getOutputStream().write(string.getBytes());
+                su.getOutputStream().flush();
+                Log.d(TAG, su.waitFor() + "   down");
+                if (su.waitFor() != 0)
+                    return false;
+                else
+                    return true;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+
+    }
+
 
 }

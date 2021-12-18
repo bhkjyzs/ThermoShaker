@@ -1,4 +1,4 @@
-package com.example.thermoshaker.util;
+package com.example.thermoshaker.util.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,12 +10,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class CustomDialog extends Dialog {
+public class CustomkeyDialog extends Dialog {
     private Context context;
     private boolean cancelTouchout;
     private View view;
 
-    public CustomDialog(Builder builder){
+    public CustomkeyDialog(Builder builder){
         super(builder.context);
         context = builder.context;
         cancelTouchout = builder.cancelTouchout;
@@ -23,7 +23,7 @@ public class CustomDialog extends Dialog {
     }
 
 
-    private CustomDialog(Builder builder, int resStyle) {
+    private CustomkeyDialog(Builder builder, int resStyle) {
         super(builder.context, resStyle);
         context = builder.context;
         cancelTouchout = builder.cancelTouchout;
@@ -40,7 +40,8 @@ public class CustomDialog extends Dialog {
         Window win = getWindow();
         WindowManager.LayoutParams lp = win.getAttributes();
         lp.gravity = Gravity.CENTER;
-
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         win.setAttributes(lp);
         this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         this.getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
@@ -95,11 +96,11 @@ public class CustomDialog extends Dialog {
         }
 
 
-        public CustomDialog build() {
+        public CustomkeyDialog build() {
             if (resStyle != -1) {
-                return new  CustomDialog(this, resStyle);
+                return new CustomkeyDialog(this, resStyle);
             } else {
-                return new  CustomDialog(this);
+                return new CustomkeyDialog(this);
             }
         }
 

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:id="@+id/tv_title"
+            android:gravity="center"
+            android:text="@string/pleasechoosefile"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_25"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/app_bg"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            android:layout_marginTop="@dimen/dip_50"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="@dimen/dip_40"
+            android:background="@drawable/file_bg_shape"
+            android:layout_height="@dimen/dip_400"
+            tools:ignore="MissingConstraints">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+        <Button
+            android:id="@+id/dialog_inout_run"
+            android:text="@string/run"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_35"
+            android:background="@drawable/btn_selector_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginBottom="@dimen/dip_16"
+            app:layout_constraintRight_toLeftOf="@+id/dialog_inout_cancel"
+            android:layout_width="@dimen/dip_400"
+            android:layout_height="@dimen/dip_70"
+            tools:ignore="MissingConstraints">
+
+        </Button>
+
+        <Button
+            android:id="@+id/dialog_inout_cancel"
+            android:text="@string/cancel"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_35"
+            android:background="@drawable/btn_selector_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="@dimen/dip_16"
+            app:layout_constraintLeft_toRightOf="@+id/dialog_inout_run"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="@dimen/dip_400"
+            android:layout_height="@dimen/dip_70"
+            tools:ignore="MissingConstraints">
+
+        </Button>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

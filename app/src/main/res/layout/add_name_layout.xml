@@ -12,20 +12,35 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="@dimen/dip_800"
-
+        android:layout_width="match_parent"
         android:background="@drawable/setting_dialog_bg"
-        android:layout_height="@dimen/dip_400">
+        android:layout_height="match_parent">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:id="@+id/tv_title"
+            android:gravity="center"
+            android:text="请输入文件名"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_25"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/app_bg"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
         <EditText
             android:id="@+id/ed_name"
             android:singleLine="true"
             android:background="@drawable/selector_edit_background"
             android:inputType="none"
             android:selectAllOnFocus="true"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
             android:textCursorDrawable="@drawable/bg_cursor"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dip_50"
+            android:textSize="@dimen/sp_28"
+            android:layout_height="@dimen/dip_80"
             tools:ignore="MissingConstraints">
 
         </EditText>
@@ -40,8 +55,13 @@
             android:focusableInTouchMode="true"
             android:background="#C8C5C5"
             android:textStyle="normal"
+            android:paddingLeft="@dimen/dip_12"
+            android:paddingTop="5dp"
+            android:keyTextSize="@dimen/sp_28"
+            app:layout_constraintTop_toBottomOf="@+id/ed_name"
             android:shadowRadius="0.0"
-            android:layout_height="@dimen/dip_320"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/dip_20"
             tools:ignore="MissingConstraints,MissingPrefix">
 
         </android.inputmethodservice.KeyboardView>
