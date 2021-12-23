@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <TextView
+        android:id="@+id/tvmd"
+        android:textSize="@dimen/sp_42"
+        android:text="@string/motordirection"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dip_100"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/dip_40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_directionlist"
+        app:layout_constraintTop_toTopOf="@+id/tvmd"
+        android:layout_width="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/tvmd"
+        android:layout_marginLeft="@dimen/dip_25"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </androidx.recyclerview.widget.RecyclerView>
+    <TextView
+        android:id="@+id/tvte"
+        android:textSize="@dimen/sp_42"
+        android:text="@string/Temperaturemode"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dip_100"
+        app:layout_constraintTop_toBottomOf="@+id/tvmd"
+        android:layout_marginTop="@dimen/dip_120"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+
+
+
+    <LinearLayout
+        android:id="@+id/mll_continuity"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toRightOf="@+id/tvte"
+        app:layout_constraintTop_toTopOf="@+id/tvte"
+        app:layout_constraintBottom_toBottomOf="@+id/tvte"
+        android:layout_marginLeft="@dimen/dip_25"
+        android:gravity="center_vertical"
+        android:layout_height="@dimen/dip_60"
+        tools:ignore="MissingConstraints">
+
+        <CheckBox
+            android:id="@+id/cb_continuity"
+            android:button="@null"
+            android:background="@drawable/check_select"
+            android:layout_width="@dimen/dip_33"
+            android:checked="true"
+            android:layout_height="@dimen/dip_33"
+            android:layout_marginLeft="@dimen/dip_20"
+            tools:ignore="MissingConstraints">
+
+        </CheckBox>
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:textSize="@dimen/sp_32"
+            android:enabled="false"
+            android:textColor="@color/gray"
+            android:text="@string/continuity"
+            android:layout_marginRight="@dimen/dip_20"
+            android:layout_marginLeft="@dimen/dip_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mll_intermission"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toRightOf="@+id/mll_continuity"
+        app:layout_constraintTop_toTopOf="@+id/tvte"
+        app:layout_constraintBottom_toBottomOf="@+id/tvte"
+        android:layout_marginLeft="@dimen/dip_25"
+        android:gravity="center_vertical"
+        android:layout_height="@dimen/dip_60"
+        tools:ignore="MissingConstraints">
+
+        <CheckBox
+            android:id="@+id/cb_intermission"
+            android:button="@null"
+            android:enabled="false"
+            android:background="@drawable/check_select"
+            android:layout_width="@dimen/dip_33"
+            android:layout_height="@dimen/dip_33"
+            android:layout_marginLeft="@dimen/dip_20"
+            tools:ignore="MissingConstraints">
+
+        </CheckBox>
+
+        <TextView
+            android:id="@+id/tv_ustomContent"
+            android:textSize="@dimen/sp_32"
+            android:textColor="@color/gray"
+            android:text="@string/intermission"
+            android:layout_marginRight="@dimen/dip_20"
+            android:layout_marginLeft="@dimen/dip_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tvcon"
+        android:textSize="@dimen/sp_42"
+        android:text="@string/continued"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dip_100"
+        app:layout_constraintTop_toBottomOf="@+id/tvte"
+        android:layout_marginTop="@dimen/dip_50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+
+
+    <TextView
+        android:id="@+id/tvConTime"
+        android:textSize="@dimen/sp_35"
+        android:text=""
+        android:paddingLeft="@dimen/dip_50"
+        android:paddingRight="@dimen/dip_50"
+        app:layout_constraintTop_toTopOf="@+id/tvcon"
+        app:layout_constraintLeft_toRightOf="@+id/tvcon"
+        app:layout_constraintBottom_toBottomOf="@+id/tvcon"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/tvint"
+        android:textSize="@dimen/sp_42"
+        android:text="@string/interval"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dip_500"
+        app:layout_constraintTop_toBottomOf="@+id/tvte"
+        android:layout_marginTop="@dimen/dip_50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+
+
+    <TextView
+        android:id="@+id/tvintTime"
+        android:textSize="@dimen/sp_35"
+        android:text=""
+        android:paddingLeft="@dimen/dip_50"
+        android:paddingRight="@dimen/dip_50"
+        app:layout_constraintTop_toTopOf="@+id/tvint"
+        app:layout_constraintLeft_toRightOf="@+id/tvint"
+        app:layout_constraintBottom_toBottomOf="@+id/tvint"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints" />
+</androidx.constraintlayout.widget.ConstraintLayout>

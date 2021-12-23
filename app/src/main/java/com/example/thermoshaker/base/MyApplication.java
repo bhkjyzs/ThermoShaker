@@ -9,13 +9,16 @@ import com.alibaba.fastjson.JSON;
 import com.example.thermoshaker.model.Device;
 import com.example.thermoshaker.model.ProgramInfo;
 import com.example.thermoshaker.model.ProgramStep;
+import com.example.thermoshaker.model.StepDefault;
 import com.example.thermoshaker.serial.message.SerialPortManager;
 import com.example.thermoshaker.util.DataUtil;
 import com.example.thermoshaker.util.ToastUtil;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 
 public class MyApplication extends Application {
@@ -26,10 +29,17 @@ public class MyApplication extends Application {
 
     private static MyApplication instance;
 
+    //当前设备步骤默认属性
+    public StepDefault stepDefault = new StepDefault();
+
     //步骤进入前的步骤列表，对比是否改变了的作用
-    public static List<ProgramStep> programsSteps;
+    public static ProgramInfo programsSteps;
     //串口打开或者关闭
     private boolean mOpened = false;
+
+    public SimpleDateFormat dateFormat; // 用于格式化局部时间
+    public SimpleDateFormat AppDateFormat;// 用于常规日期格式化
+    public SimpleDateFormat lockDateFormat;
 
 
     public static MyApplication getInstance() {
@@ -41,7 +51,20 @@ public class MyApplication extends Application {
         super.onCreate();
         instance = this;
         initData();
+        initConfig();
         OpenSerialPort(new Device("/dev/ttyS3", "57600"));
+    }
+
+    private void initConfig() {
+        /* 格式化局部时间 */
+        dateFormat = new SimpleDateFormat("HH:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+
+        AppDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        AppDateFormat.setTimeZone(TimeZone.getDefault());
+
+        lockDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        lockDateFormat.setTimeZone(TimeZone.getDefault());
     }
 
     /**

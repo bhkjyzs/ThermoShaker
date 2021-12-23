@@ -82,4 +82,5 @@ dependencies {
     implementation 'com.licheedev:logplus:1.0.0'
     // 硬件操作工具类
     implementation 'com.licheedev:hardwareutils:1.0.0'
+    implementation 'io.github.h07000223:flycoTabLayout:3.0.0'
 }

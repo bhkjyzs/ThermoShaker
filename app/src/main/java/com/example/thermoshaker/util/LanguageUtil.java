@@ -7,6 +7,7 @@ import android.os.Build;
 import android.util.DisplayMetrics;
 
 import com.alibaba.fastjson.JSON;
+import com.example.thermoshaker.base.MainType;
 
 import java.util.Locale;
 
@@ -20,6 +21,7 @@ public class LanguageUtil {
     public static Locale getLocale(Context context) {
         SharedPreferences spLocale = context.getSharedPreferences(LOCALE_SP, Context.MODE_PRIVATE);
         String localeJson = spLocale.getString(LOCALE_SP_KEY, "");
+
         return JSON.parseObject(localeJson, Locale.class);
     }
 

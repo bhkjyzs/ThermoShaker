@@ -71,7 +71,7 @@ public class KeyBoardUtil {
             switch (primaryCode){
                 case Keyboard.KEYCODE_DONE:
                     if(!editText.getText().toString().trim().equals("")){
-                        BroadcastManager.getInstance(context).sendBroadcast(FileActivity.ACTION_RECEIVE_MESSAGE,editText.getText().toString().trim()+"");
+                        BroadcastManager.getInstance(context).sendBroadcast(FileActivity.MSG,editText.getText().toString().trim()+"");
                         Log.d(TAG,"KEYCODE_DONEin"+editText.getText().toString().trim()+"");
 
                     }

@@ -16,6 +16,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.PersistableBundle;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -74,6 +75,9 @@ public abstract class BaseActivity extends Activity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Locale temp = LanguageUtil.getLocale(this);
+        if(temp==null){
+            temp = Locale.CHINA;
+        }
         for (int i = 0; i < 5; i++) {
             boolean isSuccess = LanguageUtil.updateLocale(this, temp);
             if (isSuccess) {
@@ -99,7 +103,22 @@ public abstract class BaseActivity extends Activity {
             inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
         initUsb();
+//        celiang();
 
+    }
+
+    private void celiang() {
+        DisplayMetrics dm = new DisplayMetrics();
+        dm = getResources().getDisplayMetrics();
+        float density = dm.density; // 屏幕密度（像素比例：0.75/1.0/1.5/2.0）
+        int densityDPI = dm.densityDpi; // 屏幕密度（每寸像素：120/160/240/320）
+        float xdpi = dm.xdpi;
+        float ydpi = dm.ydpi;
+        Log.e(TAG , "xdpi=" + xdpi + "; ydpi=" + ydpi);
+        Log.e(TAG, "density=" + density + "; densityDPI=" + densityDPI);
+        int screenWidth = dm.widthPixels; // 屏幕宽（像素，如：480px）
+        int screenHeight = dm.heightPixels; // 屏幕高（像素，如：800px）
+        Log.e(TAG , "screenWidth=" + screenWidth + "; screenHeight=" + screenHeight);
     }
 
     private void initUsb(){
@@ -202,7 +221,9 @@ public abstract class BaseActivity extends Activity {
         //获取当前时间
         Date date = new Date(System.currentTimeMillis());
         Locale temp = LanguageUtil.getLocale(this);
-
+        if(temp==null){
+            temp = Locale.CHINA;
+        }
         SimpleDateFormat simpleDateFormatDate = new SimpleDateFormat("yyyy/MM/dd EEEE HH:mm",temp);// HH:mm:ss
         tv.setText(simpleDateFormatDate.format(date));
 

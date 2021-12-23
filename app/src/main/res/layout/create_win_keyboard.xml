@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="550dp"
+        android:layout_height="530dp">
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dip_60"
+            android:background="@drawable/shape_background_dialog_title"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/msgdialog"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_25"
+            tools:ignore="MissingConstraints" />
+        <View
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:background="@drawable/bio_background_windows"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="0dp">
+
+        </View>
+    <RelativeLayout
+        android:id="@+id/rl_top"
+
+        android:layout_marginTop="@dimen/dip_60"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+
+            android:id="@+id/LinearLayout_time"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="15dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/textView_hh"
+                style="@style/Ten_windows_but"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bio_create_text_border"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/Ten_windows_but"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:gravity="center"
+                android:text=" : "
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/textView_mm"
+                style="@style/Ten_windows_but"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bio_create_text_border"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/textView4"
+                style="@style/Ten_windows_but"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:gravity="center"
+                android:text=" : "
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/textView_ss"
+                style="@style/Ten_windows_but"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bio_create_text_border"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView_input"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_25"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="15dp"
+            android:background="@drawable/bio_create_text_border"
+            android:gravity="center" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginBottom="@dimen/dip_70"
+        app:layout_constraintTop_toBottomOf="@+id/rl_top"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/bio_windows_vertical_division"
+                    tools:ignore="ContentDescription"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/bio_windows_vertical_division"
+                    tools:ignore="ContentDescription"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" >
+
+                    <Button
+                        android:id="@+id/button1"
+                        style="@style/Ten_windows_but"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bio_windows_click"
+                        android:text="1"
+                        tools:ignore="HardcodedText" />
+
+                    <Button
+                        android:id="@+id/button2"
+                        style="@style/Ten_windows_but"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bio_windows_click"
+                        android:text="2"
+                        tools:ignore="HardcodedText" />
+
+                    <Button
+                        android:id="@+id/button3"
+                        style="@style/Ten_windows_but"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bio_windows_click"
+                        android:text="3"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/bio_windows_horizontal_division"
+                    tools:ignore="ContentDescription" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" >
+
+                    <Button
+                        android:id="@+id/button4"
+                        style="@style/Ten_windows_but"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bio_windows_click"
+                        android:text="4"
+                        tools:ignore="HardcodedText" />
+
+                    <Button
+                        android:id="@+id/button5"
+                        style="@style/Ten_windows_but"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bio_windows_click"
+                        android:text="5"
+                        tools:ignore="HardcodedText" />
+
+                    <Button
+                        android:id="@+id/button6"
+                        style="@style/Ten_windows_but"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bio_windows_click"
+                        android:text="6"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/bio_windows_horizontal_division"
+                    tools:ignore="ContentDescription" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" >
+
+                    <Button
+                        android:id="@+id/button7"
+                        style="@style/Ten_windows_but"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bio_windows_click"
+                        android:text="7"
+                        tools:ignore="HardcodedText" />
+
+                    <Button
+                        android:id="@+id/button8"
+                        style="@style/Ten_windows_but"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bio_windows_click"
+                        android:text="8"
+                        tools:ignore="HardcodedText" />
+
+                    <Button
+                        android:id="@+id/button9"
+                        style="@style/Ten_windows_but"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bio_windows_click"
+                        android:text="9"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/bio_windows_horizontal_division"
+                    tools:ignore="ContentDescription" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/button11"
+                    style="@style/Ten_windows_but"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bio_windows_click"
+                    android:text="."
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    android:id="@+id/button10"
+                    style="@style/Ten_windows_but"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bio_windows_click"
+                    android:text="0"
+                    tools:ignore="HardcodedText" />
+
+                <ImageButton
+                    android:id="@+id/imageButton_back"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bio_windows_click"
+                    android:src="@drawable/keyboard_delete"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
+        </TableLayout>
+    </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_sure"
+            android:text="@string/sure"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@drawable/bio_windows_click"
+            android:src="@drawable/keyboard_delete"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_22"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            tools:ignore="MissingConstraints">
+
+        </Button>
+        <Button
+            android:id="@+id/btn_cancel"
+            android:text="@string/cancel"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_marginLeft="@dimen/dp_40"
+            android:background="@drawable/bio_windows_click"
+            android:src="@drawable/keyboard_delete"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_22"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            tools:ignore="MissingConstraints">
+
+        </Button>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

@@ -7,4 +7,9 @@ public class Content {
 
     public static String usb_state = ""; //usb挂载状态
     public static String usb_path = ""; //usb挂载地址
+
+
+
+
+
 }

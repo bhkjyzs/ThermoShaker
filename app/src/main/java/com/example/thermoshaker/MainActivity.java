@@ -30,6 +30,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.example.thermoshaker.base.BaseActivity;
 import com.example.thermoshaker.base.Content;
+import com.example.thermoshaker.base.MainType;
 import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.ProgramInfo;
 import com.example.thermoshaker.serial.ControlParam;
@@ -62,6 +63,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private LinearLayout ll_file,ll_setting,ll_run,ll_inching;
     private TextView tv_date,tv_time,tv_file,tv_setting,tv_running,tv_inching;
 
+    private static MainActivity instance;
+
+    public static MainActivity getInstance() {
+        return instance;
+    }
 
     private Handler handler =  new Handler(Looper.myLooper()){
         @Override
@@ -87,6 +93,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initView() {
+        instance = this;
+
         // 隐藏状态栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //        /* 横屏或竖屏 */
@@ -158,12 +166,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 byte[] temp = {b2, b3};
                 byte[] b5 = DataUtils.HexToByteArr(DataUtils.crc16(temp));
                 byte[] All =  byteMergerAll(b1, temp, b5, b7);
-
                 SerialPortManager.instance().sendCommand(All);
-
-
-
-
                 break;
 
         }
@@ -233,8 +236,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
     public void updateSystemTime(){
-        Locale temp = LanguageUtil.getLocale(this);
 
+        Locale temp = LanguageUtil.getLocale(this);
+        if(temp==null){
+             temp = Locale.CHINA;
+        }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm",temp);// HH:mm:ss
         //获取当前时间
         Date date = new Date(System.currentTimeMillis());

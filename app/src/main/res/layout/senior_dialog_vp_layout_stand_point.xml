@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/mll_sync"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/mll_hot"
+        android:layout_marginLeft="@dimen/dip_254"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints"
+        android:orientation="horizontal">
+        <CheckBox
+            android:button="@null"
+            android:id="@+id/ck_sync"
+            android:enabled="false"
+            android:background="@drawable/check_select"
+            android:layout_width="@dimen/dip_33"
+            android:layout_height="@dimen/dip_33"
+
+            tools:ignore="MissingConstraints">
+
+        </CheckBox>
+
+        <TextView
+            android:id="@+id/tv_sync"
+            android:textSize="@dimen/sp_32"
+            android:textColor="@color/gray"
+            android:layout_marginLeft="@dimen/dip_20"
+            android:text="@string/syncwork"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mll_hot"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="@dimen/dip_254"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mll_sync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <CheckBox
+            android:button="@null"
+            android:id="@+id/ck_hot"
+            android:background="@drawable/check_select"
+            android:enabled="false"
+
+            android:layout_width="@dimen/dip_33"
+            android:layout_height="@dimen/dip_33"
+
+            tools:ignore="MissingConstraints">
+
+        </CheckBox>
+        <TextView
+            android:id="@+id/tv_hot"
+            android:textSize="@dimen/sp_32"
+            android:textColor="@color/gray"
+            android:text="@string/mixpreh"
+            android:layout_marginLeft="@dimen/dip_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

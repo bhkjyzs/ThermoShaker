@@ -20,38 +20,42 @@ public class ControlParam {
     public final static byte OT_DEBUG_RUN = (byte)0x51; //运行调试模式命令
     public final static byte OT_DEBUG_STOP = (byte)0x52; //停止调试模式命令
 
-    public final static byte OT_DB_TE1_ON = (byte)0x53;  //调试模式模块1开启命令
-    public final static byte OT_DB_TE1_OFF = (byte)0x54; //调试模式模块1关闭命令
-    public final static byte OT_DB_TE2_ON = (byte)0x55;  //调试模式模块2开启命令
-    public final static byte OT_DB_TE2_OFF = (byte)0x56; //调试模式模块2关闭命令
-    public final static byte OT_DB_TE3_ON = (byte)0x57;  //调试模式模块3开启命令
-    public final static byte OT_DB_TE3_OFF = (byte)0x58; //调试模式模块3关闭命令
-    public final static byte OT_DB_TE4_ON = (byte)0x59;  //调试模式模块4开启命令
-    public final static byte OT_DB_TE4_OFF = (byte)0x5A; //调试模式模块4关闭命令
-    public final static byte OT_DB_TE5_ON = (byte)0x5B;  //调试模式模块5开启命令
-    public final static byte OT_DB_TE5_OFF = (byte)0x5C; //调试模式模块5关闭命令
-    public final static byte OT_DB_TE6_ON = (byte)0x5D;  //调试模式模块6开启命令
-    public final static byte OT_DB_TE6_OFF = (byte)0x5E; //调试模式模块6关闭命令
-    public final static byte OT_DB_TE7_ON = (byte)0x5F;  //调试模式模块7开启命令
-    public final static byte OT_DB_TE7_OFF = (byte)0x60; //调试模式模块7关闭命令
-    public final static byte OT_DB_TE8_ON = (byte)0x61;  //调试模式模块8开启命令
-    public final static byte OT_DB_TE8_OFF = (byte)0x62; //调试模式模块8关闭命令
+
+    public final static byte OT_DB_TE1_HT = (byte)0x53;//调试模式模块1加热命令
+    public final static byte OT_DB_TE1_CL = (byte)0x54;//调试模式模块1制冷命令
+    public final static byte OT_DB_TE1_OFF = (byte)0x55; //调试模式模块1关闭命令
+
+    public final static byte OT_DB_TE2_HT = (byte)0x56;//调试模式模块2加热命令
+    public final static byte OT_DB_TE2_CL = (byte)0x57;//调试模式模块2制冷命令
+    public final static byte OT_DB_TE2_OFF = (byte)0x58; //调试模式模块2关闭命令
+
+    public final static byte OT_DB_TE3_HT = (byte)0x59;//调试模式模块3加热命令
+    public final static byte OT_DB_TE3_CL = (byte)0x5a;//调试模式模块3制冷命令
+    public final static byte OT_DB_TE3_OFF = (byte)0x5b; //调试模式模块3关闭命令
+
+    public final static byte OT_DB_TE4_HT = (byte)0x5c;//调试模式模块4加热命令
+    public final static byte OT_DB_TE4_CL = (byte)0x5d;//调试模式模块4制冷命令
+    public final static byte OT_DB_TE4_OFF = (byte)0x5e; //调试模式模块4关闭命令
 
     public final static byte OT_DB_ADJ = (byte)0x63; //调试模式修正命令
-
     public final static byte OT_DB_FAN_ON =  (byte)0x64; //调试模式风扇开启命令
     public final static byte OT_DB_FAN_OFF = (byte)0x65; //调试模式风扇关闭命令
-    public final static byte OT_DB_SUN_ON =  (byte)0x66; //调试模式日光灯开启命令
-    public final static byte OT_DB_SUN_OFF = (byte)0x67; //调试模式日光灯关闭命令
-    public final static byte OT_DB_UV_ON =   (byte)0x68; //调试模式紫外灯开启命令
-    public final static byte OT_DB_UV_OFF =  (byte)0x69; //调试模式紫外灯关闭命令
-    public final static byte OT_DB_MOVE_ZERO =  (byte)0x6A; //回到零位命令
-    public final static byte OT_DB_MOVE_POS = (byte)0x6B; //回到孔位命令
+
+
+    public final static byte OT_DB_MOTOR_ON =  (byte)0x66; //调试模式电机开启运行命令
+    public final static byte OT_DB_MOTOR_OFF = (byte)0x67; //调试模式电机关闭运行命令
     public final static byte OT_DB_BRAKE_OFF = (byte)0x6C; //释放电机命令
     public final static byte OT_DB_POS = (byte)0x6D; //写入校准值命令
-    public final static byte OT_DB_LED_ON =  (byte)0x72; //调试模式LED开启命令
-    public final static byte OT_DB_LED_OFF = (byte)0x73; //调试模式LED关闭命令
-    public final static byte OT_DB_ALL_OFF =   (byte)0x88; //调试模式关闭所有命令
+
+
+    public final static byte OT_DB_LID_ON =   (byte)0xE8; //调试模式热盖开启命令
+    public final static byte OT_DB_LID_OFF =  (byte)0xE9; //调试模式热盖关闭命令
+
+    public final static byte OT_DB_LED_ON =  (byte)0xea; //调试模式LED开启命令
+    public final static byte OT_DB_LED_OFF = (byte)0xeb; //调试模式LED关闭命令
+    public final static byte OT_DB_ALL_OFF =   (byte)0xec; //调试模式关闭所有命令
+
+
 
 
     /******    数据模块   ******/

@@ -39,10 +39,10 @@
     <string name="direction">方向</string>
     <string name="shock">震荡(mm:ss)</string>
     <string name="blank">间歇(mm:ss)</string>
-    <string name="temperatures">温度：</string>
+    <string name="temperatures">温度:</string>
     <string name="speeds">速度：(℃/min)</string>
-    <string name="times">时间：</string>
-    <string name="revolutions">转速：</string>
+    <string name="times">时间:</string>
+    <string name="revolutions">转速:</string>
     <string name="ForwardRotation">正转</string>
     <string name="reversal">反转</string>
     <string name="Intermittent">间歇正转</string>
@@ -56,6 +56,7 @@
     <string name="nostepdelfile">没有创建步骤，文件自动删除</string>
     <string name="issave">是否保存</string>
     <string name="setting_factory">出厂设置</string>
+    <string name="senior_setting">高级设置</string>
     <string name="clear">清除</string>
     <string name="dialog_inout_info_1">未选择外设程序</string>
     <string name="dialog_inout_info_2">未选择本地程序</string>
@@ -64,4 +65,52 @@
     <string name="udrive">U盘</string>
     <string name="local">本地</string>
     <string name="pleasechoosefile">请选择程序</string>
+    <string name="step">步骤</string>
+    <string name="noDelete">不能删除</string>
+
+    <string name="step1">步骤1</string>
+    <string name="step2">步骤2</string>
+    <string name="step3">步骤3</string>
+    <string name="step4">步骤4</string>
+    <string name="step5">步骤5</string>
+    <string name="loopset">循环设置</string>
+    <string name="loopbegin">开始步骤:</string>
+    <string name="loopover">结束步骤:</string>
+    <string name="loopnum">循环次数:</string>
+    <string name="loopenble">循环开关:</string>
+
+
+    <string name="bio_symbols">符号</string>
+    <string name="bio_letters">字母</string>
+    <string name="bio_number">数字</string>
+    <string name="bio_clear">清空</string>
+    <string name="bio_done">完成</string>
+
+    <string name="up_speed">升温速率:</string>
+    <string name="down_speed">降温速率:</string>
+    <string name="motordirection">电机方向:</string>
+    <string name="mixingmode">混匀方式:</string>
+    <string name="blendstart">混匀起点</string>
+
+    <string name="rate">速率</string>
+    <string name="mixedmode">混合模式</string>
+    <string name="blendstartpoint">混合起点</string>
+    <string name="Temperaturemode">温度模式:</string>
+    <string name="FullPower">全功率</string>
+    <string name="continued">持续:</string>
+
+    <string name="tmcustom">自定义</string>
+    <string name="intermission">间歇</string>
+    <string name="interval">间隔:</string>
+
+    <string name="continuity">连续</string>
+    <string name="syncwork">同步运行(加热混匀同步运行)</string>
+    <string name="mixpreh">预热后混匀(到达设定温度开始混匀)</string>
+    <string name="mixprehnok">预热后混匀</string>
+    <string name="syncnok">同步运行</string>
+
+    <string name="forwardmixing">正转混匀</string>
+    <string name="rotarymixing">反转混匀</string>
+    <string name="Forwardandreversemixing">正反转混匀</string>
+
 </resources>

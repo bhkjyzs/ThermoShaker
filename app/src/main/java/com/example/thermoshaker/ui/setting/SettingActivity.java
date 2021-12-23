@@ -23,8 +23,8 @@ import com.example.thermoshaker.model.SettingListBean;
 import com.example.thermoshaker.util.AppManager;
 import com.example.thermoshaker.util.dialog.CustomDialog;
 import com.example.thermoshaker.util.LanguageUtil;
-import com.example.thermoshaker.util.PayPassView;
 import com.example.thermoshaker.util.Utils;
+import com.example.thermoshaker.util.dialog.CustomKeyEditDialog;
 import com.example.thermoshaker.util.dialog.DialogInout;
 
 import org.apache.commons.io.FileUtils;
@@ -148,17 +148,14 @@ public class SettingActivity extends BaseActivity {
 
     }
     private void factoryDialog() {
-        CustomDialog factoryDialog = new CustomDialog.Builder(this)
-                .view(R.layout.factory_layout)
-                .style(R.style.CustomDialog)
-                .cancelTouchout(true)
-                .build();
-        factoryDialog.show();
-        PayPassView payPassView = factoryDialog.findViewById(R.id.pay_View);
-        payPassView.setPassInpntClickListener(new PayPassView.OnPassInputClickListener() {
+
+        CustomKeyEditDialog customKeyEditDialog = new CustomKeyEditDialog(this);
+        customKeyEditDialog.show();
+        customKeyEditDialog.init(getString(R.string.setting_factory)+"",CustomKeyEditDialog.TYPE.Null,0);
+        customKeyEditDialog.setOnDialogLister(new CustomKeyEditDialog.onDialogLister() {
             @Override
-            public void onPassFinish(String password) {
-                switch (password){
+            public void onConfirm() {
+                switch (customKeyEditDialog.getOutStr()){
                     case "159357":
                         Utils.startDeskLaunch();
                         Toast.makeText(SettingActivity.this, "密码正确", Toast.LENGTH_SHORT).show();
@@ -166,18 +163,13 @@ public class SettingActivity extends BaseActivity {
                         break;
                     default:
                         Toast.makeText(SettingActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
-                        payPassView.cleanAllTv();
+
                         break;
                 }
-            }
-
-            @Override
-            public void onPayClose() {
 
             }
-
-
         });
+
     }
 
     /**

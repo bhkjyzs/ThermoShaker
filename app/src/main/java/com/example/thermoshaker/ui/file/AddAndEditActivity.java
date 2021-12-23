@@ -1,66 +1,88 @@
 package com.example.thermoshaker.ui.file;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.text.Editable;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.base.BaseActivity;
 import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.ProgramInfo;
 import com.example.thermoshaker.model.ProgramStep;
+import com.example.thermoshaker.model.TabEntity;
+import com.example.thermoshaker.ui.adapter.MyAdapter;
+import com.example.thermoshaker.util.BroadcastManager;
 import com.example.thermoshaker.util.ToastUtil;
+import com.example.thermoshaker.util.dialog.CustomKeyEditDialog;
 import com.example.thermoshaker.util.dialog.CustomkeyDialog;
 import com.example.thermoshaker.util.DataUtil;
-import com.example.thermoshaker.util.MyTableTextView;
+import com.example.thermoshaker.util.dialog.SeniorDialog;
 import com.example.thermoshaker.util.dialog.TipsDialog;
-import com.example.thermoshaker.util.key.KeyBoardActionListener;
-import com.example.thermoshaker.util.key.SystemKeyboard;
-
-import org.jetbrains.annotations.NotNull;
+import com.example.thermoshaker.util.key.FloatingKeyboard;
+import com.flyco.tablayout.CommonTabLayout;
+import com.flyco.tablayout.SlidingTabLayout;
+import com.flyco.tablayout.listener.CustomTabEntity;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class AddAndEditActivity extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
+public class AddAndEditActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "AddAndEditActivity";
+    public final static String MSG = AddAndEditActivity.class.getName();
+
     private TextView tv_times;
-    private LinearLayout MyTable;
-    private LinearLayout linearLayout;
-    private RecyclerView rv_list;
-    private RVListAdapter rvListAdapter;
-    private int ChoosePos = -1;
-    private String Direction="正转";
-    private int DirectionType = 0;
+    private RecyclerView rv_Senior_list;
+    private RVListSeniorAdapter rvListSeniorAdapter;
+
+    private int ChoosePos = 0;
     private LinearLayout ll_add,ll_save,ll_run,ll_del,ll_return;
     private boolean isEdit = false;
     //当前正在操作的文件
     private ProgramInfo programInfo;
 
-    //key
-    private EditText ediTemperature,ediSpeed,editTime,editRevolution,editShockTime,editPauseTime;
-    private SystemKeyboard systemKeyboard;
 
+    private String[] strings = {};
+
+
+    private CommonTabLayout Tb_step;
+    private List<String> mlistSenior = new ArrayList<>();
+    private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
+
+    private EditText edLoorBegin,edLoorOver,edLoorNum;
+    private TextView tvTime,tvFileNmae;
+    private LinearLayout mll_Revolution,mll_temp;
+    private TextView tvTemperatures,tvRevolution;
+    private FloatingKeyboard keyboardview;
+    private View mViewSenior;
+    private CheckBox ckLoorSwitch;
+
+    private ArrayList<View> viewList = new ArrayList<>();
     @Override
     protected int getLayout() {
         return R.layout.activity_add_and_edit;
@@ -71,36 +93,194 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
         Intent intent = getIntent();
         programInfo = (ProgramInfo) intent.getSerializableExtra("ProgramInfo");
         isEdit = intent.getBooleanExtra("isEdit",false);
+        BroadCast();
         GetViews();
     }
+    private void BroadCast() {
+        BroadcastManager.getInstance(this).addAction(MSG, new BroadcastReceiver(){
+            @Override
+            public void onReceive(Context arg0, Intent intent) {
+                String command = intent.getAction();
+
+                if(!TextUtils.isEmpty(command)){
+                    if((MSG).equals(command)){
+                        //获取json结果
+                        String json = intent.getStringExtra("result");
+                        if(!TextUtils.isEmpty(json)&&json.equals("[keyboard]")){
+                            //更新当前步骤数据数据
+                            updateCurrentStep();
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+
+
 
     private void GetViews() {
+        Tb_step = findViewById(R.id.Tb_step);
         tv_times = findViewById(R.id.tv_times);
-        MyTable = findViewById(R.id.MyTable);
-        rv_list = findViewById(R.id.rv_list);
         ll_add = findViewById(R.id.ll_add);
         ll_save = findViewById(R.id.ll_save);
         ll_run = findViewById(R.id.ll_run);
         ll_del = findViewById(R.id.ll_del);
+        mll_temp = findViewById(R.id.mll_temp);
+        mll_Revolution = findViewById(R.id.mll_Revolution);
+        ckLoorSwitch = findViewById(R.id.ckLoorSwitch);
         ll_return = findViewById(R.id.ll_return);
+        edLoorBegin = findViewById(R.id.edLoorBegin);
+        edLoorOver = findViewById(R.id.edLoorOver);
+        edLoorNum = findViewById(R.id.edLoorNum);
+        tvTemperatures = findViewById(R.id.tvTemperatures);
+        tvRevolution = findViewById(R.id.tvRevolution);
+        tvTime = findViewById(R.id.tvTime);
+        rv_Senior_list = findViewById(R.id.rv_Senior_list);
+        mViewSenior = findViewById(R.id.mViewSenior);
+        tvFileNmae = findViewById(R.id.tvFileNmae);
+        mViewSenior.setOnClickListener(this);
+        tvTime.setOnClickListener(this);
         ll_add.setOnClickListener(this);
         ll_save.setOnClickListener(this);
         ll_run.setOnClickListener(this);
         ll_del.setOnClickListener(this);
+        mll_temp.setOnClickListener(this);
+        mll_Revolution.setOnClickListener(this);
         ll_return.setOnClickListener(this);
-
-        rv_list.setLayoutManager(new LinearLayoutManager(this));
-        rvListAdapter = new RVListAdapter(R.layout.file_step_list_item);
-
-        rvListAdapter.setList(programInfo.getStepList());
-        rv_list.setAdapter(rvListAdapter);
-        rvListAdapter.setOnItemClickListener(new OnItemClickListener() {
+        tvTemperatures.setOnClickListener(this);
+        tvRevolution.setOnClickListener(this);
+        keyboardview = findViewById(R.id.keyboardview);
+        keyboardview.registerEditText(edLoorBegin);
+        keyboardview.registerEditText(edLoorOver);
+        keyboardview.registerEditText(edLoorNum);
+        keyboardview.setfocusCurrent(this.getWindow());
+        keyboardview.setFinishAction(MSG);
+        keyboardview.setKeyboardInt(FloatingKeyboard.KEYBOARD.number);
+        keyboardview.setPreviewEnabled(false);
+        setonFocus();
+        ckLoorSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                ChoosePos = position;
-                rvListAdapter.notifyDataSetChanged();
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                edLoorBegin.setEnabled(isChecked);
+                edLoorOver.setEnabled(isChecked);
+                edLoorNum.setEnabled(isChecked);
             }
         });
+        tvFileNmae.setText(getString(R.string.file)+":"+programInfo.getFileName()+"");
+        ckLoorSwitch.setChecked(programInfo.isLoopEnable());
+        edLoorBegin.setText(programInfo.getLoopStart()+"");
+        edLoorBegin.setEnabled(programInfo.isLoopEnable());
+        edLoorOver.setText(programInfo.getLoopEnd()+"");
+        edLoorOver.setEnabled(programInfo.isLoopEnable());
+        edLoorNum.setText(programInfo.getLoopNum()+"");
+        edLoorNum.setEnabled(programInfo.isLoopEnable());
+
+
+        rv_Senior_list.setLayoutManager(new GridLayoutManager(this,2));
+        rvListSeniorAdapter = new RVListSeniorAdapter(R.layout.layout_senior_list_item);
+        rv_Senior_list.setAdapter(rvListSeniorAdapter);
+        if(isEdit){
+            for (int i = 0; i < programInfo.getStepList().size(); i++) {
+                mTabEntities.add(new TabEntity(getString(R.string.step)+(i+1)));
+            }
+            showView(programInfo.getStepList().get(0));
+
+//            for (int i = 0; i < programInfo.getStepList().size(); i++) {
+//                viewList.add(LayoutInflater.from(this).inflate(R.layout.step_view_list_item,null,false));
+//            }
+
+        }else {
+            mTabEntities.add(new TabEntity(getString(R.string.step1)));
+            ProgramStep programStep = new ProgramStep();
+            programInfo.getStepList().add(programStep);
+            showView(programStep);
+        }
+
+        Tb_step.setTabData(mTabEntities);
+        Tb_step.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                ChoosePos = position;
+                showView(programInfo.getStepList().get(position));
+
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+
+            }
+        });
+
+
+    }
+
+    private void setonFocus() {
+        edLoorNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View arg0, boolean arg1) {
+                if (arg1) {
+                    keyboardview.setKeyboardInt(FloatingKeyboard.KEYBOARD.number);
+                    keyboardview.show(arg0);
+
+                } else {
+                    keyboardview.hide();
+
+                    String str = edLoorNum.getText().toString().trim();
+                    programInfo.setLoopNumStr(str);
+                    edLoorNum.setText(programInfo.getLoopNum() + "");
+                }
+            }
+        });
+        edLoorOver.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View arg0, boolean arg1) {
+                if (arg1) {
+                    keyboardview.setKeyboardInt(FloatingKeyboard.KEYBOARD.number);
+                    keyboardview.show(arg0);
+
+                } else {
+                    keyboardview.hide();
+
+                    String str = edLoorOver.getText().toString().trim();
+                    programInfo.setLoopEndStr(str);
+                    edLoorOver.setText(programInfo.getLoopEnd() + "");
+                }
+            }
+        });
+        edLoorBegin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View arg0, boolean arg1) {
+                if (arg1) {
+                    keyboardview.setKeyboardInt(FloatingKeyboard.KEYBOARD.number);
+                    keyboardview.show(arg0);
+
+                } else {
+                    keyboardview.hide();
+
+                    String str = edLoorBegin.getText().toString().trim();
+                    programInfo.setLoopStartStr(str);
+                    edLoorBegin.setText(programInfo.getLoopStart() + "");
+                }
+            }
+        });
+
+    }
+
+    private void showView(ProgramStep programStep) {
+
+        tvTemperatures.setText(programStep.getTemperature()+"");
+        tvRevolution.setText(programStep.getZSpeed()+"");
+        tvTime.setText(MyApplication.getInstance().dateFormat.format(programStep.getTime())+"");
+
+
+        mlistSenior.clear();
+        mlistSenior.add(getString(R.string.up_speed)+""+programStep.getUpSpeedStr());
+        mlistSenior.add(getString(R.string.down_speed)+""+programStep.getDownSpeedStr());
+        mlistSenior.add(getString(R.string.motordirection)+""+programStep.getDirectionStr());
+        mlistSenior.add(getString(R.string.mixingmode)+""+programStep.getMixingModeStr());
+        mlistSenior.add(getString(R.string.blendstart)+":"+programStep.getBlendStartStr());
+        rvListSeniorAdapter.setList(mlistSenior);
 
     }
 
@@ -113,60 +293,29 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
 
     @SuppressLint("SetTextI18n")
     private void initLinViews() {
-        //初始化标题
-         linearLayout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.table_item, null);
-        MyTableTextView title = (MyTableTextView) linearLayout.findViewById(R.id.list_1_1);
-        title = (MyTableTextView) linearLayout.findViewById(R.id.list_1_2);
-        title.setText(R.string.temperature);
-        title.setTextColor(Color.BLACK);
-        title = (MyTableTextView) linearLayout.findViewById(R.id.list_1_3);
-        title.setText(R.string.speed);
-        title.setTextColor(Color.BLACK);
-        title = (MyTableTextView) linearLayout.findViewById(R.id.list_1_4);
-        title.setText(R.string.time);
-        title.setTextColor(Color.BLACK);
-        title = (MyTableTextView) linearLayout.findViewById(R.id.list_1_5);
-        title.setText(R.string.revolution);
-        title.setTextColor(Color.BLACK);
-        title = (MyTableTextView) linearLayout.findViewById(R.id.list_1_6);
-        title.setText(R.string.direction);
-        title.setTextColor(Color.BLACK);
-        title = (MyTableTextView) linearLayout.findViewById(R.id.list_1_7);
-        title.setText(R.string.shock);
-        title.setTextColor(Color.BLACK);
-        title = (MyTableTextView) linearLayout.findViewById(R.id.list_1_8);
-        title.setText(R.string.blank);
-        title.setTextColor(Color.BLACK);
-        MyTable.addView(linearLayout);
 
-        //初始化内容
-        for (int i=1;i<6;i++) {
-            linearLayout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.table_item, null);
-            MyTableTextView txt = (MyTableTextView) linearLayout.findViewById(R.id.list_1_1);
-            txt.setText(i+"");
-            txt = (MyTableTextView) linearLayout.findViewById(R.id.list_1_2);
-            txt.setText("");
-            txt = (MyTableTextView) linearLayout.findViewById(R.id.list_1_3);
-            txt.setText("");
-            txt = (MyTableTextView) linearLayout.findViewById(R.id.list_1_4);
-            txt.setText("");
-            txt = (MyTableTextView) linearLayout.findViewById(R.id.list_1_5);
-            txt.setText("");
-            txt = (MyTableTextView) linearLayout.findViewById(R.id.list_1_6);
-            txt.setText("");
-            txt = (MyTableTextView) linearLayout.findViewById(R.id.list_1_7);
-            txt.setText("");
-            txt = (MyTableTextView) linearLayout.findViewById(R.id.list_1_8);
-            txt.setText("");
-            MyTable.addView(linearLayout);
-        }
     }
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+
+            case R.id.mll_temp:
+                showkeyDialog(CustomKeyEditDialog.TYPE.Temp,String.valueOf(programInfo.getStepList().get(ChoosePos).getTemperature()));
+                break;
+            case R.id.mll_Revolution:
+                showkeyDialog(CustomKeyEditDialog.TYPE.RPM,String.valueOf(programInfo.getStepList().get(ChoosePos).getZSpeed()));
+                break;
+            case R.id.tvTime:
+                showkeyDialog(CustomKeyEditDialog.TYPE.Time,String.valueOf(MyApplication.getInstance().dateFormat.format(programInfo.getStepList().get(ChoosePos).getTime())));
+                break;
+            case R.id.mViewSenior:
+                showSenior();
+
+                break;
             case R.id.ll_add:
-                showAdd();
+                AddStep();
                 break;
             case R.id.ll_save:
 
@@ -218,18 +367,33 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
 
                 break;
             case R.id.ll_del:
-                if(ChoosePos==-1){
-                    ToastUtil.show(this,getString(R.string.pleasechoosefile));
+                if(programInfo.getStepList().size()<=1){
+                    ToastUtil.show(this,getString(R.string.noDelete));
                     return;
                 }
-                programInfo.getStepList().remove(ChoosePos);
-                rvListAdapter.getData().remove(ChoosePos);
-                rvListAdapter.notifyDataSetChanged();
-                ChoosePos = -1;
+                if(ChoosePos==programInfo.getStepList().size()-1) {
+                    Tb_step.setCurrentTab(0);
+                    programInfo.getStepList().remove(ChoosePos);
+                    mTabEntities.clear();
+                    for (int i = 0; i < programInfo.getStepList().size(); i++) {
+                        mTabEntities.add(new TabEntity(getString(R.string.step)+(i+1)));
+                    }
+                    Tb_step.setTabData(mTabEntities);
+                    showView(programInfo.getStepList().get(0));
+                    return;
+                }
+
+                    programInfo.getStepList().remove(ChoosePos);
+                    mTabEntities.clear();
+                    for (int i = 0; i < programInfo.getStepList().size(); i++) {
+                        mTabEntities.add(new TabEntity(getString(R.string.step)+(i+1)));
+                    }
+                    Tb_step.setTabData(mTabEntities);
+                    showView(programInfo.getStepList().get(ChoosePos));
                 break;
             case R.id.ll_return:
-
-                if(!compareList(MyApplication.programsSteps,programInfo.getStepList())){
+                Log.d(TAG,programInfo.equals(MyApplication.programsSteps)+"");
+                if(!programInfo.equals(MyApplication.programsSteps)){
                     TipsDialog tipsDialogReturn = new TipsDialog(AddAndEditActivity.this,getString(R.string.issave));
                     tipsDialogReturn.show();
                     tipsDialogReturn.setOnDialogLister(new TipsDialog.onDialogLister() {
@@ -280,10 +444,92 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
 
         }
     }
+
+    private void showSenior() {
+
+        SeniorDialog seniorDialog = new SeniorDialog(programInfo.getStepList().get(ChoosePos), this);
+        seniorDialog.setProgramStepListener(new SeniorDialog.dismissProgramStepListener() {
+            @Override
+            public void disStep(boolean isSave, ProgramStep programStep) {
+                if(true){
+                    programInfo.getStepList().set(ChoosePos,programStep);
+                    showView(programStep);
+                }
+            }
+        });
+
+    }
+
+    private void showkeyDialog(CustomKeyEditDialog.TYPE type,String name) {
+        CustomKeyEditDialog customKeyEditDialog = new CustomKeyEditDialog(this);
+        customKeyEditDialog.show();
+        customKeyEditDialog.init(name,type,ChoosePos);
+        customKeyEditDialog.setOnDialogLister(new CustomKeyEditDialog.onDialogLister() {
+            @Override
+            public void onConfirm() {
+                Log.d(TAG,customKeyEditDialog.getOutStr()+"    "+customKeyEditDialog.getOutTime());
+                switch (type){
+                    case RPM:
+                        programInfo.getStepList().get(ChoosePos).setZSpeed(Integer.parseInt(customKeyEditDialog.getOutStr()));
+                        tvRevolution.setText(customKeyEditDialog.getOutStr()+"");
+                        break;
+                    case Temp:
+                        programInfo.getStepList().get(ChoosePos).setTemperature(Float.parseFloat(customKeyEditDialog.getOutStr()));
+                        tvTemperatures.setText(customKeyEditDialog.getOutStr()+"");
+                        break;
+                    case Time:
+                        try {
+                            programInfo.getStepList().get(ChoosePos).setTime(MyApplication.getInstance().dateFormat.parse(customKeyEditDialog.getOutTime()).getTime());
+                            tvTime.setText(customKeyEditDialog.getOutTime()+"");
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+
+                }
+
+            }
+        });
+
+    }
+
+    /**
+     * 更新当前步骤
+     */
+    private void updateCurrentStep() {
+        programInfo.getStepList().get(ChoosePos).setTemperature(Float.parseFloat(tvTemperatures.getText().toString().trim()));
+        programInfo.getStepList().get(ChoosePos).setZSpeed(Integer.parseInt(tvRevolution.getText().toString().trim()));
+//        programInfo.getStepList().get(ChoosePos).setTime(Long.parseLong(tvTime.getText().toString().trim()));
+
+        programInfo.setLoopEnable(ckLoorSwitch.isChecked());
+        programInfo.setLoopStart(Integer.parseInt(edLoorBegin.getText().toString().trim()));
+        programInfo.setLoopEnd(Integer.parseInt(edLoorOver.getText().toString().trim()));
+        programInfo.setLoopNum(Integer.parseInt(edLoorNum.getText().toString().trim()));
+
+    }
+
+
+
+    private void AddStep() {
+        if(programInfo.getStepList().size()>=5){
+            tips();
+            return;
+        }
+        ProgramStep programStep = new ProgramStep();
+        programInfo.getStepList().add(programStep);
+        mTabEntities.add(new TabEntity(getString(R.string.step)+(programInfo.getStepList().size())));
+        Tb_step.setTabData(mTabEntities);
+
+
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(compareList(MyApplication.programsSteps,programInfo.getStepList()) && programInfo.getStepList().size()==0){
+        BroadcastManager.getInstance(this).destroy(MSG);
+
+        if(programInfo.equals(MyApplication.programsSteps)&& programInfo.getStepList().size()==0){
             String path = programInfo.getFilePath();
             if (null != path) {//已经存在本地的文件进行删除，路径不为空
                 File file = new File(path);
@@ -311,251 +557,42 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
         if (list1.size() != list2.size()) {
             return false;
         }
-//        if (!list1.equals(list2)) {
-//            return false;
-//        }
-        for (int i = 0; i < list1.size(); i++) {
-            if(!list1.get(i).equals(list1.get(i))){
-                return false;
-            }
+        if (!list1.equals(list2)) {
+            return false;
         }
+//        for (int i = 0; i < list1.size(); i++) {
+//            if(!list1.get(i).equals(list2.get(i))){
+//                return false;
+//            }
+//        }
         return true;
     }
 
 
 
 
-    public void showAdd(){
-        CustomkeyDialog AddFileDialog = new CustomkeyDialog.Builder(this)
-                .view(R.layout.add_step_layout)
-                .style(R.style.CustomDialog)
-                .build();
-        AddFileDialog.show();
-        RadioGroup rg_v = AddFileDialog.findViewById(R.id.rg_v);
-        RadioGroup rg_btm = AddFileDialog.findViewById(R.id.rg_btm);
-        RadioButton rbTopOne = AddFileDialog.findViewById(R.id.rbTopOne);
-        RadioButton rbTopTwo = AddFileDialog.findViewById(R.id.rbTopTwo);
-        RadioButton rbBtmOne = AddFileDialog.findViewById(R.id.rbBtmOne);
-        RadioButton rbBtmTwo = AddFileDialog.findViewById(R.id.rbBtmTwo);
-        Button btnSure = AddFileDialog.findViewById(R.id.btnSure);
-        ConstraintLayout cl_shock = AddFileDialog.findViewById(R.id.cl_shock);
-        ConstraintLayout clPause = AddFileDialog.findViewById(R.id.clPause);
-//        cl_shock.setVisibility(View.GONE);
-//        clPause.setVisibility(View.GONE);
-        btnSure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveAll();
-                AddFileDialog.dismiss();
-
-            }
-        });
-        rg_v.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
-                    case R.id.rbTopOne:
-                        if(rbTopOne.isChecked())
-                        rg_btm.clearCheck();
-                        Direction = getString(R.string.ForwardRotation);
-                        DirectionType=0;
-//                        cl_shock.setVisibility(View.GONE);
-//                        clPause.setVisibility(View.GONE);
-                        editShockTime.setEnabled(false);
-                        editPauseTime.setEnabled(false);
-                        break;
-                    case R.id.rbTopTwo:
-                        if(rbTopTwo.isChecked())
-
-                        rg_btm.clearCheck();
-                        Direction = getString(R.string.reversal);
-                        DirectionType=0;
-//                        cl_shock.setVisibility(View.GONE);
-//                        clPause.setVisibility(View.GONE);
-                        editShockTime.setEnabled(false);
-                        editPauseTime.setEnabled(false);
-                        break;
-                }
-            }
-        });
-        rg_btm.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
-                    case R.id.rbBtmOne:
-                        if(rbBtmOne.isChecked())
-                        rg_v.clearCheck();
-                        Direction = getString(R.string.Intermittent);
-                        DirectionType=1;
-//                        cl_shock.setVisibility(View.VISIBLE);
-//                        clPause.setVisibility(View.VISIBLE);
-                        editShockTime.setEnabled(true);
-                        editPauseTime.setEnabled(true);
-                        break;
-                    case R.id.rbBtmTwo:
-                        if(rbBtmTwo.isChecked())
-                        rg_v.clearCheck();
-                        Direction = getString(R.string.Intermittentinversion);
-                        DirectionType=1;
-//                        cl_shock.setVisibility(View.VISIBLE);
-//                        clPause.setVisibility(View.VISIBLE);
-                        editShockTime.setEnabled(true);
-                        editPauseTime.setEnabled(true);
-                        break;
-                }
-            }
-        });
-        ediTemperature = AddFileDialog.findViewById(R.id.ediTemperature);
-         ediSpeed = AddFileDialog.findViewById(R.id.ediSpeed);
-         editTime = AddFileDialog.findViewById(R.id.editTime);
-         editRevolution = AddFileDialog.findViewById(R.id.editRevolution);
-         editShockTime = AddFileDialog.findViewById(R.id.editShockTime);
-         editPauseTime = AddFileDialog.findViewById(R.id.editPauseTime);
-        ediTemperature.setOnFocusChangeListener(this);
-        ediSpeed.setOnFocusChangeListener(this);
-        editTime.setOnFocusChangeListener(this);
-        editRevolution.setOnFocusChangeListener(this);
-        editShockTime.setOnFocusChangeListener(this);
-        editPauseTime.setOnFocusChangeListener(this);
-
-        systemKeyboard = AddFileDialog.findViewById(R.id.customNumKeyView);
-        systemKeyboard.setEditText(ediTemperature);
-        systemKeyboard.setOnKeyboardActionListener(new KeyBoardActionListener() {
-            @Override
-            public void onComplete() {
-
-            }
-
-            @Override
-            public void onTextChange(Editable editable) {
-
-            }
-
-            @Override
-            public void onClear() {
-
-            }
-
-            @Override
-            public void onClearAll() {
-
-            }
-        });
-
-
-    }
-
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        switch (v.getId()){
-            case R.id.ediTemperature: //绑定EditText并显示自定义键盘
-                systemKeyboard.setEditText((EditText) v);
-                break;
-            case R.id.ediSpeed:
-                systemKeyboard.setEditText((EditText) v);
-                break;
-            case R.id.editTime:
-                systemKeyboard.setEditText((EditText) v);
-                break;
-            case R.id.editRevolution:
-                systemKeyboard.setEditText((EditText) v);
-                break;
-            case R.id.editShockTime:
-                systemKeyboard.setEditText((EditText) v);
-                break;
-            case R.id.editPauseTime:
-                systemKeyboard.setEditText((EditText) v);
-                break;
-        }
-    }
-
-    private void saveAll(){
-        if(programInfo.getStepList().size()>=5){
-            tips();
-            return;
-        }
-        //温度
-        String ediTempera =  ediTemperature.getText().toString();
-        if(ediTempera.equals("")){
-            ediTempera="37";
-        }
-        Float tt = Float.parseFloat(ediTempera);
-
-        float str = Float.parseFloat(String.format("%.2f", tt));
-        //速度
-        String ediS =  ediSpeed.getText().toString();
-        if(ediS.equals("")){
-            ediS="4";
-        }
-        Float ttSpeed = Float.parseFloat(ediS);
-
-        float strSpeed = Float.parseFloat(String.format("%.2f", ttSpeed));
-        //时间
-        String timeString = editTime.getText().toString();
-        if(timeString.equals("")){
-            timeString = "1";
-        }
-        int Time = Integer.parseInt(timeString);
-        //转速
-        String RevolutionString = editRevolution.getText().toString();
-        if(RevolutionString.equals("")){
-            RevolutionString = "1500";
-        }
-        int Revolution = Integer.parseInt(RevolutionString);
-
-        //震荡时间和暂停时间
-        int Shock = 0;
-        int Pause = 0;
-        if(DirectionType!=0){
-            String ShockTimeString = editShockTime.getText().toString();
-            if(ShockTimeString.equals("")){
-                ShockTimeString = "60";
-            }
-            Shock = Integer.parseInt(ShockTimeString);
-
-            String PauseTimeString = editPauseTime.getText().toString();
-            if(PauseTimeString.equals("")){
-                PauseTimeString = "60";
-            }
-            Pause = Integer.parseInt(PauseTimeString);
-        }
-
-
-        ProgramStep programStep = new ProgramStep(str,strSpeed,Time,
-                Revolution,Direction,Shock,
-                Pause);
-        programInfo.getStepList().add(programStep);
-        Log.d(TAG,MyApplication.programsSteps.toString()+"");
-        rvListAdapter.setList(programInfo.getStepList());
-    }
-
     private void tips() {
         TipsDialog tipsDialog = new TipsDialog(AddAndEditActivity.this,getString(R.string.upperlimit));
         tipsDialog.show();
     }
 
-    class RVListAdapter extends BaseQuickAdapter<ProgramStep, BaseViewHolder>{
+    class RVListSeniorAdapter extends BaseQuickAdapter<String,BaseViewHolder>{
 
-        public RVListAdapter(int layoutResId) {
+        public RVListSeniorAdapter(int layoutResId) {
             super(layoutResId);
         }
-        @SuppressLint("ResourceAsColor")
+
         @Override
-        protected void convert(@NotNull BaseViewHolder baseViewHolder, ProgramStep programStep) {
-            LinearLayout ll_ = baseViewHolder.getView(R.id.ll_);
-            if(ChoosePos == baseViewHolder.getAdapterPosition()){
-                ll_.setBackground(getResources().getDrawable(R.drawable.bg_app_bg));
+        protected void convert(@NonNull BaseViewHolder baseViewHolder, String s) {
+            baseViewHolder.setText(R.id.tv_content,s+"");
 
-            }else {
-                ll_.setBackground(getResources().getDrawable(R.drawable.bg_white));
 
-            }
-            baseViewHolder.setText(R.id.list_1_1,baseViewHolder.getAdapterPosition()+1+"");
-
-            baseViewHolder.setText(R.id.list_1_2,programStep.getTemperature()+"")
-            .setText(R.id.list_1_3,programStep.getSpeed()+"").setText(R.id.list_1_4,programStep.getTime()+"")
-            .setText(R.id.list_1_5,programStep.getZSpeed()+"").setText(R.id.list_1_6,programStep.getDirection()+"")
-            .setText(R.id.list_1_7,programStep.getShock()+"").setText(R.id.list_1_8,programStep.getIntermission()+"");
         }
     }
+
+
+
+
+
+
 }

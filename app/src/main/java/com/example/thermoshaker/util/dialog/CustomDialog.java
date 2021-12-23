@@ -78,7 +78,10 @@ public class CustomDialog extends Dialog {
             return this;
         }
 
-
+        public Builder viewId(View  views) {
+            view = views;
+            return this;
+        }
         public Builder style(int resStyle) {
             this.resStyle = resStyle;
             return this;

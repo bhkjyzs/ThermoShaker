@@ -33,12 +33,13 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.List;
 public class FileActivity extends BaseActivity implements View.OnClickListener {
+    public final static String MSG = FileActivity.class.getName();
+
     private TextView tv_times,tv_number;
     private RecyclerView rv_list;
     private RVListFileAdapter rvListFileAdapter;
     private LinearLayout ll_add,ll_edit,ll_run,ll_del,ll_return;
     private int ChooseFilePos = -1;
-    public static  String ACTION_RECEIVE_MESSAGE = "ACTION_RECEIVE_MESSAGE";
     @Override
     protected int getLayout() {
         return R.layout.activity_file;
@@ -187,15 +188,15 @@ public class FileActivity extends BaseActivity implements View.OnClickListener {
         BroadCast();
     }
     private void BroadCast() {
-        BroadcastManager.getInstance(this).addAction(ACTION_RECEIVE_MESSAGE, new BroadcastReceiver(){
+        BroadcastManager.getInstance(this).addAction(MSG, new BroadcastReceiver(){
             @Override
             public void onReceive(Context arg0, Intent intent) {
                 String command = intent.getAction();
                 if(!TextUtils.isEmpty(command)){
-                    if((ACTION_RECEIVE_MESSAGE).equals(command)){
+                    if((MSG).equals(command)){
                         //获取json结果
                         String json = intent.getStringExtra("result");
-                        if(!TextUtils.isEmpty(command)){
+                        if(!TextUtils.isEmpty(json)){
                             ProgramInfo programInfo = new ProgramInfo(json);
                             GoEditPage(programInfo,false);
                         }
@@ -211,11 +212,11 @@ public class FileActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        BroadcastManager.getInstance(this).destroy(ACTION_RECEIVE_MESSAGE);
+        BroadcastManager.getInstance(this).destroy(MSG);
     }
 
     public void GoEditPage(ProgramInfo programInfo,boolean isEdit){
-        MyApplication.programsSteps = programInfo.getStepList();
+        MyApplication.programsSteps = programInfo;
         Intent intent = new Intent(this,AddAndEditActivity.class);
         intent.putExtra("ProgramInfo",programInfo);
         intent.putExtra("isEdit",isEdit);

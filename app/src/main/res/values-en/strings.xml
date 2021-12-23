@@ -40,8 +40,8 @@
     <string name="blank">blank(mm:ss)</string>
     <string name="temperatures">Temperatures:</string>
     <string name="speeds">Speed:(℃/min)</string>
-    <string name="times">Time：</string>
-    <string name="revolutions">Revolution：</string>
+    <string name="times">Time:</string>
+    <string name="revolutions">Revolution:</string>
     <string name="ForwardRotation">ForwardRotation</string>
     <string name="reversal">Reversal</string>
     <string name="Intermittent">IntermittentForwardRotation</string>
@@ -55,6 +55,8 @@
     <string name="nostepdelfile">There is no creation step, and the file is automatically deleted</string>
     <string name="issave"> Do you want to save</string>
     <string name="setting_factory">Factory</string>
+    <string name="senior_setting">Senior Setting</string>
+
     <string name="clear">Clear</string>
     <string name="success">OK</string>
     <string name="dialog_inout_info_1">no select usb program</string>
@@ -65,4 +67,52 @@
     <string name="udrive">USB drive</string>
     <string name="local">Local</string>
     <string name="pleasechoosefile">Please select a program</string>
+    <string name="step">Step</string>
+    <string name="noDelete">Cannot delete</string>
+
+    <string name="step1">Step1</string>
+    <string name="step2">Step2</string>
+    <string name="step3">Step3</string>
+    <string name="step4">Step4</string>
+    <string name="step5">Step5</string>
+    <string name="loopset">Cycle Settings</string>
+    <string name="loopbegin">Begin:</string>
+    <string name="loopover">Over:</string>
+    <string name="loopnum">Num:</string>
+    <string name="loopenble">switch:</string>
+
+
+    <string name="bio_symbols">Symbols</string>
+    <string name="bio_letters">Letters</string>
+    <string name="bio_number">Number</string>
+    <string name="bio_clear">Clear</string>
+    <string name="bio_done">Done</string>
+
+
+    <string name="up_speed">Heating Rate:</string>
+    <string name="down_speed">Cooling Rate:</string>
+    <string name="motordirection">Motor Direction:</string>
+    <string name="mixingmode">Mixing Mode:</string>
+    <string name="blendstart">Blend Start</string>
+    <string name="continued">Continued:</string>
+    <string name="interval">Interval:</string>
+
+    <string name="rate">Rate</string>
+    <string name="mixedmode">Mixed Mode</string>
+    <string name="blendstartpoint">Blend start</string>
+    <string name="Temperaturemode">Temperature Mode:</string>
+    <string name="FullPower">Full Power</string>
+    <string name="tmcustom">Custom</string>
+    <string name="intermission">Intermission</string>
+    <string name="continuity">Continuity</string>
+    <string name="syncwork">Sync Run(Heating and mixing)</string>
+    <string name="mixpreh">Mix well after preheating(Heating and mixing)</string>
+    <string name="mixprehnok">Mix well after preheating</string>
+    <string name="syncnok">Sync Run</string>
+
+
+    <string name="forwardmixing">Forward Mixing</string>
+    <string name="rotarymixing">Rotary mixing</string>
+    <string name="Forwardandreversemixing">Forward and reverse mixing</string>
+
 </resources>

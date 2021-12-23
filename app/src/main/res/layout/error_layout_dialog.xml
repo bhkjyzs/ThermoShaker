@@ -7,18 +7,18 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="300dp"
+        android:layout_width="400dp"
         android:background="@drawable/input_dialog_bg"
-        android:layout_height="240dp">
+        android:layout_height="340dp">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dip_40"
+            android:layout_height="@dimen/dip_60"
             android:background="@drawable/shape_background_dialog_title"
             android:gravity="center"
             app:layout_constraintTop_toTopOf="parent"
             android:text="@string/msgdialog"
             android:textColor="@color/white"
-            android:textSize="@dimen/design_bottom_navigation_active_text_size"
+            android:textSize="@dimen/sp_25"
             tools:ignore="MissingConstraints" />
         <TextView
             android:id="@+id/tv_msg"
@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:textSize="@dimen/sp_16"
+            android:textSize="@dimen/sp_25"
             android:layout_width="wrap_content"
             android:textColor="@color/black"
             android:layout_height="wrap_content"
@@ -40,13 +40,13 @@
             style="?android:attr/borderlessButtonStyle"
             android:background="@drawable/selector_background"
             android:textColor="@color/black"
-            android:textSize="@dimen/design_bottom_navigation_active_text_size"
+            android:textSize="@dimen/sp_22"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="20dp"
-            android:layout_width="100dp"
-            android:layout_height="@dimen/dp_40"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
             tools:ignore="MissingConstraints">
 
         </Button>
@@ -57,13 +57,13 @@
             android:layout_marginLeft="@dimen/dp_40"
             android:background="@drawable/selector_background"
             android:textColor="@color/black"
-            android:textSize="@dimen/design_bottom_navigation_active_text_size"
+            android:textSize="@dimen/sp_22"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="20dp"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
             tools:ignore="MissingConstraints">
 
         </Button>

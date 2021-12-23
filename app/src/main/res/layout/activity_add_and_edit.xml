@@ -1,14 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
+    xmlns:keyboard="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.file.AddAndEditActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_height="match_parent">
 
     <include layout="@layout/inclub_titile_tabar" android:id="@+id/mViewTop"></include>
 
+
+    <TextView
+        android:id="@+id/tvFileNmae"
+        android:text=""
+        android:textSize="@dimen/sp_25"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="@+id/mViewTop"
+        app:layout_constraintRight_toRightOf="@+id/mViewTop"
+        app:layout_constraintBottom_toBottomOf="@+id/mViewTop"
+        app:layout_constraintTop_toTopOf="@+id/mViewTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
 
     <View
         android:id="@+id/mViewBtm"
@@ -161,44 +183,384 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <LinearLayout
-        android:id="@+id/MyTable"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+
+    <com.flyco.tablayout.CommonTabLayout
+        android:id="@+id/Tb_step"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dip_60"
         app:layout_constraintTop_toTopOf="@+id/mViewBtm"
         android:layout_marginTop="@dimen/dip_130"
-        android:layout_marginBottom="@dimen/dip_30"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="@dimen/dip_30"
-        android:layout_marginRight="@dimen/dip_30"
 
-        android:orientation="vertical"
+        tl:tl_iconVisible="false"
+        tl:tl_indicator_corner_radius="1.5dp"
+        tl:tl_indicator_height="5dp"
+        tl:tl_tab_width="@dimen/dip_150"
+        tl:tl_indicator_width="@dimen/dip_150"
+        tl:tl_textsize="28sp"
+        tl:tl_indicator_color="#008FD7"
+        tl:tl_textSelectColor="#151212"
+        tl:tl_textUnselectColor="#887D7D"
         tools:ignore="MissingConstraints">
-    </LinearLayout>
+
+    </com.flyco.tablayout.CommonTabLayout>
 
     <View
-        app:layout_constraintTop_toTopOf="@+id/MyTable"
-        app:layout_constraintBottom_toBottomOf="@+id/MyTable"
-        app:layout_constraintLeft_toLeftOf="@+id/MyTable"
+        app:layout_constraintLeft_toLeftOf="@+id/Tb_step"
+        app:layout_constraintRight_toRightOf="@+id/ll_Stepdesc"
+        app:layout_constraintBottom_toTopOf="@+id/ll_Stepdesc"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
         android:background="@color/app_bg"
-        android:layout_width="0.5dp"
-        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/dip_10"
         tools:ignore="MissingConstraints">
 
     </View>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_list"
-        android:layout_width="0dp"
-        app:layout_constraintTop_toTopOf="@+id/MyTable"
-        app:layout_constraintBottom_toBottomOf="@+id/MyTable"
-        app:layout_constraintLeft_toLeftOf="@+id/MyTable"
-        app:layout_constraintRight_toRightOf="@+id/MyTable"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ll_Stepdesc"
+        android:layout_width="830dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dip_70"
+        app:layout_constraintLeft_toLeftOf="@+id/Tb_step"
+        android:layout_marginLeft="@dimen/dip_30"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginRight="@dimen/dip_30"
+        app:layout_constraintTop_toBottomOf="@+id/Tb_step"
+        android:layout_marginTop="@dimen/dip_10"
         tools:ignore="MissingConstraints">
 
-    </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/tv1"
+            android:text="@string/temperatures"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/tv2"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/sp_25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <LinearLayout
+            android:id="@+id/mll_temp"
+            app:layout_constraintRight_toRightOf="@+id/tv1"
+            app:layout_constraintLeft_toLeftOf="@+id/tv1"
+            app:layout_constraintTop_toBottomOf="@+id/tv1"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dip_50"
+            android:paddingRight="@dimen/dip_50"
+            android:paddingBottom="@dimen/dip_15"
+            android:layout_marginTop="@dimen/dip_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tvTemperatures"
+                android:textSize="@dimen/sp_35"
+                android:background="@null"
+                android:textColor="@color/app_bg"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="MissingConstraints" />
+            <TextView
+                android:text=" °C"
+                android:textColor="@color/app_bg"
+                android:textSize="@dimen/sp_25"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+        </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv2"
+            android:text="@string/revolutions"
+            app:layout_constraintLeft_toRightOf="@+id/tv1"
+            app:layout_constraintRight_toLeftOf="@+id/tv3"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/sp_25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <LinearLayout
+            android:id="@+id/mll_Revolution"
+            app:layout_constraintRight_toRightOf="@+id/tv2"
+            app:layout_constraintLeft_toLeftOf="@+id/tv2"
+            app:layout_constraintTop_toBottomOf="@+id/tv2"
+            android:layout_marginTop="@dimen/dip_15"
+            android:paddingLeft="@dimen/dip_50"
+            android:paddingRight="@dimen/dip_50"
+            android:paddingBottom="@dimen/dip_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tvRevolution"
+                android:textSize="@dimen/sp_35"
+                android:background="@null"
+                android:textColor="@color/app_bg"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="MissingConstraints" />
+            <TextView
+                android:text=" RPM"
+                android:textColor="@color/app_bg"
+                android:textSize="@dimen/sp_25"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv3"
+            android:text="@string/times"
+            android:textColor="@color/gray"
+            app:layout_constraintLeft_toRightOf="@+id/tv2"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textSize="@dimen/sp_25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <TextView
+            android:id="@+id/tvTime"
+            android:textSize="@dimen/sp_35"
+            android:text="00000"
+            android:paddingLeft="@dimen/dip_50"
+            android:paddingRight="@dimen/dip_50"
+            android:paddingBottom="@dimen/dip_15"
+            app:layout_constraintRight_toRightOf="@+id/tv3"
+            app:layout_constraintLeft_toLeftOf="@+id/tv3"
+            app:layout_constraintTop_toBottomOf="@+id/tv3"
+            android:layout_marginTop="@dimen/dip_15"
+            android:textColor="@color/app_bg"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints" />
+
+
+
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_Senior_list"
+                android:layout_width="0dp"
+                app:layout_constraintBottom_toBottomOf="@+id/mViewSenior"
+                app:layout_constraintTop_toTopOf="@+id/mViewSenior"
+                android:layout_margin="@dimen/dip_10"
+                app:layout_constraintLeft_toLeftOf="@+id/mViewSenior"
+                app:layout_constraintRight_toRightOf="@+id/mViewSenior"
+                android:layout_height="0dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+        <View
+            android:id="@+id/mViewSenior"
+            app:layout_constraintTop_toBottomOf="@+id/tvTime"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:background="@drawable/shape_bg_add_edit"
+            android:layout_marginTop="@dimen/dip_20"
+            android:layout_marginBottom="@dimen/dip_20"
+            android:layout_height="0dp">
+
+        </View>
+
+        <TextView
+            android:id="@+id/tv_tools"
+            android:text="000"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="0.5dp"
+        android:layout_height="0dp"
+        android:background="@color/app_bg"
+        app:layout_constraintTop_toTopOf="@+id/cl_loop"
+        app:layout_constraintLeft_toRightOf="@+id/ll_Stepdesc"
+        app:layout_constraintRight_toLeftOf="@+id/cl_loop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="MissingConstraints">
+
+    </View>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_loop"
+        app:layout_constraintTop_toTopOf="@+id/Tb_step"
+        android:layout_width="0dp"
+        android:layout_marginLeft="@dimen/dip_20"
+        app:layout_constraintLeft_toRightOf="@+id/ll_Stepdesc"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:text="@string/loopset"
+            android:id="@+id/tv_loort"
+            android:textSize="@dimen/sp_35"
+            android:textColor="@color/black"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/dip_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+
+        </TextView>
+
+
+        <TextView
+            android:id="@+id/tvLoorBegin"
+            android:text="@string/loopbegin"
+            android:layout_marginTop="@dimen/dip_30"
+            android:textSize="@dimen/sp_25"
+            app:layout_constraintTop_toBottomOf="@+id/tv_loort"
+            android:textColor="@color/black"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints"></TextView>
+
+        <EditText
+            android:inputType="number"
+            android:id="@+id/edLoorBegin"
+            android:gravity="center"
+            android:digits="12345"
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@+id/tvLoorBegin"
+            app:layout_constraintLeft_toLeftOf="@+id/tvLoorBegin"
+            android:layout_marginLeft="@dimen/dip_2"
+            app:layout_constraintRight_toRightOf="@+id/tvLoorBegin"
+
+            android:layout_width="@dimen/dip_120"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        </EditText>
+
+
+        <TextView
+            android:id="@+id/tvLoorOver"
+            android:text="@string/loopover"
+            android:layout_marginTop="@dimen/dip_50"
+            android:textSize="@dimen/sp_25"
+            app:layout_constraintTop_toBottomOf="@+id/tvLoorBegin"
+            android:textColor="@color/black"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints"></TextView>
+
+        <EditText
+            android:inputType="number"
+            android:id="@+id/edLoorOver"
+            android:gravity="center"
+            android:digits="12345"
+
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@+id/tvLoorOver"
+            app:layout_constraintLeft_toLeftOf="@+id/tvLoorOver"
+            android:layout_marginLeft="@dimen/dip_2"
+            app:layout_constraintRight_toRightOf="@+id/tvLoorOver"
+
+            android:layout_width="@dimen/dip_120"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        </EditText>
+        <TextView
+            android:id="@+id/tvLoorNum"
+            android:text="@string/loopnum"
+            android:layout_marginTop="@dimen/dip_50"
+            android:textSize="@dimen/sp_25"
+            app:layout_constraintTop_toBottomOf="@+id/tvLoorOver"
+            android:textColor="@color/black"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints"></TextView>
+
+        <EditText
+            android:inputType="number"
+            android:id="@+id/edLoorNum"
+            android:digits="1~99"
+            android:gravity="center"
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@+id/tvLoorNum"
+            app:layout_constraintLeft_toLeftOf="@+id/tvLoorNum"
+            android:layout_marginLeft="@dimen/dip_2"
+            app:layout_constraintRight_toRightOf="@+id/tvLoorNum"
+
+            android:layout_width="@dimen/dip_120"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        </EditText>
+
+
+        <TextView
+            android:id="@+id/tvLooren"
+            android:text="@string/loopenble"
+            android:layout_marginTop="@dimen/dip_50"
+            android:textSize="@dimen/sp_25"
+            app:layout_constraintTop_toBottomOf="@+id/tvLoorNum"
+            android:textColor="@color/black"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints"></TextView>
+
+        <CheckBox
+            android:inputType="number"
+            android:id="@+id/ckLoorSwitch"
+            android:button="@null"
+            android:background="@drawable/check_stitch_select"
+            app:layout_constraintTop_toBottomOf="@+id/tvLooren"
+            app:layout_constraintLeft_toLeftOf="@+id/tvLooren"
+            android:layout_marginLeft="@dimen/dip_2"
+            android:layout_marginTop="@dimen/dip_12"
+            app:layout_constraintRight_toRightOf="@+id/tvLooren"
+            android:layout_marginRight="@dimen/dip_12"
+            android:layout_width="@dimen/dip_120"
+            android:layout_height="@dimen/dip_40"
+            tools:ignore="MissingConstraints">
+
+        </CheckBox>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.example.thermoshaker.util.key.FloatingKeyboard
+        android:id="@+id/keyboardview"
+        android:layout_width="750dp"
+        android:layout_height="320dp"
+        android:background="@android:color/transparent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:keyTextColor="@color/white"
+        android:keyBackground="@drawable/bio_keyboard_click"
+
+    android:visibility="gone"
+        tools:ignore="MissingConstraints" />
+</RelativeLayout>

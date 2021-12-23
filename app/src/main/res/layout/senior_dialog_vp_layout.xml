@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <TextView
+        android:id="@+id/tvte"
+        android:textSize="@dimen/sp_42"
+        android:text="@string/Temperaturemode"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dip_100"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/dip_40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+
+
+
+    <LinearLayout
+        android:id="@+id/mll_full"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toRightOf="@+id/tvte"
+        app:layout_constraintTop_toTopOf="@+id/tvte"
+        app:layout_constraintBottom_toBottomOf="@+id/tvte"
+        android:layout_marginLeft="@dimen/dip_25"
+        android:gravity="center_vertical"
+        android:layout_height="@dimen/dip_60"
+        tools:ignore="MissingConstraints">
+
+        <CheckBox
+            android:id="@+id/cb_full"
+            android:button="@null"
+            android:enabled="false"
+            android:background="@drawable/check_select"
+            android:layout_width="@dimen/dip_33"
+            android:layout_height="@dimen/dip_33"
+            android:layout_marginLeft="@dimen/dip_20"
+            tools:ignore="MissingConstraints">
+
+        </CheckBox>
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:textSize="@dimen/sp_32"
+            android:textColor="@color/gray"
+            android:text="@string/FullPower"
+            android:layout_marginRight="@dimen/dip_20"
+            android:layout_marginLeft="@dimen/dip_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mll_custom"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toRightOf="@+id/mll_full"
+        app:layout_constraintTop_toTopOf="@+id/tvte"
+        app:layout_constraintBottom_toBottomOf="@+id/tvte"
+        android:layout_marginLeft="@dimen/dip_25"
+        android:gravity="center_vertical"
+        android:layout_height="@dimen/dip_60"
+        tools:ignore="MissingConstraints">
+
+        <CheckBox
+            android:id="@+id/cb_custom"
+            android:button="@null"
+            android:enabled="false"
+            android:background="@drawable/check_select"
+            android:layout_width="@dimen/dip_33"
+            android:layout_height="@dimen/dip_33"
+            android:layout_marginLeft="@dimen/dip_20"
+            tools:ignore="MissingConstraints">
+
+        </CheckBox>
+
+        <TextView
+            android:id="@+id/tv_ustomContent"
+            android:textSize="@dimen/sp_32"
+            android:textColor="@color/gray"
+            android:text="@string/tmcustom"
+            android:layout_marginRight="@dimen/dip_20"
+            android:layout_marginLeft="@dimen/dip_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvup"
+        android:textSize="@dimen/sp_42"
+        android:text="@string/up_speed"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dip_100"
+        app:layout_constraintTop_toBottomOf="@+id/tvte"
+        android:layout_marginTop="@dimen/dip_50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+
+    </TextView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_uplist"
+        app:layout_constraintTop_toTopOf="@+id/tvup"
+        android:layout_width="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/tvup"
+        android:layout_marginLeft="@dimen/dip_25"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/tvdown"
+        android:textSize="@dimen/sp_42"
+        android:text="@string/down_speed"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dip_100"
+        app:layout_constraintTop_toBottomOf="@+id/tvup"
+        android:layout_marginTop="@dimen/dip_80"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_downlist"
+        app:layout_constraintTop_toTopOf="@+id/tvdown"
+        android:layout_width="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/tvdown"
+        android:layout_marginLeft="@dimen/dip_25"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </androidx.recyclerview.widget.RecyclerView>
+</androidx.constraintlayout.widget.ConstraintLayout>

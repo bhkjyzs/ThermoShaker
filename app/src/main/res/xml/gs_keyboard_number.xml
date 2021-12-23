@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
+    android:horizontalGap="0dip"
+    android:keyHeight="80dp"
+    android:keyWidth="130dp"
+    android:verticalGap="0dip" >
+
+    <Row>
+        <Key
+            android:codes="49"
+            android:keyEdgeFlags="left"
+            android:keyLabel="1" />
+        <Key
+            android:codes="50"
+            android:keyLabel="2" />
+        <Key
+            android:codes="51"
+            android:keyLabel="3" />
+        <Key
+            android:codes="52"
+            android:keyEdgeFlags="right"
+            android:keyLabel="4" />
+    </Row>
+    <Row>
+        <Key
+            android:codes="53"
+            android:keyEdgeFlags="left"
+            android:keyLabel="5" />
+        <Key
+            android:codes="54"
+            android:keyLabel="6" />
+        <Key
+            android:codes="55"
+            android:keyLabel="7" />
+        <Key
+            android:codes="56"
+            android:keyEdgeFlags="right"
+            android:keyLabel="8" />
+    </Row>
+    <Row>
+        <Key
+            android:codes="57"
+            android:keyEdgeFlags="left"
+            android:keyLabel="9" />
+        <Key
+            android:codes="48"
+            android:keyLabel="0" />
+        <Key
+            android:codes="46"
+            android:keyLabel="." />
+        <Key
+            android:codes="-5"
+            android:isRepeatable="true"
+            android:keyEdgeFlags="right"
+            android:keyIcon="@drawable/keyboard_delete" />
+    </Row>
+    <Row>
+        <Key
+            android:codes="-11"
+            android:keyEdgeFlags="left"
+            android:keyLabel="@string/bio_number" />
+        <Key
+            android:codes="-21"
+            android:keyLabel="@string/bio_symbols" />
+        <Key
+            android:codes="-31"
+            android:keyLabel="@string/bio_letters" />
+        <Key
+            android:codes="-3"
+            android:keyEdgeFlags="right"
+            android:keyLabel="@string/bio_done" />
+    </Row>
+
+</Keyboard>
