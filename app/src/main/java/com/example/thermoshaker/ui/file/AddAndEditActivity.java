@@ -66,10 +66,6 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
     //当前正在操作的文件
     private ProgramInfo programInfo;
 
-
-    private String[] strings = {};
-
-
     private CommonTabLayout Tb_step;
     private List<String> mlistSenior = new ArrayList<>();
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
