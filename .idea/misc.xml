@@ -8,6 +8,7 @@
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/drawable/bg_edittext_focused.xml" value="0.415625" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/drawable/bio_create_text_border.xml" value="0.415625" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/drawable/bio_create_text_border_nor.xml" value="0.415625" />
+        <entry key="..\:/demo/ThermoShaker/app/src/main/res/drawable/bio_create_text_border_null.xml" value="0.517578125" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/drawable/bio_keyboard_click.xml" value="0.415625" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/drawable/bio_windows_click.xml" value="0.415625" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/drawable/btn_keyboard_key.xml" value="0.25703125" />
@@ -15,6 +16,7 @@
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/drawable/check_select.xml" value="0.32109375" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/drawable/check_stitch_select.xml" value="0.31796875" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/drawable/file_bg_shape.xml" value="0.32109375" />
+        <entry key="..\:/demo/ThermoShaker/app/src/main/res/drawable/gv_step_list_item_bg_shape.xml" value="0.5" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/drawable/input_bg_shape.xml" value="0.5" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/drawable/input_dialog_bg.xml" value="0.415625" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/drawable/no_pre.xml" value="0.20234375" />
@@ -27,7 +29,8 @@
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/drawable/shape_bg_add_edit.xml" value="0.25" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/activity_add_and_edit.xml" value="0.33" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/activity_file.xml" value="0.33" />
-        <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/activity_main.xml" value="0.14739583333333334" />
+        <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/activity_run.xml" value="0.5" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/activity_setting.xml" value="0.22890625" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/add_name_layout.xml" value="0.14739583333333334" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/add_step_layout.xml" value="0.33" />
@@ -39,6 +42,7 @@
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/factory_layout.xml" value="0.1625" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/file_list_item.xml" value="0.1625" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/file_step_list_item.xml" value="0.14739583333333334" />
+        <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/gv_step_list_item.xml" value="0.67" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/inclub_titile_tabar.xml" value="0.2835917312661499" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/layout_dialog_inout.xml" value="0.22" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/layout_num_keybroad.xml" value="0.33" />

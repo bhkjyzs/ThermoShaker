@@ -22,4 +22,10 @@
     <color name="file_true">#2C70AD</color>
     <color name="file_false">#ff008fd7</color>
 
+
+    <color name="color_line_straight">#1FB1AA</color>
+    <color name="color_line_yuan">#87FFFA</color>
+    <color name="color_line_green">#43AF14</color>
+    <color name="color_line_red">#E83F59</color>
+
 </resources>

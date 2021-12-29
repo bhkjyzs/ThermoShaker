@@ -5,6 +5,8 @@
     <string name="file">file</string>
     <string name="setting">set up</string>
     <string name="run">run</string>
+    <string name="Fast">Fast</string>
+
     <string name="inching">inching</string>
     <string name="addfile">add</string>
     <string name="edit">edit</string>
@@ -39,6 +41,8 @@
     <string name="shock">Shock(mm:ss)</string>
     <string name="blank">blank(mm:ss)</string>
     <string name="temperatures">Temperatures:</string>
+    <string name="RemainingTime">RemainingTime:</string>
+
     <string name="speeds">Speed:(℃/min)</string>
     <string name="times">Time:</string>
     <string name="revolutions">Revolution:</string>

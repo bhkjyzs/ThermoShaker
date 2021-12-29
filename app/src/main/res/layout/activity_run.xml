@@ -26,17 +26,18 @@
         tools:ignore="MissingConstraints">
 
         <LinearLayout
-            android:id="@+id/ll_add"
+            android:id="@+id/ll_return"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/ll_edit"
+            app:layout_constraintRight_toLeftOf="@+id/ll_pause"
             android:background="@drawable/btn_selector_bg"
             android:layout_width="@dimen/dip_164"
             android:gravity="center"
             android:layout_height="@dimen/dip_60">
             <ImageView
                 android:src="@drawable/calibration"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -44,24 +45,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/calibration"
-                android:layout_marginLeft="@dimen/dip_12"
+                android:text="@string/returnname"
+
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_25"
+                android:textSize="@dimen/sp_28"
                 />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/ll_edit"
+            android:id="@+id/ll_pause"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/ll_add"
-            app:layout_constraintRight_toLeftOf="@+id/ll_run"
+            app:layout_constraintLeft_toRightOf="@+id/ll_return"
+            app:layout_constraintRight_toLeftOf="@+id/ll_next"
             android:background="@drawable/btn_selector_bg"
             android:layout_width="@dimen/dip_164"
             android:gravity="center"
             android:layout_height="@dimen/dip_60">
             <ImageView
                 android:src="@drawable/pause"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -70,23 +72,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pause"
-                android:layout_marginLeft="@dimen/dip_12"
+
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_25"
+                android:textSize="@dimen/sp_28"
                 />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/ll_run"
+            android:id="@+id/ll_next"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/ll_edit"
-            app:layout_constraintRight_toLeftOf="@id/ll_del"
+            app:layout_constraintLeft_toRightOf="@+id/ll_pause"
+            app:layout_constraintRight_toLeftOf="@id/ll_stop"
             android:background="@drawable/btn_selector_bg"
             android:layout_width="@dimen/dip_164"
             android:gravity="center"
             android:layout_height="@dimen/dip_60">
             <ImageView
                 android:src="@drawable/next_jie"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -95,23 +98,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/nextSection"
-                android:layout_marginLeft="@dimen/dip_12"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_25"
+                android:textSize="@dimen/sp_28"
                 />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/ll_del"
+            android:id="@+id/ll_stop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/ll_run"
-            app:layout_constraintRight_toLeftOf="@+id/ll_return"
+            app:layout_constraintLeft_toRightOf="@+id/ll_next"
+            app:layout_constraintRight_toLeftOf="@+id/ll_deil"
             android:background="@drawable/btn_selector_bg"
             android:layout_width="@dimen/dip_164"
             android:gravity="center"
             android:layout_height="@dimen/dip_60">
             <ImageView
                 android:src="@drawable/stop"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -120,15 +123,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/stopit"
-                android:layout_marginLeft="@dimen/dip_12"
+
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_25"
+                android:textSize="@dimen/sp_28"
                 />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/ll_return"
+            android:id="@+id/ll_deil"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/ll_stop"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginRight="@dimen/dip_12"
             android:background="@drawable/btn_selector_bg"
@@ -136,6 +140,7 @@
             android:gravity="center"
             android:layout_height="@dimen/dip_60">
             <ImageView
+                android:visibility="gone"
                 android:src="@drawable/details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -145,21 +150,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/details"
-                android:layout_marginLeft="@dimen/dip_12"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_25"
+                android:textSize="@dimen/sp_28"
                 />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/mll_listStep"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="@+id/mViewBtm"
         android:layout_marginTop="@dimen/dip_140"
         android:layout_width="match_parent"
         android:background="@drawable/file_bg_shape"
         android:layout_height="0dp"
+
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="@dimen/dip_30"
@@ -167,7 +173,114 @@
         android:layout_marginBottom="@dimen/dip_30"
         tools:ignore="MissingConstraints">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_StepList"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+           >
+
+        </androidx.recyclerview.widget.RecyclerView>
 
 
-    </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/ViewR"
+        app:layout_constraintTop_toTopOf="@+id/mll_listStep"
+        app:layout_constraintRight_toRightOf="@+id/mll_listStep"
+        app:layout_constraintBottom_toBottomOf="@+id/mll_listStep"
+        android:layout_width="240dp"
+        android:layout_height="0dp"
+        tools:ignore="MissingConstraints">
+
+    </View>
+
+    <TextView
+        android:id="@+id/tv_ZSpeed"
+        app:layout_constraintLeft_toLeftOf="@+id/ViewR"
+        app:layout_constraintTop_toTopOf="@+id/mll_listStep"
+        android:layout_marginRight="@dimen/dip_100"
+        android:layout_marginTop="@dimen/dip_40"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_28"
+        android:text="@string/revolutions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+
+    <TextView
+        app:layout_constraintLeft_toRightOf="@+id/tv_ZSpeed"
+        android:layout_marginTop="@dimen/dip_40"
+        android:layout_marginLeft="@dimen/dip_4"
+        android:textSize="@dimen/sp_20"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_ZSpeed"
+        android:textColor="@color/white"
+        android:text="RPM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_Temp"
+        app:layout_constraintLeft_toLeftOf="@+id/ViewR"
+        android:layout_marginRight="@dimen/dip_100"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ZSpeed"
+        android:layout_marginTop="@dimen/dip_20"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_28"
+        android:text="@string/temperatures"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+
+    <TextView
+        app:layout_constraintLeft_toRightOf="@+id/tv_Temp"
+        android:layout_marginTop="@dimen/dip_40"
+        android:textSize="@dimen/sp_24"
+        android:layout_marginLeft="@dimen/dip_4"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_Temp"
+        android:textColor="@color/white"
+        android:text="°C"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_STime"
+        app:layout_constraintLeft_toLeftOf="@+id/ViewR"
+        android:layout_marginRight="@dimen/dip_100"
+        app:layout_constraintTop_toBottomOf="@+id/tv_Temp"
+        android:layout_marginTop="@dimen/dip_20"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_28"
+        android:text="@string/RemainingTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+
+    <TextView
+        app:layout_constraintLeft_toRightOf="@+id/tv_STime"
+        android:layout_marginTop="@dimen/dip_40"
+        android:textSize="@dimen/sp_24"
+        android:layout_marginLeft="@dimen/dip_4"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_STime"
+        android:textColor="@color/white"
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

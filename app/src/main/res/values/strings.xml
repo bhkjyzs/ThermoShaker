@@ -67,6 +67,7 @@
     <string name="pleasechoosefile">请选择程序</string>
     <string name="step">步骤</string>
     <string name="noDelete">不能删除</string>
+    <string name="RemainingTime">剩余时间:</string>
 
     <string name="step1">步骤1</string>
     <string name="step2">步骤2</string>
@@ -112,5 +113,6 @@
     <string name="forwardmixing">正转混匀</string>
     <string name="rotarymixing">反转混匀</string>
     <string name="Forwardandreversemixing">正反转混匀</string>
+    <string name="Fast">快速</string>
 
 </resources>

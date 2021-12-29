@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="150dp"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <com.example.thermoshaker.util.custom.MultiWaveHeaderRun
+        android:id="@+id/multiWaveHeader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:mwhCloseColor="#00BAF1"
+        app:mwhCloseColorSelected="#006F8F"
+        app:mwhStartColor="#7ED6E4" />
+
+
+    <TextView
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/textView_title"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_20"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/dip_12"
+
+        android:layout_weight="0.8"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:text=""
+        tools:ignore="MissingConstraints" />
+
+    <View
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="3dp"
+        android:scaleType="fitXY"
+        android:background="@drawable/bio_create_item_line"
+        android:layout_height="match_parent"
+        tools:ignore="MissingConstraints">
+
+    </View>
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout_but"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        >
+        <Button
+            android:id="@+id/Button_temp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:background="@drawable/bio_create_text_border_null"
+            android:focusableInTouchMode="false" />
+
+        <Button
+            android:id="@+id/Button_time"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:background="@drawable/bio_create_text_border_null"
+            android:focusableInTouchMode="false" />
+
+        <TextView
+            android:id="@+id/textView_run_inc"
+            android:layout_width="match_parent"
+            android:layout_height="172dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:lineSpacingExtra="10dp"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+
+    <com.example.thermoshaker.util.custom.LoopRunView
+        android:id="@+id/mLoop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/dip_50"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dip_100"
+        tools:ignore="MissingConstraints">
+
+    </com.example.thermoshaker.util.custom.LoopRunView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

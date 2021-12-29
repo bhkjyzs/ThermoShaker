@@ -37,6 +37,7 @@ import com.example.thermoshaker.serial.ControlParam;
 import com.example.thermoshaker.serial.DataUtils;
 import com.example.thermoshaker.serial.message.SerialPortManager;
 import com.example.thermoshaker.ui.file.FileActivity;
+import com.example.thermoshaker.ui.run.RunActivity;
 import com.example.thermoshaker.ui.setting.SettingActivity;
 import com.example.thermoshaker.util.LanguageUtil;
 import com.example.thermoshaker.util.ToastUtil;
@@ -119,7 +120,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             tv_file.setText(getString(R.string.file));
             tv_setting.setText(getString(R.string.setting));
             tv_running.setText(getString(R.string.run));
-            tv_inching.setText(getString(R.string.inching));
+            tv_inching.setText(getString(R.string.Fast));
         }
 
     }
@@ -185,6 +186,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 选择运行程序
      */
     private void ChoosePrograms() {
+        ChooseFilePos=-1;
+        List<ProgramInfo> dataRefre = MyApplication.getInstance().getDataRefre();
 
         CustomkeyDialog customkeyDialog = new CustomkeyDialog.Builder(this)
                 .view(R.layout.choose_programs_layout)
@@ -202,8 +205,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                     return;
                 }
-
-
+                Intent intent = new Intent(MainActivity.this, RunActivity.class);
+                intent.putExtra("programInfo",dataRefre.get(ChooseFilePos));
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                customkeyDialog.dismiss();
             }
         });
         customkeyDialog.findViewById(R.id.dialog_inout_cancel).setOnClickListener(new View.OnClickListener() {
@@ -213,7 +219,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         });
 
-        List<ProgramInfo> dataRefre = MyApplication.getInstance().getDataRefre();
         rvListFileAdapter.setList(dataRefre);
 //        tv_number.setText(rvListFileAdapter.getData().size()+"/"+ Content.FileNumberNum);
         rv_list.setAdapter(rvListFileAdapter);

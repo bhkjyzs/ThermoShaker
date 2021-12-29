@@ -32,12 +32,14 @@
             android:layout_marginTop="@dimen/dip_50"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginRight="@dimen/dip_40"
+            android:layout_marginLeft="@dimen/dip_40"
             android:background="@drawable/file_bg_shape"
             android:layout_height="@dimen/dip_400"
             tools:ignore="MissingConstraints">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_list"
+                android:layout_marginTop="@dimen/dip_12"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 

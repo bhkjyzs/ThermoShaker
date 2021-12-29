@@ -188,7 +188,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:src="@drawable/main_btn_inching"
+                android:src="@drawable/fast_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -198,7 +198,7 @@
                 android:id="@+id/tv_inching"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/inching"
+                android:text="@string/Fast"
                 android:layout_marginTop="@dimen/dip_4"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_36"

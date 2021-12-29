@@ -69,6 +69,7 @@ public class SettingActivity extends BaseActivity {
 
         listNames.add(getString(R.string.returnname)+"");
         listNames.add(getString(R.string.ImportExport)+"");
+        listNames.add(getString(R.string.inching)+"");
 
         listImgs.add(R.drawable.echangec);
         listImgs.add(R.drawable.voicesetting);
@@ -78,6 +79,7 @@ public class SettingActivity extends BaseActivity {
         listImgs.add(R.drawable.factory_img);
         listImgs.add(R.drawable.return_img);
         listImgs.add(R.drawable.input);
+        listImgs.add(R.drawable.inching);
 
         tv_times = findViewById(R.id.tv_times);
         rv_list = findViewById(R.id.rv_list);

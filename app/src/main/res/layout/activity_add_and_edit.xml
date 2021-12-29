@@ -498,7 +498,6 @@
         <EditText
             android:inputType="number"
             android:id="@+id/edLoorNum"
-            android:digits="1~99"
             android:gravity="center"
             android:textColorHint="@color/gray"
             app:layout_constraintTop_toBottomOf="@+id/tvLoorNum"

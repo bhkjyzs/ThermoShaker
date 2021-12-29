@@ -161,6 +161,7 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                 edLoorBegin.setEnabled(isChecked);
                 edLoorOver.setEnabled(isChecked);
                 edLoorNum.setEnabled(isChecked);
+                programInfo.setLoopEnable(ckLoorSwitch.isChecked());
             }
         });
         tvFileNmae.setText(getString(R.string.file)+":"+programInfo.getFileName()+"");
@@ -494,8 +495,8 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
      * 更新当前步骤
      */
     private void updateCurrentStep() {
-        programInfo.getStepList().get(ChoosePos).setTemperature(Float.parseFloat(tvTemperatures.getText().toString().trim()));
-        programInfo.getStepList().get(ChoosePos).setZSpeed(Integer.parseInt(tvRevolution.getText().toString().trim()));
+//        programInfo.getStepList().get(ChoosePos).setTemperature(Float.parseFloat(tvTemperatures.getText().toString().trim()));
+//        programInfo.getStepList().get(ChoosePos).setZSpeed(Integer.parseInt(tvRevolution.getText().toString().trim()));
 //        programInfo.getStepList().get(ChoosePos).setTime(Long.parseLong(tvTime.getText().toString().trim()));
 
         programInfo.setLoopEnable(ckLoorSwitch.isChecked());
