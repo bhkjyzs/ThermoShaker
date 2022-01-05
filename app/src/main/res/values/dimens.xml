@@ -73,6 +73,7 @@
     <dimen name="dip_15">15dp</dimen>
     <dimen name="sp_32">32sp</dimen>
     <dimen name="dip_33">33dp</dimen>
+    <dimen name="sp_30">30sp</dimen>
 
     <item name="dip__5" type="dimen" format="float">0.5</item>
 </resources>

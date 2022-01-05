@@ -4,6 +4,8 @@
     <string name="welcome_main">欢迎使用本产品</string>
     <string name="file">文件</string>
     <string name="setting">设置</string>
+    <string name="showfast">展示</string>
+
     <string name="run">运行</string>
     <string name="inching">点动</string>
     <string name="addfile">添加</string>

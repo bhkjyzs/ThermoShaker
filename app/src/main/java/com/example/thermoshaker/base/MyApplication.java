@@ -1,27 +1,29 @@
 package com.example.thermoshaker.base;
 
 import android.app.Application;
-import android.os.Build;
-import android.serialport.SerialPortFinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.example.thermoshaker.model.Device;
 import com.example.thermoshaker.model.ProgramInfo;
-import com.example.thermoshaker.model.ProgramStep;
 import com.example.thermoshaker.model.StepDefault;
-import com.example.thermoshaker.serial.message.SerialPortManager;
 import com.example.thermoshaker.util.DataUtil;
-import com.example.thermoshaker.util.ToastUtil;
+import com.kongqw.serialportlibrary.Device;
+import com.kongqw.serialportlibrary.SerialPortFinder;
+import com.kongqw.serialportlibrary.SerialPortManager;
+import com.kongqw.serialportlibrary.listener.OnOpenSerialPortListener;
+import com.kongqw.serialportlibrary.listener.OnSerialPortDataListener;
+import com.licheedev.myutils.LogPlus;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.TimeZone;
 
 
-public class MyApplication extends Application {
+public class MyApplication extends Application implements OnOpenSerialPortListener {
     private static final String TAG = "MyApplication";
 
 
@@ -36,6 +38,9 @@ public class MyApplication extends Application {
     public static ProgramInfo programsSteps;
     //串口打开或者关闭
     private boolean mOpened = false;
+
+    public SerialPortManager mSerialPortManager;
+
 
     public SimpleDateFormat dateFormat; // 用于格式化局部时间
     public SimpleDateFormat AppDateFormat;// 用于常规日期格式化
@@ -52,7 +57,8 @@ public class MyApplication extends Application {
         instance = this;
         initData();
         initConfig();
-        OpenSerialPort(new Device("/dev/ttyS3", "57600"));
+        File file = new File("/dev/ttyS3");
+        OpenSerialPort(new Device("ttyS3", "uart",file));
     }
 
     private void initConfig() {
@@ -71,20 +77,57 @@ public class MyApplication extends Application {
      * 打开串口
      */
     private void OpenSerialPort(Device device) {
-        mOpened = SerialPortManager.instance().open(device) != null;
-        if (mOpened) {
-            ToastUtil.showOne(this, "成功打开串口");
-        } else {
-            ToastUtil.showOne(this, "打开串口失败");
-        }
+        mSerialPortManager = new SerialPortManager();
+
+
+        // 打开串口
+        mOpened = mSerialPortManager.setOnOpenSerialPortListener(this)
+//                .setOnSerialPortDataListener(new OnSerialPortDataListener() {
+//                    @Override
+//                    public void onDataReceived(byte[] bytes) {
+//                        Log.i(TAG, "onDataReceived [ byte[] ]: " + Arrays.toString(bytes));
+//                        Log.i(TAG, "onDataReceived [ String ]: " + new String(bytes));
+//                        final byte[] finalBytes = bytes;
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                LogPlus.d(String.format("接收\n%s", new String(finalBytes)));
+//                            }
+//                        });
+//                    }
+//
+//                    @Override
+//                    public void onDataSent(byte[] bytes) {
+//                        Log.i(TAG, "onDataSent [ byte[] ]: " + Arrays.toString(bytes));
+//                        Log.i(TAG, "onDataSent [ String ]: " + new String(bytes));
+//                        final byte[] finalBytes = bytes;
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                LogPlus.d(String.format("发送\n%s", new String(finalBytes)));
+//
+//                            }
+//                        });
+//                    }
+//                })
+                .openSerialPort(device.getFile(), 57600);
+        LogPlus.i("onCreate: openSerialPort = " + mOpened);
+
+
+
     }
 
     /**
      * 关闭串口
      */
     public void CloseSerialPort() {
-        SerialPortManager.instance().close();
-        mOpened = false;
+//        SerialPortManager.instance().close();
+        if (null != mSerialPortManager) {
+            mSerialPortManager.closeSerialPort();
+            mSerialPortManager = null;
+            mOpened = false;
+        }
+
     }
 
     public void initData() {
@@ -145,5 +188,25 @@ public class MyApplication extends Application {
 
     }
 
+
+    @Override
+    public void onSuccess(File device) {
+        Toast.makeText(getApplicationContext(), String.format("串口 [%s] 打开成功", device.getPath()), Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onFail(File device, Status status) {
+        switch (status) {
+            case NO_READ_WRITE_PERMISSION:
+                LogPlus.d(TAG,device.getPath()+"没有读写权限");
+                break;
+            case OPEN_FAIL:
+            default:
+                LogPlus.d(TAG,device.getPath()+"串口打开失败");
+
+                break;
+        }
+    }
 
 }

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.thermoshaker"
     android:sharedUserId="android.uid.system">
+
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission
         android:name="android.permission.SET_PREFERRED_APPLICATIONS"
@@ -10,8 +11,9 @@
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
-        tools:ignore="ProtectedPermissions"></uses-permission>
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -40,15 +42,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.file.AddAndEditActivity"
-            android:configChanges="locale|layoutDirection|orientation|keyboardHidden|screenSize"></activity>
-
-        <activity android:name=".ui.run.RunActivity"
+        <activity
+            android:name=".ui.fast.FastActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.file.AddAndEditActivity"
             android:configChanges="locale|layoutDirection|orientation|keyboardHidden|screenSize" />
-        <activity android:name=".ui.setting.SettingActivity"
-            android:configChanges="locale|layoutDirection|orientation|keyboardHidden|screenSize"/>
-        <activity android:name=".ui.file.FileActivity"
-            android:configChanges="locale|layoutDirection|orientation|keyboardHidden|screenSize"/>
+        <activity
+            android:name=".ui.run.RunActivity"
+            android:configChanges="locale|layoutDirection|orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name=".ui.setting.SettingActivity"
+            android:configChanges="locale|layoutDirection|orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name=".ui.file.FileActivity"
+            android:configChanges="locale|layoutDirection|orientation|keyboardHidden|screenSize" />
         <activity
             android:name=".MainActivity"
             android:configChanges="locale|layoutDirection|orientation|keyboardHidden|screenSize">

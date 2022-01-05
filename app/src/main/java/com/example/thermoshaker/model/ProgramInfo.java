@@ -16,6 +16,7 @@ public class ProgramInfo implements Serializable {
     private int loopStart;//循环开始步骤
     private int loopEnd;//循环结束步骤
     private int loopNum;//循环次数
+    private float lidTm;
     public ProgramInfo() {
     }
 
@@ -27,12 +28,21 @@ public class ProgramInfo implements Serializable {
         loopStart=0;
         loopEnd=0;
         loopNum=0;
+        lidTm = 0;
     }
 
     public ProgramInfo(List<ProgramStep> stepList, String filePath, String fileName) {
         this.stepList = stepList;
         this.filePath = filePath;
         this.fileName = fileName;
+    }
+
+    public float getLidTm() {
+        return lidTm;
+    }
+
+    public void setLidTm(float lidTm) {
+        this.lidTm = lidTm;
     }
 
     public boolean isLoopEnable() {

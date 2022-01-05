@@ -56,12 +56,12 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
     private static final String TAG = "AddAndEditActivity";
     public final static String MSG = AddAndEditActivity.class.getName();
 
-    private TextView tv_times;
+    private TextView tv_times,tv_lidTm;
     private RecyclerView rv_Senior_list;
     private RVListSeniorAdapter rvListSeniorAdapter;
 
     private int ChoosePos = 0;
-    private LinearLayout ll_add,ll_save,ll_run,ll_del,ll_return;
+    private LinearLayout ll_add,ll_save,ll_run,ll_del,ll_return,ll_lid;
     private boolean isEdit = false;
     //当前正在操作的文件
     private ProgramInfo programInfo;
@@ -116,6 +116,8 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
 
 
     private void GetViews() {
+        tv_lidTm = findViewById(R.id.tv_lidTm);
+        ll_lid = findViewById(R.id.ll_lid);
         Tb_step = findViewById(R.id.Tb_step);
         tv_times = findViewById(R.id.tv_times);
         ll_add = findViewById(R.id.ll_add);
@@ -144,6 +146,7 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
         mll_temp.setOnClickListener(this);
         mll_Revolution.setOnClickListener(this);
         ll_return.setOnClickListener(this);
+        ll_lid.setOnClickListener(this);
         tvTemperatures.setOnClickListener(this);
         tvRevolution.setOnClickListener(this);
         keyboardview = findViewById(R.id.keyboardview);
@@ -297,7 +300,10 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.ll_lid:
+                showLidkeyDialog(String.valueOf(programInfo.getLidTm()));
 
+                break;
             case R.id.mll_temp:
                 showkeyDialog(CustomKeyEditDialog.TYPE.Temp,String.valueOf(programInfo.getStepList().get(ChoosePos).getTemperature()));
                 break;
@@ -421,13 +427,10 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                                 if (isSuccess) {
                                     Log.d(TAG,JSON.toJSON(programInfo)+"");
                                     DataUtil.writeData(JSON.toJSON(programInfo)+"", DataUtil.data_path+ DataUtil.data_name, programInfo.getFileName() + "", false);
-
                                 }
                             }
                             finish();
                             overridePendingTransition(0, 0);
-
-
                         }
                     });
 
@@ -452,6 +455,20 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                     programInfo.getStepList().set(ChoosePos,programStep);
                     showView(programStep);
                 }
+            }
+        });
+
+    }
+    private void showLidkeyDialog(String name) {
+        CustomKeyEditDialog customKeyEditDialog = new CustomKeyEditDialog(this);
+        customKeyEditDialog.show();
+        customKeyEditDialog.init(name,CustomKeyEditDialog.TYPE.Temp,ChoosePos);
+        customKeyEditDialog.setOnDialogLister(new CustomKeyEditDialog.onDialogLister() {
+            @Override
+            public void onConfirm() {
+                Log.d(TAG,customKeyEditDialog.getOutStr()+"    "+customKeyEditDialog.getOutTime());
+                        programInfo.setLidTm(Float.parseFloat(customKeyEditDialog.getOutStr()));
+                        tv_lidTm.setText(customKeyEditDialog.getOutStr()+"°C");
             }
         });
 

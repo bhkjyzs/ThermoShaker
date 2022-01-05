@@ -1,9 +1,6 @@
 package com.example.thermoshaker;
 
-import static com.example.thermoshaker.serial.DataUtils.byteMergerAll;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,14 +11,12 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,21 +24,15 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.example.thermoshaker.base.BaseActivity;
-import com.example.thermoshaker.base.Content;
-import com.example.thermoshaker.base.MainType;
 import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.ProgramInfo;
-import com.example.thermoshaker.serial.ControlParam;
-import com.example.thermoshaker.serial.DataUtils;
-import com.example.thermoshaker.serial.message.SerialPortManager;
+import com.example.thermoshaker.ui.fast.FastActivity;
 import com.example.thermoshaker.ui.file.FileActivity;
 import com.example.thermoshaker.ui.run.RunActivity;
 import com.example.thermoshaker.ui.setting.SettingActivity;
 import com.example.thermoshaker.util.LanguageUtil;
 import com.example.thermoshaker.util.ToastUtil;
-import com.example.thermoshaker.util.Utils;
 import com.example.thermoshaker.util.dialog.CustomkeyDialog;
-import com.licheedev.hwutils.ByteUtil;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -61,7 +50,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private int ChooseFilePos = -1;
 
 
-    private LinearLayout ll_file,ll_setting,ll_run,ll_inching;
+    private LinearLayout ll_file,ll_setting,ll_run,ll_fast;
     private TextView tv_date,tv_time,tv_file,tv_setting,tv_running,tv_inching;
 
     private static MainActivity instance;
@@ -135,11 +124,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ll_file = findViewById(R.id.ll_file);
         ll_setting = findViewById(R.id.ll_setting);
         ll_run = findViewById(R.id.ll_run);
-        ll_inching = findViewById(R.id.ll_inching);
+        ll_fast = findViewById(R.id.ll_fast);
         ll_file.setOnClickListener(this);
         ll_setting.setOnClickListener(this);
         ll_run.setOnClickListener(this);
-        ll_inching.setOnClickListener(this);
+        ll_fast.setOnClickListener(this);
 
 
     }
@@ -161,27 +150,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
                 break;
-            case R.id.ll_inching:
-                byte b2 = ControlParam.head_order;
-                byte b3 = ControlParam.OT_RUN;
-                byte[] temp = {b2, b3};
-                byte[] b5 = DataUtils.HexToByteArr(DataUtils.crc16(temp));
-                byte[] All =  byteMergerAll(b1, temp, b5, b7);
-                SerialPortManager.instance().sendCommand(All);
+            case R.id.ll_fast:
+                startActivity(new Intent(MainActivity.this, FastActivity.class));
+                overridePendingTransition(0, 0);
+
                 break;
 
         }
 
 
     }
-    //起始符
-    static byte[] b1 = {(byte) 0xAA};
-    //b2 通讯体类型
-    //b3 通讯命令
-    //b4 数据长度
-    //b5 具体数据
-    //b6 校验码
-    static byte[] b7 = {(byte) 0x55};
+
     /**
      * 选择运行程序
      */

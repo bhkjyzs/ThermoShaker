@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.thermoshaker"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -33,10 +33,10 @@ android {
 
     signingConfigs {
         config {
-            keyAlias 'jjy'
-            keyPassword 'jjy123'
-            storeFile file('E:\\demo\\ThermoShaker/a33_platform.jks')
-            storePassword 'jjy123'
+            keyAlias 'keys'
+            keyPassword '123456'
+            storeFile file('E:\\demo\\ThermoShaker/keysts.jks')
+            storePassword '123456'
         }
 
     }
@@ -83,4 +83,7 @@ dependencies {
     // 硬件操作工具类
     implementation 'com.licheedev:hardwareutils:1.0.0'
     implementation 'io.github.h07000223:flycoTabLayout:3.0.0'
+    api project(':SerialPortLibrary')
+
+
 }

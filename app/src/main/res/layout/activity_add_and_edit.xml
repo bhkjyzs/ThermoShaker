@@ -30,6 +30,40 @@
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints">
     </TextView>
+    <LinearLayout
+        android:id="@+id/ll_lid"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@+id/tvFileNmae"
+        app:layout_constraintLeft_toRightOf="@+id/tvFileNmae"
+        android:layout_marginLeft="@dimen/dip_40"
+        android:background="@drawable/lidheated_bg_shape"
+        app:layout_constraintBottom_toBottomOf="@+id/tvFileNmae"
+        android:layout_width="@dimen/dip_120"
+        android:layout_height="45dp"
+        tools:ignore="MissingConstraints"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:src="@drawable/lid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/tv_lidTm"
+            android:text="38°C"
+            android:layout_marginLeft="@dimen/dip_5"
+            android:textSize="@dimen/sp_23"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+    </LinearLayout>
+
+
 
     <View
         android:id="@+id/mViewBtm"
@@ -247,9 +281,11 @@
             app:layout_constraintLeft_toLeftOf="@+id/tv1"
             app:layout_constraintTop_toBottomOf="@+id/tv1"
             android:orientation="horizontal"
-            android:paddingLeft="@dimen/dip_50"
-            android:paddingRight="@dimen/dip_50"
-            android:paddingBottom="@dimen/dip_15"
+            android:background="@drawable/btn_click_shape"
+            android:paddingLeft="@dimen/dip_10"
+            android:paddingRight="@dimen/dip_10"
+            android:paddingBottom="@dimen/dip_5"
+            android:paddingTop="@dimen/dip_5"
             android:layout_marginTop="@dimen/dip_15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -292,9 +328,12 @@
             app:layout_constraintLeft_toLeftOf="@+id/tv2"
             app:layout_constraintTop_toBottomOf="@+id/tv2"
             android:layout_marginTop="@dimen/dip_15"
-            android:paddingLeft="@dimen/dip_50"
-            android:paddingRight="@dimen/dip_50"
-            android:paddingBottom="@dimen/dip_15"
+            android:background="@drawable/btn_click_shape"
+
+            android:paddingLeft="@dimen/dip_10"
+            android:paddingRight="@dimen/dip_10"
+            android:paddingBottom="@dimen/dip_5"
+            android:paddingTop="@dimen/dip_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
@@ -331,9 +370,11 @@
             android:id="@+id/tvTime"
             android:textSize="@dimen/sp_35"
             android:text="00000"
-            android:paddingLeft="@dimen/dip_50"
-            android:paddingRight="@dimen/dip_50"
-            android:paddingBottom="@dimen/dip_15"
+            android:paddingLeft="@dimen/dip_10"
+            android:paddingRight="@dimen/dip_10"
+            android:paddingBottom="@dimen/dip_5"
+            android:paddingTop="@dimen/dip_5"
+            android:background="@drawable/btn_click_shape"
             app:layout_constraintRight_toRightOf="@+id/tv3"
             app:layout_constraintLeft_toLeftOf="@+id/tv3"
             app:layout_constraintTop_toBottomOf="@+id/tv3"

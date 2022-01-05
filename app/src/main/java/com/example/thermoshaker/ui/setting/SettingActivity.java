@@ -67,9 +67,9 @@ public class SettingActivity extends BaseActivity {
         listNames.add(getString(R.string.nativeinformation)+"");
         listNames.add(getString(R.string.setting_factory));
 
-        listNames.add(getString(R.string.returnname)+"");
         listNames.add(getString(R.string.ImportExport)+"");
         listNames.add(getString(R.string.inching)+"");
+        listNames.add(getString(R.string.returnname)+"");
 
         listImgs.add(R.drawable.echangec);
         listImgs.add(R.drawable.voicesetting);
@@ -77,9 +77,9 @@ public class SettingActivity extends BaseActivity {
         listImgs.add(R.drawable.softerwareupdate);
         listImgs.add(R.drawable.nativeinformation);
         listImgs.add(R.drawable.factory_img);
-        listImgs.add(R.drawable.return_img);
         listImgs.add(R.drawable.input);
         listImgs.add(R.drawable.inching);
+        listImgs.add(R.drawable.return_img);
 
         tv_times = findViewById(R.id.tv_times);
         rv_list = findViewById(R.id.rv_list);
@@ -100,8 +100,8 @@ public class SettingActivity extends BaseActivity {
                         showLanguage();
                         break;
                     case 1:
-//                        setCompanyLogo("bio_gener/bootanimation.zip", "/td/bio_gener/bootanimation.zip", "biologo",
-//                                 0);
+                        setCompanyLogo("bio_gener/bootanimation.zip", "/td/bio_gener/bootanimation.zip", "biologo",
+                                 0);
 //                        setCompanyLogo("Labyeah/bootanimation.zip", "/td/Labyeah/bootanimation.zip", "Labyeahlogo",
 //                                 0);
                         voice();
@@ -121,13 +121,15 @@ public class SettingActivity extends BaseActivity {
                         break;
 
                     case 6:
-
-                        finish();
-                        overridePendingTransition(0, 0);
+                        inout();
 
                         break;
                     case 7:
-                        inout();
+
+                        break;
+                    case 8:
+                        finish();
+                        overridePendingTransition(0, 0);
                         break;
 
                 }

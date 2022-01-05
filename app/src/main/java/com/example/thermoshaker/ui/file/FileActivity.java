@@ -135,6 +135,7 @@ public class FileActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+
     @Override
     protected boolean isRegisterEventBus() {
         return true;

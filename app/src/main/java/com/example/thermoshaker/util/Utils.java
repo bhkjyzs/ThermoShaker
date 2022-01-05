@@ -15,7 +15,7 @@ public class Utils {
         try {
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_LAUNCHER);
-            ComponentName cn = new ComponentName("com.android.launcher", "com.android.launcher2.Launcher");
+            ComponentName cn = new ComponentName("com.android.launcher3", "com.android.launcher3.Launcher");
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setComponent(cn);
             MyApplication.getInstance().startActivity(intent);

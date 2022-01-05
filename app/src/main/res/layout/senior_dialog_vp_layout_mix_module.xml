@@ -34,7 +34,7 @@
     <TextView
         android:id="@+id/tvte"
         android:textSize="@dimen/sp_42"
-        android:text="@string/Temperaturemode"
+        android:text="@string/mixingmode"
         android:textColor="@color/black"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="@dimen/dip_100"

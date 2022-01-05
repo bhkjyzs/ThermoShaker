@@ -177,7 +177,7 @@
                 tools:ignore="HardcodedText" />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/ll_inching"
+            android:id="@+id/ll_fast"
             android:layout_weight="1"
             android:layout_marginRight="@dimen/dip_10"
             android:layout_marginLeft="@dimen/dip_10"

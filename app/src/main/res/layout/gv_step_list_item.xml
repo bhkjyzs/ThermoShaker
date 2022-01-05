@@ -83,7 +83,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="@dimen/dip_50"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dip_100"
+        android:layout_height="@dimen/dip_50"
         tools:ignore="MissingConstraints">
 
     </com.example.thermoshaker.util.custom.LoopRunView>

@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fast.FastActivity">
+    <include layout="@layout/inclub_titile_tabar"
+        android:id="@+id/mViewTop"></include>
+
+    <TextView
+        android:id="@+id/tvFileNmae"
+        android:text="@string/Fast"
+        android:textSize="@dimen/sp_25"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="@+id/mViewTop"
+        app:layout_constraintRight_toRightOf="@+id/mViewTop"
+        app:layout_constraintBottom_toBottomOf="@+id/mViewTop"
+        app:layout_constraintTop_toTopOf="@+id/mViewTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+    </TextView>
+    <LinearLayout
+        android:id="@+id/ll_lid"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@+id/tvFileNmae"
+        app:layout_constraintLeft_toRightOf="@+id/tvFileNmae"
+        android:layout_marginLeft="@dimen/dip_20"
+        android:background="@drawable/lidheated_bg_shape"
+        app:layout_constraintBottom_toBottomOf="@+id/tvFileNmae"
+        android:layout_width="@dimen/dip_120"
+        android:layout_height="45dp"
+        tools:ignore="MissingConstraints"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:src="@drawable/lid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/tv_lidTm"
+            android:text="38°C"
+            android:layout_marginLeft="@dimen/dip_5"
+            android:textSize="@dimen/sp_23"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/mViewBtm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mViewTop"
+        android:layout_width="match_parent"
+        android:background="@drawable/main_btm_bg_shape"
+        android:layout_height="0dp"
+        android:gravity="center"
+        tools:ignore="MissingConstraints">
+
+
+
+
+    </View>
+    <TextView
+        android:text="@string/showfast"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@+id/mViewBtm"
+        android:textSize="@dimen/sp_32"
+
+        app:layout_constraintLeft_toLeftOf="@+id/tv_btm_tm"
+        android:layout_marginTop="@dimen/dip_15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+    <View
+        android:id="@+id/viewTm"
+        android:layout_width="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/viewSpeed"
+        app:layout_constraintTop_toBottomOf="@+id/mViewTop"
+        android:layout_height="@dimen/dip_200"
+        android:layout_marginTop="@dimen/dip_50"
+        tools:ignore="MissingConstraints">
+
+    </View>
+
+    <ImageView
+        android:id="@+id/iv_tm_img"
+        android:src="@drawable/tm_fast_img"
+        app:layout_constraintTop_toTopOf="@+id/viewTm"
+        app:layout_constraintBottom_toBottomOf="@+id/viewTm"
+        app:layout_constraintLeft_toLeftOf="@+id/viewTm"
+        android:layout_marginLeft="@dimen/dip_80"
+        android:layout_width="@dimen/dip_120"
+        android:layout_height="@dimen/dip_120"
+        tools:ignore="MissingConstraints">
+
+    </ImageView>
+    <TextView
+        android:text="@string/temperatures"
+        android:textSize="@dimen/sp_30"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@+id/iv_tm_img"
+        app:layout_constraintLeft_toRightOf="@+id/iv_tm_img"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/dip_12"
+
+        android:layout_marginLeft="@dimen/dip_20"
+        android:layout_height="wrap_content">
+
+    </TextView>
+    <TextView
+        android:text="38°C"
+        android:textSize="@dimen/sp_30"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_tm_img"
+        app:layout_constraintLeft_toRightOf="@+id/iv_tm_img"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="@dimen/dip_12"
+
+        android:layout_marginLeft="@dimen/dip_20"
+        android:layout_height="wrap_content">
+
+    </TextView>
+
+
+    <View
+        android:id="@+id/viewSpeed"
+        android:layout_width="0dp"
+        app:layout_constraintLeft_toRightOf="@+id/viewTm"
+        app:layout_constraintTop_toBottomOf="@+id/mViewTop"
+        app:layout_constraintRight_toLeftOf="@+id/viewTime"
+        android:layout_height="@dimen/dip_200"
+        android:layout_marginTop="@dimen/dip_50"
+        tools:ignore="MissingConstraints">
+
+    </View>
+    <ImageView
+        android:id="@+id/iv_speed_img"
+        android:src="@drawable/speed_fast_img"
+        app:layout_constraintTop_toTopOf="@+id/viewSpeed"
+        app:layout_constraintBottom_toBottomOf="@+id/viewSpeed"
+        app:layout_constraintLeft_toLeftOf="@+id/viewSpeed"
+        android:layout_marginLeft="@dimen/dip_50"
+        android:layout_width="@dimen/dip_120"
+        android:layout_height="@dimen/dip_120"
+        tools:ignore="MissingConstraints">
+
+    </ImageView>
+    <TextView
+        android:text="@string/revolutions"
+        android:textSize="@dimen/sp_30"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@+id/iv_speed_img"
+        app:layout_constraintLeft_toRightOf="@+id/iv_speed_img"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/dip_12"
+
+        android:layout_marginLeft="@dimen/dip_20"
+        android:layout_height="wrap_content">
+
+    </TextView>
+    <TextView
+        android:text="3000 RPM"
+        android:textSize="@dimen/sp_30"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_speed_img"
+        app:layout_constraintLeft_toRightOf="@+id/iv_speed_img"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="@dimen/dip_12"
+
+        android:layout_marginLeft="@dimen/dip_20"
+        android:layout_height="wrap_content">
+
+    </TextView>
+    <View
+        android:id="@+id/viewTime"
+        android:layout_width="0dp"
+        app:layout_constraintLeft_toRightOf="@+id/viewSpeed"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mViewTop"
+        android:layout_height="@dimen/dip_200"
+        android:layout_marginTop="@dimen/dip_50"
+        tools:ignore="MissingConstraints">
+
+    </View>
+    <ImageView
+        android:id="@+id/iv_time_img"
+        android:src="@drawable/time_fast_img"
+        app:layout_constraintTop_toTopOf="@+id/viewTime"
+        app:layout_constraintBottom_toBottomOf="@+id/viewTime"
+        app:layout_constraintLeft_toLeftOf="@+id/viewTime"
+        android:layout_marginLeft="@dimen/dip_50"
+        android:layout_width="@dimen/dip_120"
+        android:layout_height="@dimen/dip_120"
+        tools:ignore="MissingConstraints">
+
+    </ImageView>
+    <TextView
+        android:text="@string/times"
+        android:textSize="@dimen/sp_30"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@+id/iv_time_img"
+        app:layout_constraintLeft_toRightOf="@+id/iv_time_img"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/dip_12"
+
+        android:layout_marginLeft="@dimen/dip_20"
+        android:layout_height="wrap_content">
+
+    </TextView>
+    <TextView
+        android:text="00:00:00"
+        android:textSize="@dimen/sp_30"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_time_img"
+        app:layout_constraintLeft_toRightOf="@+id/iv_time_img"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="@dimen/dip_12"
+
+        android:layout_marginLeft="@dimen/dip_20"
+        android:layout_height="wrap_content">
+
+    </TextView>
+    <TextView
+        android:text="@string/setting"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/tv_btm_tm"
+        android:layout_marginBottom="@dimen/dip_50"
+        android:textSize="@dimen/sp_32"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_btm_tm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+
+
+    <TextView
+        android:id="@+id/tv_btm_tm"
+        app:layout_constraintBottom_toTopOf="@+id/btnReturn"
+        android:layout_marginBottom="@dimen/dip_90"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_26"
+        app:layout_constraintLeft_toLeftOf="@+id/btnReturn"
+        android:text="@string/temperatures"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="InvalidId,MissingConstraints">
+
+    </TextView>
+
+    <Button
+        android:id="@+id/Btn_SetTM"
+        android:text="37°C"
+        android:textSize="@dimen/sp_30"
+        app:layout_constraintLeft_toRightOf="@+id/tv_btm_tm"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_btm_tm"
+        app:layout_constraintTop_toTopOf="@+id/tv_btm_tm"
+        android:background="@drawable/btn_click_shape"
+        android:layout_width="180dp"
+        android:layout_marginLeft="@dimen/dip_12"
+        android:layout_height="@dimen/dip_60"
+        tools:ignore="MissingConstraints">
+
+    </Button>
+
+    <TextView
+        android:id="@+id/tv_btm_speed"
+        app:layout_constraintTop_toTopOf="@+id/tv_btm_tm"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_btm_tm"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_26"
+        app:layout_constraintLeft_toLeftOf="@+id/btnReturn"
+        app:layout_constraintRight_toRightOf="@+id/btnRun"
+        android:layout_marginRight="180dp"
+        android:text="@string/revolutions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="InvalidId,MissingConstraints">
+
+    </TextView>
+    <Button
+        android:id="@+id/Btn_SetSpeed"
+        android:text="2500 RPM"
+        android:textSize="@dimen/sp_30"
+        app:layout_constraintLeft_toRightOf="@+id/tv_btm_speed"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_btm_speed"
+        app:layout_constraintTop_toTopOf="@+id/tv_btm_speed"
+        android:background="@drawable/btn_click_shape"
+        android:layout_width="180dp"
+        android:layout_marginLeft="@dimen/dip_12"
+        android:layout_height="@dimen/dip_60"
+        tools:ignore="MissingConstraints">
+
+    </Button>
+
+    <Button
+        android:id="@+id/Btn_SetTime"
+        android:text="00:00:00"
+        android:textSize="@dimen/sp_30"
+        app:layout_constraintRight_toRightOf="@+id/btnRun"
+        android:background="@drawable/btn_click_shape"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_btm_speed"
+        app:layout_constraintTop_toTopOf="@+id/tv_btm_speed"
+        android:layout_width="180dp"
+        android:layout_marginLeft="@dimen/dip_12"
+        android:layout_height="@dimen/dip_60"
+        tools:ignore="MissingConstraints">
+
+    </Button>
+    <TextView
+        android:id="@+id/tv_btm_time"
+        app:layout_constraintTop_toTopOf="@+id/tv_btm_tm"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_btm_tm"
+        android:textColor="@color/black"
+        app:layout_constraintRight_toLeftOf="@+id/Btn_SetTime"
+        android:textSize="@dimen/sp_26"
+        android:layout_marginRight="@dimen/dip_12"
+        android:text="@string/times"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="InvalidId,MissingConstraints">
+
+    </TextView>
+
+    <Button
+        android:id="@+id/btnReturn"
+        android:text="@string/returnname"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_35"
+        android:background="@drawable/btn_selector_bg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="@dimen/dip_400"
+        app:layout_constraintRight_toLeftOf="@+id/btnRun"
+        android:layout_marginBottom="@dimen/dip_40"
+        android:layout_height="@dimen/dip_70"
+        tools:ignore="MissingConstraints">
+
+    </Button>
+    <Button
+        android:id="@+id/btnRun"
+        android:text="@string/run"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_35"
+        android:background="@drawable/btn_selector_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="@dimen/dip_400"
+        android:layout_marginBottom="@dimen/dip_40"
+        app:layout_constraintLeft_toRightOf="@+id/btnReturn"
+        android:layout_height="@dimen/dip_70"
+        tools:ignore="MissingConstraints">
+
+    </Button>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -173,17 +173,39 @@
         android:layout_marginBottom="@dimen/dip_30"
         tools:ignore="MissingConstraints">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_StepList"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-           >
 
-        </androidx.recyclerview.widget.RecyclerView>
 
 
     </LinearLayout>
 
+    <RelativeLayout
+        app:layout_constraintBottom_toBottomOf="@+id/mll_listStep"
+        app:layout_constraintTop_toTopOf="@+id/mll_listStep"
+        app:layout_constraintRight_toLeftOf="@+id/ViewR"
+        app:layout_constraintLeft_toLeftOf="@+id/mll_listStep"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:ignore="MissingConstraints">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_StepList"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            >
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/tvNum"
+            android:text="x1"
+            android:visibility="gone"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+    </RelativeLayout>
     <View
         android:id="@+id/ViewR"
         app:layout_constraintTop_toTopOf="@+id/mll_listStep"
