@@ -2,7 +2,6 @@ package com.example.thermoshaker.util.dialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -23,9 +22,9 @@ import com.example.thermoshaker.base.MainType;
 import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.ProgramStep;
 import com.example.thermoshaker.ui.adapter.MyAdapter;
-import com.example.thermoshaker.ui.file.AddAndEditActivity;
+import com.example.thermoshaker.util.dialog.base.CustomKeyEditDialog;
+import com.example.thermoshaker.util.dialog.base.CustomkeyDialog;
 import com.flyco.tablayout.SlidingTabLayout;
-import com.flyco.tablayout.listener.OnTabSelectListener;
 
 import java.text.ParseException;
 import java.util.ArrayList;

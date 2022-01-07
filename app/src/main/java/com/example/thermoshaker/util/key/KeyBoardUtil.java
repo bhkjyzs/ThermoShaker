@@ -12,7 +12,7 @@ import android.widget.EditText;
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.ui.file.FileActivity;
 import com.example.thermoshaker.util.BroadcastManager;
-import com.example.thermoshaker.util.dialog.CustomkeyDialog;
+import com.example.thermoshaker.util.dialog.base.CustomkeyDialog;
 
 import java.util.List;
 

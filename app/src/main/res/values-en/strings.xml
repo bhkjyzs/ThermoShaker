@@ -62,6 +62,10 @@
     <string name="issave"> Do you want to save</string>
     <string name="setting_factory">Factory</string>
     <string name="senior_setting">Senior Setting</string>
+    <string name="debug_mode">Debug mode</string>
+    <string name="debugmodule">Debug module</string>
+    <string name="debuggingfunction">Debugging function</string>
+    <string name="Localcorrelation">Local correlation</string>
 
     <string name="clear">Clear</string>
     <string name="success">OK</string>
@@ -120,5 +124,17 @@
     <string name="forwardmixing">Forward Mixing</string>
     <string name="rotarymixing">Rotary mixing</string>
     <string name="Forwardandreversemixing">Forward and reverse mixing</string>
+    <string name="model_1">Modular 1:</string>
+    <string name="Heatingcommand">Heating Command</string>
+    <string name="Refrigerationcommand">Refrigeration Command</string>
+    <string name="closecommand">Close Command</string>
+    <string name="modle_2">Modular 2:</string>
+    <string name="modle_3">Modular 3:</string>
+    <string name="modle_4">Modular 4:</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="debug_fan">Fan:</string>
+    <string name="Motor">Motor:</string>
+    <string name="led">led:</string>
 
 </resources>

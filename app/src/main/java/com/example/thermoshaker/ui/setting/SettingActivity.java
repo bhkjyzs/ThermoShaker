@@ -21,15 +21,17 @@ import com.example.thermoshaker.base.Content;
 import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.SettingListBean;
 import com.example.thermoshaker.util.AppManager;
-import com.example.thermoshaker.util.dialog.CustomDialog;
+import com.example.thermoshaker.util.dialog.DebugDialog;
+import com.example.thermoshaker.util.dialog.base.CustomDialog;
 import com.example.thermoshaker.util.LanguageUtil;
 import com.example.thermoshaker.util.Utils;
-import com.example.thermoshaker.util.dialog.CustomKeyEditDialog;
+import com.example.thermoshaker.util.dialog.base.CustomKeyEditDialog;
 import com.example.thermoshaker.util.dialog.DialogInout;
 
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -163,6 +165,10 @@ public class SettingActivity extends BaseActivity {
                     case "159357":
                         Utils.startDeskLaunch();
                         Toast.makeText(SettingActivity.this, "密码正确", Toast.LENGTH_SHORT).show();
+
+                        break;
+                    case "357159":
+                        DebugDialog debugDialog = new DebugDialog(SettingActivity.this);
 
                         break;
                     default:
@@ -315,7 +321,11 @@ public class SettingActivity extends BaseActivity {
 
             boolean bool = app.exec("mount -o remount,rw /system;cp " + path
                     +" /system/media/bootanimation.zip;mount -o remount,ro /system");
-            Log.d(TAG,bool+"");
+            Log.d(TAG,bool+"    bool");
+
+            boolean exec = app.exec("mount -o remount,rw /system;chmod 777 /system/media/bootanimation.zip");
+            Log.d(TAG,exec+"    exec");
+
 
         } catch (IOException e) {
             e.printStackTrace();

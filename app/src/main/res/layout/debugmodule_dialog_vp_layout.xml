@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+
+    <TextView
+        android:id="@+id/tv_model1"
+        android:text="@string/model_1"
+        android:textSize="@dimen/sp_35"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/dip_15"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dip_40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+
+    <RadioGroup
+        app:layout_constraintTop_toTopOf="@+id/tv_model1"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_model1"
+        app:layout_constraintLeft_toRightOf="@+id/tv_model1"
+        android:layout_marginLeft="@dimen/dip_12"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+        <RadioButton
+            android:id="@+id/rb1_model1"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+            android:textSize="@dimen/sp_30"
+            android:layout_marginLeft="@dimen/dip_50"
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Heatingcommand">
+
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/rb2_model1"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+
+            android:textSize="@dimen/sp_30"
+            android:layout_marginLeft="@dimen/dip_85"
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Refrigerationcommand">
+
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/rb3_model1"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+            android:textSize="@dimen/sp_30"
+            android:layout_marginLeft="@dimen/dip_85"
+
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/closecommand">
+
+        </RadioButton>
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tv_model2"
+        android:text="@string/modle_2"
+        app:layout_constraintTop_toBottomOf="@+id/tv_model1"
+        android:textSize="@dimen/sp_35"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/dip_15"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dip_40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+
+    <RadioGroup
+        app:layout_constraintTop_toTopOf="@+id/tv_model2"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_model2"
+        app:layout_constraintLeft_toRightOf="@+id/tv_model2"
+        android:layout_marginLeft="@dimen/dip_12"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+        <RadioButton
+            android:id="@+id/rb1_model2"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+            android:textSize="@dimen/sp_30"
+            android:layout_marginLeft="@dimen/dip_50"
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Heatingcommand">
+
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/rb2_model2"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+
+            android:textSize="@dimen/sp_30"
+            android:layout_marginLeft="@dimen/dip_85"
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Refrigerationcommand">
+
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/rb3_model2"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+            android:textSize="@dimen/sp_30"
+            android:layout_marginLeft="@dimen/dip_85"
+
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/closecommand">
+
+        </RadioButton>
+    </RadioGroup>
+
+
+    <TextView
+        android:id="@+id/tv_model3"
+        android:text="@string/modle_3"
+        app:layout_constraintTop_toBottomOf="@+id/tv_model2"
+        android:textSize="@dimen/sp_35"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/dip_15"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dip_40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+
+    <RadioGroup
+        app:layout_constraintTop_toTopOf="@+id/tv_model3"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_model3"
+        app:layout_constraintLeft_toRightOf="@+id/tv_model3"
+        android:layout_marginLeft="@dimen/dip_12"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+        <RadioButton
+            android:id="@+id/rb1_model3"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+            android:textSize="@dimen/sp_30"
+            android:layout_marginLeft="@dimen/dip_50"
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Heatingcommand">
+
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/rb2_model3"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+
+            android:textSize="@dimen/sp_30"
+            android:layout_marginLeft="@dimen/dip_85"
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Refrigerationcommand">
+
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/rb3_model3"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+            android:textSize="@dimen/sp_30"
+            android:layout_marginLeft="@dimen/dip_85"
+
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/closecommand">
+
+        </RadioButton>
+    </RadioGroup>
+
+
+
+    <TextView
+        android:id="@+id/tv_model4"
+        android:text="@string/modle_4"
+        app:layout_constraintTop_toBottomOf="@+id/tv_model3"
+        android:textSize="@dimen/sp_35"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/dip_15"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dip_40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+
+    <RadioGroup
+        app:layout_constraintTop_toTopOf="@+id/tv_model4"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_model4"
+        app:layout_constraintLeft_toRightOf="@+id/tv_model4"
+        android:layout_marginLeft="@dimen/dip_12"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+        <RadioButton
+            android:id="@+id/rb1_model4"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+            android:textSize="@dimen/sp_30"
+            android:layout_marginLeft="@dimen/dip_50"
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Heatingcommand">
+
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/rb2_model4"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+
+            android:textSize="@dimen/sp_30"
+            android:layout_marginLeft="@dimen/dip_85"
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Refrigerationcommand">
+
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/rb3_model4"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+            android:textSize="@dimen/sp_30"
+            android:layout_marginLeft="@dimen/dip_85"
+
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/closecommand">
+
+        </RadioButton>
+    </RadioGroup>
+
+
+    <TextView
+        android:id="@+id/tv_fan"
+        android:text="@string/debug_fan"
+        android:textSize="@dimen/sp_30"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/tv_model4"
+        android:layout_marginTop="@dimen/dip_15"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dip_40"
+        android:layout_width="@dimen/dip_80"
+
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+
+    <RadioGroup
+        android:id="@+id/rg_fan"
+        app:layout_constraintTop_toTopOf="@+id/tv_fan"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_fan"
+        app:layout_constraintLeft_toRightOf="@+id/tv_fan"
+        android:layout_marginLeft="@dimen/dip_12"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+        <RadioButton
+            android:id="@+id/rb1_open_fan"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+            android:textSize="@dimen/sp_25"
+            android:layout_marginLeft="@dimen/dip_50"
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/open">
+
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/rb2_close_fan"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+            android:textSize="@dimen/sp_25"
+            android:layout_marginLeft="@dimen/dip_85"
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/close">
+
+        </RadioButton>
+
+    </RadioGroup>
+
+
+    <TextView
+        android:id="@+id/tv_Motor"
+        android:text="@string/Motor"
+        android:textSize="@dimen/sp_30"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/tv_model4"
+        android:layout_marginTop="@dimen/dip_15"
+        app:layout_constraintLeft_toRightOf="@+id/rg_fan"
+        android:layout_marginLeft="@dimen/dip_40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+
+    <RadioGroup
+        app:layout_constraintTop_toTopOf="@+id/tv_Motor"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_Motor"
+        app:layout_constraintLeft_toRightOf="@+id/tv_Motor"
+        android:layout_marginLeft="@dimen/dip_12"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+        <RadioButton
+            android:id="@+id/rb1_open_Motor"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+            android:textSize="@dimen/sp_25"
+            android:layout_marginLeft="@dimen/dip_50"
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/open">
+
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/rb2_close_Motor"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+            android:textSize="@dimen/sp_25"
+            android:layout_marginLeft="@dimen/dip_85"
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/close">
+
+        </RadioButton>
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tv_led"
+        android:text="@string/led"
+        android:textSize="@dimen/sp_30"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/tv_fan"
+        android:layout_marginTop="@dimen/dip_15"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dip_40"
+        android:layout_width="@dimen/dip_80"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
+    <RadioGroup
+        android:id="@+id/rg_led"
+        app:layout_constraintTop_toTopOf="@+id/tv_led"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_led"
+        app:layout_constraintLeft_toRightOf="@+id/tv_led"
+        android:layout_marginLeft="@dimen/dip_12"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+        <RadioButton
+            android:id="@+id/rb1_open_led"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+            android:textSize="@dimen/sp_25"
+            android:layout_marginLeft="@dimen/dip_50"
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/open">
+
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/rb2_close_led"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+            android:textSize="@dimen/sp_25"
+            android:layout_marginLeft="@dimen/dip_85"
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/close">
+
+        </RadioButton>
+
+    </RadioGroup>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

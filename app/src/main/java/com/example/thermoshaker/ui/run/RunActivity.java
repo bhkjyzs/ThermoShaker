@@ -14,17 +14,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.base.BaseActivity;
+import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.ProgramInfo;
 import com.example.thermoshaker.serial.CommandDateUtil;
 import com.example.thermoshaker.serial.ControlParam;
+import com.example.thermoshaker.serial.DataUtils;
 import com.example.thermoshaker.ui.adapter.RVStepListAdapter;
 import com.example.thermoshaker.util.key.Util;
+import com.kongqw.serialportlibrary.listener.OnSerialPortDataListener;
+import com.licheedev.myutils.LogPlus;
 
 public class RunActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "RunActivity";
     public ProgramInfo programInfo;
-    private TextView tv_times,tv_ZSpeed,tv_Temp,tv_STime,tvNum;
-    private LinearLayout ll_return,ll_pause,ll_next,ll_stop,ll_deil;
+    private TextView tv_times, tv_ZSpeed, tv_Temp, tv_STime, tvNum;
+    private LinearLayout ll_return, ll_pause, ll_next, ll_stop, ll_deil;
     private RecyclerView rv_StepList;
     private RVStepListAdapter RVStepListAdapter;
 
@@ -39,6 +43,7 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
 
         programInfo = (ProgramInfo) intent.getSerializableExtra("programInfo");
         GetViews();
+
     }
 
     private void GetViews() {
@@ -61,16 +66,16 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         ll_next.setOnClickListener(this);
         ll_stop.setOnClickListener(this);
         ll_deil.setOnClickListener(this);
-        if(programInfo.isLoopEnable()){
+        if (programInfo.isLoopEnable()) {
             tvNum.setVisibility(View.VISIBLE);
-            tvNum.setLayoutParams(new RelativeLayout.LayoutParams(Util.dpToPx(this,150*(programInfo.getLoopEnd()-programInfo.getLoopStart()+1)), 50));
+            tvNum.setLayoutParams(new RelativeLayout.LayoutParams(Util.dpToPx(this, 150 * (programInfo.getLoopEnd() - programInfo.getLoopStart() + 1)), 50));
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) tvNum.getLayoutParams();
             lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            lp.leftMargin = (programInfo.getLoopStart()-1)*Util.dpToPx(this,150);
-            lp.bottomMargin = Util.dpToPx(this,50);
+            lp.leftMargin = (programInfo.getLoopStart() - 1) * Util.dpToPx(this, 150);
+            lp.bottomMargin = Util.dpToPx(this, 50);
             tvNum.setLayoutParams(lp);
-            tvNum.setText("x"+programInfo.getLoopNum()+"");
-        }else {
+            tvNum.setText("x" + programInfo.getLoopNum() + "");
+        } else {
             tvNum.setVisibility(View.GONE);
 
         }
@@ -81,20 +86,20 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void initDate() {
         updateSystemTime(tv_times);
-        RVStepListAdapter = new RVStepListAdapter(R.layout.gv_step_list_item,this);
+        RVStepListAdapter = new RVStepListAdapter(R.layout.gv_step_list_item, this);
         rv_StepList.setAdapter(RVStepListAdapter);
         RVStepListAdapter.setList(programInfo.getStepList());
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ll_return:
                 finish();
                 break;
             case R.id.ll_pause:
                 boolean b = CommandDateUtil.SendCommand(ControlParam.OT_PAUSE);
-                Log.d(TAG,b+"");
+                Log.d(TAG, b + "");
                 break;
             case R.id.ll_next:
 

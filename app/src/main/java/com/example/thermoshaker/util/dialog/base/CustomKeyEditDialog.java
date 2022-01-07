@@ -1,4 +1,4 @@
-package com.example.thermoshaker.util.dialog;
+package com.example.thermoshaker.util.dialog.base;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;

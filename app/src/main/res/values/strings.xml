@@ -59,6 +59,8 @@
     <string name="issave">是否保存</string>
     <string name="setting_factory">出厂设置</string>
     <string name="senior_setting">高级设置</string>
+    <string name="debug_mode">调试模式</string>
+
     <string name="clear">清除</string>
     <string name="dialog_inout_info_1">未选择外设程序</string>
     <string name="dialog_inout_info_2">未选择本地程序</string>
@@ -94,6 +96,9 @@
     <string name="motordirection">电机方向:</string>
     <string name="mixingmode">混匀方式:</string>
     <string name="blendstart">混匀起点</string>
+    <string name="debugmodule">调试模块</string>
+    <string name="debuggingfunction">调试功能</string>
+    <string name="Localcorrelation">本机相关</string>
 
     <string name="rate">速率</string>
     <string name="mixedmode">混合模式</string>
@@ -116,5 +121,17 @@
     <string name="rotarymixing">反转混匀</string>
     <string name="Forwardandreversemixing">正反转混匀</string>
     <string name="Fast">快速</string>
+    <string name="model_1">模块 1:</string>
+    <string name="Heatingcommand">加热命令</string>
+    <string name="Refrigerationcommand">制冷命令</string>
+    <string name="closecommand">关闭命令</string>
+    <string name="modle_2">模块 2:</string>
+    <string name="modle_3">模块 3:</string>
+    <string name="modle_4">模块 4:</string>
+    <string name="open">打开</string>
+    <string name="close">关闭</string>
+    <string name="debug_fan">风扇:</string>
+    <string name="Motor">电机:</string>
+    <string name="led">led:</string>
 
 </resources>

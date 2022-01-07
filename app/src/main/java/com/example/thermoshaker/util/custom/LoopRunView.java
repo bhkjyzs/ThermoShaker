@@ -11,7 +11,6 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import com.example.thermoshaker.R;
-import com.example.thermoshaker.util.dialog.CustomKeyEditDialog;
 
 public class LoopRunView extends View {
     public int mwidth = 111;

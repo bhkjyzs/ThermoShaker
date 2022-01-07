@@ -32,7 +32,7 @@ import com.example.thermoshaker.ui.run.RunActivity;
 import com.example.thermoshaker.ui.setting.SettingActivity;
 import com.example.thermoshaker.util.LanguageUtil;
 import com.example.thermoshaker.util.ToastUtil;
-import com.example.thermoshaker.util.dialog.CustomkeyDialog;
+import com.example.thermoshaker.util.dialog.base.CustomkeyDialog;
 
 import org.jetbrains.annotations.NotNull;
 

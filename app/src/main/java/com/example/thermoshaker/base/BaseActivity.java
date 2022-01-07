@@ -31,11 +31,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.model.Event;
+import com.example.thermoshaker.serial.DataUtils;
 import com.example.thermoshaker.util.AppManager;
 import com.example.thermoshaker.util.BindEventBus;
 import com.example.thermoshaker.util.CloseBarUtil;
 import com.example.thermoshaker.util.EventBusUtils;
 import com.example.thermoshaker.util.LanguageUtil;
+import com.kongqw.serialportlibrary.listener.OnSerialPortDataListener;
+import com.licheedev.myutils.LogPlus;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -103,8 +106,36 @@ public abstract class BaseActivity extends Activity {
             inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
         initUsb();
+        initSer();
 //        celiang();
 
+    }
+
+    private void initSer() {
+        MyApplication.getInstance().mSerialPortManager.setOnSerialPortDataListener(new OnSerialPortDataListener() {
+            @Override
+            public void onDataReceived(byte[] bytes) {
+                final byte[] finalBytes = bytes;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        LogPlus.d(String.format("接收\n%s", new String(finalBytes)));
+                    }
+                });
+            }
+
+            @Override
+            public void onDataSent(byte[] bytes) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String s = DataUtils.ByteArrToHex(bytes);
+                        LogPlus.d(String.format("发送\n%s", s+""));
+
+                    }
+                });
+            }
+        });
     }
 
     private void celiang() {

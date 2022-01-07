@@ -1,4 +1,4 @@
-package com.example.thermoshaker.util.dialog;
+package com.example.thermoshaker.util.dialog.base;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -7,18 +7,15 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.example.thermoshaker.R;
-
-public class CustomkeyDialog extends Dialog {
+public class CustomDialog extends Dialog {
     private Context context;
     private boolean cancelTouchout;
     private View view;
 
-    public CustomkeyDialog(Builder builder){
+    public CustomDialog(Builder builder){
         super(builder.context);
         context = builder.context;
         cancelTouchout = builder.cancelTouchout;
@@ -26,7 +23,7 @@ public class CustomkeyDialog extends Dialog {
     }
 
 
-    private CustomkeyDialog(Builder builder, int resStyle) {
+    private CustomDialog(Builder builder, int resStyle) {
         super(builder.context, resStyle);
         context = builder.context;
         cancelTouchout = builder.cancelTouchout;
@@ -43,12 +40,10 @@ public class CustomkeyDialog extends Dialog {
         Window win = getWindow();
         WindowManager.LayoutParams lp = win.getAttributes();
         lp.gravity = Gravity.CENTER;
-        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
 
         win.setAttributes(lp);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
         this.getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
@@ -71,9 +66,7 @@ public class CustomkeyDialog extends Dialog {
             }
         });
 
-
     }
-
 
     @Override
     public void show() {
@@ -101,7 +94,10 @@ public class CustomkeyDialog extends Dialog {
             return this;
         }
 
-
+        public Builder viewId(View  views) {
+            view = views;
+            return this;
+        }
         public Builder style(int resStyle) {
             this.resStyle = resStyle;
             return this;
@@ -118,14 +114,15 @@ public class CustomkeyDialog extends Dialog {
         }
 
 
-        public CustomkeyDialog build() {
+        public CustomDialog build() {
             if (resStyle != -1) {
-                return new CustomkeyDialog(this, resStyle);
+                return new  CustomDialog(this, resStyle);
             } else {
-                return new CustomkeyDialog(this);
+                return new  CustomDialog(this);
             }
         }
 
     }
+
 
 }

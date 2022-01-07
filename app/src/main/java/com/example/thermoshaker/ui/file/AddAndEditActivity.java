@@ -3,18 +3,14 @@ package com.example.thermoshaker.ui.file;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -31,25 +27,20 @@ import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.ProgramInfo;
 import com.example.thermoshaker.model.ProgramStep;
 import com.example.thermoshaker.model.TabEntity;
-import com.example.thermoshaker.ui.adapter.MyAdapter;
 import com.example.thermoshaker.util.BroadcastManager;
 import com.example.thermoshaker.util.ToastUtil;
-import com.example.thermoshaker.util.dialog.CustomKeyEditDialog;
-import com.example.thermoshaker.util.dialog.CustomkeyDialog;
+import com.example.thermoshaker.util.dialog.base.CustomKeyEditDialog;
 import com.example.thermoshaker.util.DataUtil;
 import com.example.thermoshaker.util.dialog.SeniorDialog;
 import com.example.thermoshaker.util.dialog.TipsDialog;
 import com.example.thermoshaker.util.key.FloatingKeyboard;
 import com.flyco.tablayout.CommonTabLayout;
-import com.flyco.tablayout.SlidingTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class AddAndEditActivity extends BaseActivity implements View.OnClickListener {

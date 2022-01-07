@@ -23,7 +23,7 @@ import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.ProgramInfo;
 import com.example.thermoshaker.util.BroadcastManager;
 import com.example.thermoshaker.util.ToastUtil;
-import com.example.thermoshaker.util.dialog.CustomkeyDialog;
+import com.example.thermoshaker.util.dialog.base.CustomkeyDialog;
 import com.example.thermoshaker.util.dialog.TipsDialog;
 import com.example.thermoshaker.util.key.KeyBoardUtil;
 import com.example.thermoshaker.util.key.Util;

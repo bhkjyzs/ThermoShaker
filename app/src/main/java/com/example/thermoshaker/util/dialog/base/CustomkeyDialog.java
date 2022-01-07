@@ -1,4 +1,4 @@
-package com.example.thermoshaker.util.dialog;
+package com.example.thermoshaker.util.dialog.base;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,12 +10,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class CustomDialog extends Dialog {
+public class CustomkeyDialog extends Dialog {
     private Context context;
     private boolean cancelTouchout;
     private View view;
 
-    public CustomDialog(Builder builder){
+    public CustomkeyDialog(Builder builder){
         super(builder.context);
         context = builder.context;
         cancelTouchout = builder.cancelTouchout;
@@ -23,7 +23,7 @@ public class CustomDialog extends Dialog {
     }
 
 
-    private CustomDialog(Builder builder, int resStyle) {
+    private CustomkeyDialog(Builder builder, int resStyle) {
         super(builder.context, resStyle);
         context = builder.context;
         cancelTouchout = builder.cancelTouchout;
@@ -40,10 +40,12 @@ public class CustomDialog extends Dialog {
         Window win = getWindow();
         WindowManager.LayoutParams lp = win.getAttributes();
         lp.gravity = Gravity.CENTER;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
 
         win.setAttributes(lp);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
         this.getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
@@ -66,7 +68,9 @@ public class CustomDialog extends Dialog {
             }
         });
 
+
     }
+
 
     @Override
     public void show() {
@@ -94,10 +98,7 @@ public class CustomDialog extends Dialog {
             return this;
         }
 
-        public Builder viewId(View  views) {
-            view = views;
-            return this;
-        }
+
         public Builder style(int resStyle) {
             this.resStyle = resStyle;
             return this;
@@ -114,15 +115,14 @@ public class CustomDialog extends Dialog {
         }
 
 
-        public CustomDialog build() {
+        public CustomkeyDialog build() {
             if (resStyle != -1) {
-                return new  CustomDialog(this, resStyle);
+                return new CustomkeyDialog(this, resStyle);
             } else {
-                return new  CustomDialog(this);
+                return new CustomkeyDialog(this);
             }
         }
 
     }
-
 
 }
