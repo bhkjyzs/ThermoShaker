@@ -2,6 +2,7 @@ package com.example.thermoshaker.ui.run;
 
 import android.content.Intent;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
@@ -20,6 +21,8 @@ import com.example.thermoshaker.serial.CommandDateUtil;
 import com.example.thermoshaker.serial.ControlParam;
 import com.example.thermoshaker.serial.DataUtils;
 import com.example.thermoshaker.ui.adapter.RVStepListAdapter;
+import com.example.thermoshaker.ui.file.FileActivity;
+import com.example.thermoshaker.util.dialog.TipsDialog;
 import com.example.thermoshaker.util.key.Util;
 import com.kongqw.serialportlibrary.listener.OnSerialPortDataListener;
 import com.licheedev.myutils.LogPlus;
@@ -31,6 +34,8 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
     private LinearLayout ll_return, ll_pause, ll_next, ll_stop, ll_deil;
     private RecyclerView rv_StepList;
     private RVStepListAdapter RVStepListAdapter;
+
+    private boolean isPause = false;
 
     @Override
     protected int getLayout() {
@@ -88,27 +93,57 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         updateSystemTime(tv_times);
         RVStepListAdapter = new RVStepListAdapter(R.layout.gv_step_list_item, this);
         rv_StepList.setAdapter(RVStepListAdapter);
+
         RVStepListAdapter.setList(programInfo.getStepList());
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ll_return:
+//                TipsDialog tipsDialog = new TipsDialog(RunActivity.this,getString(R.string.RunisExit));
+//                tipsDialog.show();
+//                tipsDialog.setOnDialogLister(new TipsDialog.onDialogLister() {
+//                    @Override
+//                    public void onCancel() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onConfirm() {
+//                        if(CommandDateUtil.SendCommand(ControlParam.OT_STOP)){
+//                            finish();
+//                        }
+//
+//                    }
+//                });
                 finish();
+
                 break;
             case R.id.ll_pause:
-                boolean b = CommandDateUtil.SendCommand(ControlParam.OT_PAUSE);
-                Log.d(TAG, b + "");
+                if(isPause){
+                    if(CommandDateUtil.SendCommand(ControlParam.OT_RESUME)){
+                        isPause = false;
+                    }
+
+                }else {
+                    if(CommandDateUtil.SendCommand(ControlParam.OT_PAUSE)){
+                        isPause = true;
+                    }
+                }
+
                 break;
             case R.id.ll_next:
 
                 break;
             case R.id.ll_stop:
+                if(CommandDateUtil.SendCommand(ControlParam.OT_STOP)){
+                    finish();
+                }
 
                 break;
             case R.id.ll_deil:
-
 
                 break;
         }

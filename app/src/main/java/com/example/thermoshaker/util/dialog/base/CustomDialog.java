@@ -14,6 +14,7 @@ public class CustomDialog extends Dialog {
     private Context context;
     private boolean cancelTouchout;
     private View view;
+    private Object tag;
 
     public CustomDialog(Builder builder){
         super(builder.context);
@@ -29,7 +30,13 @@ public class CustomDialog extends Dialog {
         cancelTouchout = builder.cancelTouchout;
         view = builder.view;
     }
+    public Object getTag() {
+        return tag;
+    }
 
+    public void setTag(Object tag) {
+        this.tag = tag;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

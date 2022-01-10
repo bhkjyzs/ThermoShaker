@@ -15,7 +15,6 @@
     </ImageView>
     <TextView
         android:id="@+id/tv_Name"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""

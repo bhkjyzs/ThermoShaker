@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -26,6 +27,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.example.thermoshaker.base.BaseActivity;
 import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.ProgramInfo;
+import com.example.thermoshaker.serial.DataUtils;
 import com.example.thermoshaker.ui.fast.FastActivity;
 import com.example.thermoshaker.ui.file.FileActivity;
 import com.example.thermoshaker.ui.run.RunActivity;
@@ -33,6 +35,8 @@ import com.example.thermoshaker.ui.setting.SettingActivity;
 import com.example.thermoshaker.util.LanguageUtil;
 import com.example.thermoshaker.util.ToastUtil;
 import com.example.thermoshaker.util.dialog.base.CustomkeyDialog;
+import com.kongqw.serialportlibrary.listener.OnSerialPortDataListener;
+import com.licheedev.myutils.LogPlus;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -176,6 +180,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         RecyclerView rv_list = customkeyDialog.findViewById(R.id.rv_list);
         rv_list.setLayoutManager(new GridLayoutManager(MainActivity.this,6));
         RVListFileAdapter rvListFileAdapter = new RVListFileAdapter(R.layout.file_list_item);
+        View view = LayoutInflater.from(this).inflate(R.layout.empty_layout,null,false);
+        rvListFileAdapter.setEmptyView(view);
         customkeyDialog.findViewById(R.id.dialog_inout_run).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -293,6 +299,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if(handler!=null){
             handler.removeCallbacks(null);
         }
+        MyApplication.getInstance().CloseSerialPort();
     }
 
 

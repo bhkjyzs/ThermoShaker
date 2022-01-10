@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/dip_700"
+    android:layout_width="@dimen/dip_800"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:background="@drawable/setting_dialog_bg"
-    android:layout_height="@dimen/dip_350"
+    android:layout_height="@dimen/dip_480"
     android:orientation="vertical">
 
 
@@ -22,10 +22,8 @@
     </TextView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="@dimen/dip_600"
-        android:layout_marginLeft="@dimen/dip_50"
-        android:layout_marginRight="@dimen/dip_50"
-        android:layout_height="@dimen/dip_200"
+        android:layout_width="@dimen/dip_800"
+        android:layout_height="@dimen/dip_300"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -35,8 +33,9 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="@dimen/dip_50"
-            android:text=""
+            android:layout_marginTop="@dimen/dip_70"
+            android:text="升级中……"
+            android:textSize="@dimen/sp_25"
             android:textColor="@color/black"
 
             android:layout_width="wrap_content"
@@ -48,13 +47,13 @@
         <ProgressBar
             android:layout_width="match_parent"
             android:max="100"
-            android:progress="40"
+            android:progress="20"
             android:secondaryProgress="100"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginLeft="@dimen/dip_20"
             android:layout_marginRight="@dimen/dip_20"
-            android:layout_marginTop="@dimen/dip_70"
+            android:layout_marginTop="@dimen/dip_150"
             style="?android:attr/progressBarStyleHorizontal"
             android:progressDrawable="@drawable/progressbar_color"
             android:id="@+id/pB_Level_up"
@@ -71,13 +70,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dip_100"
+        android:layout_height="@dimen/dip_120"
         android:gravity="center">
 
         <Button
             android:id="@+id/dialog_language_confirm"
-            android:layout_width="@dimen/dip_120"
-            android:layout_height="@dimen/dip_50"
+            android:layout_width="@dimen/dip_250"
+            android:layout_height="@dimen/dip_70"
             android:background="@drawable/selector_background"
             android:text="@string/sure"
             android:textAllCaps="false"
@@ -87,8 +86,8 @@
 
         <Button
             android:id="@+id/dialog_language_cancel"
-            android:layout_width="@dimen/dip_120"
-            android:layout_height="@dimen/dip_50"
+            android:layout_width="@dimen/dip_250"
+            android:layout_height="@dimen/dip_70"
             android:layout_marginLeft="@dimen/dip_100"
             android:background="@drawable/selector_background"
             android:text="@string/cancel"

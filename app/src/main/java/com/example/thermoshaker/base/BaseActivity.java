@@ -16,6 +16,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.PersistableBundle;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -31,12 +32,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.model.Event;
+import com.example.thermoshaker.model.ProgramInfo;
 import com.example.thermoshaker.serial.DataUtils;
+import com.example.thermoshaker.ui.file.AddAndEditActivity;
 import com.example.thermoshaker.util.AppManager;
 import com.example.thermoshaker.util.BindEventBus;
+import com.example.thermoshaker.util.BroadcastManager;
 import com.example.thermoshaker.util.CloseBarUtil;
 import com.example.thermoshaker.util.EventBusUtils;
 import com.example.thermoshaker.util.LanguageUtil;
+import com.example.thermoshaker.util.dialog.TipsDialog;
 import com.kongqw.serialportlibrary.listener.OnSerialPortDataListener;
 import com.licheedev.myutils.LogPlus;
 
@@ -55,7 +60,10 @@ public abstract class BaseActivity extends Activity {
     private int update_system_time=1;
     private int update_system=1000;
     private TextView tv_times;
+    private TipsDialog tipsDialog;
     USBBroadcastReceiver usbBroadcastReceiver;
+    public static final String ERROR_ACTION = "ERROR_ACTION";
+
 
     private Handler handler =  new Handler(Looper.myLooper()){
         @Override
@@ -107,9 +115,29 @@ public abstract class BaseActivity extends Activity {
         }
         initUsb();
         initSer();
+        bradCast();
 //        celiang();
 
     }
+
+    private   void bradCast(){
+        BroadcastManager.getInstance(this).addAction(ERROR_ACTION, new BroadcastReceiver(){
+            @Override
+            public void onReceive(Context arg0, Intent intent) {
+                String command = intent.getAction();
+                if(tipsDialog==null){
+                    tipsDialog = new TipsDialog(BaseActivity.this,getString(R.string.dialog_info_communication_failed));
+                    tipsDialog.show();
+                }else {
+                    if(!tipsDialog.isShowing()){
+                        tipsDialog.show();
+                    }
+                }
+
+
+            }
+        });
+    };
 
     private void initSer() {
         MyApplication.getInstance().mSerialPortManager.setOnSerialPortDataListener(new OnSerialPortDataListener() {

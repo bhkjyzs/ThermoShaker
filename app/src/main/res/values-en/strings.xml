@@ -8,7 +8,10 @@
 
     <string name="run">run</string>
     <string name="Fast">Fast</string>
-
+    <string name="Runsettings">Run settings</string>
+    <!--对话框 声音设置-->
+    <string name="dialog_voice_1">Alertor Voice</string>
+    <string name="dialog_voice_2">Program Finish Voice</string>
     <string name="inching">inching</string>
     <string name="addfile">add</string>
     <string name="edit">edit</string>
@@ -64,8 +67,11 @@
     <string name="senior_setting">Senior Setting</string>
     <string name="debug_mode">Debug mode</string>
     <string name="debugmodule">Debug module</string>
-    <string name="debuggingfunction">Debugging function</string>
+    <string name="Temperaturecorrection">Temperature correction</string>
     <string name="Localcorrelation">Local correlation</string>
+    <string name="dialog_factory_tempe_update">Temperature Update（-9.99 ～9.99℃）</string>
+    <string name="dialog_factory_motor_write">Write</string>
+    <string name="RunisExit">Running, are you sure you want to exit?</string>
 
     <string name="clear">Clear</string>
     <string name="success">OK</string>
@@ -119,8 +125,13 @@
     <string name="mixpreh">Mix well after preheating(Heating and mixing)</string>
     <string name="mixprehnok">Mix well after preheating</string>
     <string name="syncnok">Sync Run</string>
+    <string name="No_software_detected">No files detected</string>
+    <string name="next">Next</string>
+    <string name="update_failed">Update Failed!</string>
+    <string name="ask_update_software_start">Files detected&#8194;</string>
+    <string name="ask_update_software_end">,Are you sure to update?</string>
 
-
+    <string name="In_preparation_USB">U disk in preparation, please try again later</string>
     <string name="forwardmixing">Forward Mixing</string>
     <string name="rotarymixing">Rotary mixing</string>
     <string name="Forwardandreversemixing">Forward and reverse mixing</string>
@@ -136,5 +147,8 @@
     <string name="debug_fan">Fan:</string>
     <string name="Motor">Motor:</string>
     <string name="led">led:</string>
+    <string name="softer_version">Software Version:</string>
+    <string name="recovery">Restore factory settings</string>
+    <string name="dialog_info_communication_failed" translatable="true">The device cannot communicate normally</string>
 
 </resources>

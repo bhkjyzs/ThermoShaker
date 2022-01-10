@@ -1,13 +1,17 @@
 package com.example.thermoshaker.base;
 
 import android.app.Application;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.example.thermoshaker.model.ProgramInfo;
 import com.example.thermoshaker.model.StepDefault;
+import com.example.thermoshaker.serial.CommandDateUtil;
+import com.example.thermoshaker.serial.ControlParam;
 import com.example.thermoshaker.util.DataUtil;
+import com.example.thermoshaker.util.service.BioHeartService;
 import com.kongqw.serialportlibrary.Device;
 import com.kongqw.serialportlibrary.SerialPortFinder;
 import com.kongqw.serialportlibrary.SerialPortManager;
@@ -45,6 +49,7 @@ public class MyApplication extends Application implements OnOpenSerialPortListen
     public SimpleDateFormat dateFormat; // 用于格式化局部时间
     public SimpleDateFormat AppDateFormat;// 用于常规日期格式化
     public SimpleDateFormat lockDateFormat;
+    private Intent serviceIntent;
 
 
     public static MyApplication getInstance() {
@@ -59,7 +64,12 @@ public class MyApplication extends Application implements OnOpenSerialPortListen
         initConfig();
         File file = new File("/dev/ttyS3");
         OpenSerialPort(new Device("ttyS3", "uart",file));
+        initSystemParam();
+//        serviceIntent = new Intent(this, BioHeartService.class);
+//        startService(serviceIntent);
+
     }
+
 
     private void initConfig() {
         /* 格式化局部时间 */
@@ -78,44 +88,14 @@ public class MyApplication extends Application implements OnOpenSerialPortListen
      */
     private void OpenSerialPort(Device device) {
         mSerialPortManager = new SerialPortManager();
-
-
         // 打开串口
         mOpened = mSerialPortManager.setOnOpenSerialPortListener(this)
-//                .setOnSerialPortDataListener(new OnSerialPortDataListener() {
-//                    @Override
-//                    public void onDataReceived(byte[] bytes) {
-//                        Log.i(TAG, "onDataReceived [ byte[] ]: " + Arrays.toString(bytes));
-//                        Log.i(TAG, "onDataReceived [ String ]: " + new String(bytes));
-//                        final byte[] finalBytes = bytes;
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                LogPlus.d(String.format("接收\n%s", new String(finalBytes)));
-//                            }
-//                        });
-//                    }
-//
-//                    @Override
-//                    public void onDataSent(byte[] bytes) {
-//                        Log.i(TAG, "onDataSent [ byte[] ]: " + Arrays.toString(bytes));
-//                        Log.i(TAG, "onDataSent [ String ]: " + new String(bytes));
-//                        final byte[] finalBytes = bytes;
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                LogPlus.d(String.format("发送\n%s", new String(finalBytes)));
-//
-//                            }
-//                        });
-//                    }
-//                })
                 .openSerialPort(device.getFile(), 57600);
         LogPlus.i("onCreate: openSerialPort = " + mOpened);
-
-
-
     }
+
+
+
 
     /**
      * 关闭串口
@@ -162,6 +142,24 @@ public class MyApplication extends Application implements OnOpenSerialPortListen
     }
 
 
+    public void initSystemParam() {
+        byte[] temp = CommandDateUtil.SendQueryCommand(ControlParam.ASK_SYSTEM);
+        Log.i("===", "init systemparam：" + temp);
+        if (temp != null) {
+            Content.control_systemParam = CommandDateUtil.bioSystemRec(temp);
+//            int Lamp_Sun_State = Content.control_systemParam.getLamp_Sun_State();
+//            if (0 == Lamp_Sun_State) {
+//                isLight = false;
+//            } else if (ControlParam.WINDOW_OPEN_STATE == Lamp_Sun_State) {
+//                isLight = true;
+//            } else {
+//                isLight = false;
+//            }
+        }
+    }
+
+
+
     /**
      * LiJ 根据主板型号运行系统命令
      */
@@ -192,7 +190,6 @@ public class MyApplication extends Application implements OnOpenSerialPortListen
     @Override
     public void onSuccess(File device) {
         Toast.makeText(getApplicationContext(), String.format("串口 [%s] 打开成功", device.getPath()), Toast.LENGTH_SHORT).show();
-
     }
 
     @Override

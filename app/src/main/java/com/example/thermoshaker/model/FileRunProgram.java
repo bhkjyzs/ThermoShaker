@@ -4,9 +4,14 @@ public class FileRunProgram {
 
     private int CURRunStep;//当前步骤
     private int ALLRunStepNum;//总步骤
+    private long CURWaitTime;//当前等待时间
+    private long CURRemnantTime;//当前总剩余时间
+    private int RunCir;//运行循环次数
+    private int CirStep;//循环跳转步骤
     private float ModuleTemp;//模块后台显示温度1
     private float DispTemp;//模块显示温度1
-
+    private float LidModuleTemp;//热盖后台显示温度
+    private float LidDispTemp;//热盖显示温度
     private int RunCourse;//当前运行状态
     private int RunFileState;//文件当前状态
     private int[] SystemErrCode = new int[4];//系统错误代码
@@ -65,5 +70,54 @@ public class FileRunProgram {
 
     public void setSystemErrCode(int[] systemErrCode) {
         SystemErrCode = systemErrCode;
+    }
+
+
+    public long getCURWaitTime() {
+        return CURWaitTime;
+    }
+
+    public void setCURWaitTime(long CURWaitTime) {
+        this.CURWaitTime = CURWaitTime;
+    }
+
+    public long getCURRemnantTime() {
+        return CURRemnantTime;
+    }
+
+    public void setCURRemnantTime(long CURRemnantTime) {
+        this.CURRemnantTime = CURRemnantTime;
+    }
+
+    public int getRunCir() {
+        return RunCir;
+    }
+
+    public void setRunCir(int runCir) {
+        RunCir = runCir;
+    }
+
+    public int getCirStep() {
+        return CirStep;
+    }
+
+    public void setCirStep(int cirStep) {
+        CirStep = cirStep;
+    }
+
+    public float getLidModuleTemp() {
+        return LidModuleTemp;
+    }
+
+    public void setLidModuleTemp(float lidModuleTemp) {
+        LidModuleTemp = lidModuleTemp;
+    }
+
+    public float getLidDispTemp() {
+        return LidDispTemp;
+    }
+
+    public void setLidDispTemp(float lidDispTemp) {
+        LidDispTemp = lidDispTemp;
     }
 }

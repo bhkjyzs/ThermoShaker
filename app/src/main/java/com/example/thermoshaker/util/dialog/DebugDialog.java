@@ -37,12 +37,11 @@ public class DebugDialog {
     public DebugDialog(Context context) {
         this.context = context;
         init();
-
     }
 
     private void init() {
         ArrayList<View> viewList = new ArrayList<>();
-        String[] title={context.getString(R.string.debugmodule)+"",context.getString(R.string.debuggingfunction)+"",context.getString(R.string.Localcorrelation)+""};
+        String[] title={context.getString(R.string.debugmodule)+"",context.getString(R.string.Temperaturecorrection)+"",context.getString(R.string.Localcorrelation)+""};
 
 
 

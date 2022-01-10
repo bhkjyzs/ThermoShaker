@@ -8,6 +8,10 @@
 
     <string name="run">运行</string>
     <string name="inching">点动</string>
+    <string name="Runsettings">运行设置</string>
+    <!--对话框 声音设置-->
+    <string name="dialog_voice_1">报警提示音</string>
+    <string name="dialog_voice_2">程序结束提示音</string>
     <string name="addfile">添加</string>
     <string name="edit">编辑</string>
     <string name="del">删除</string>
@@ -15,6 +19,9 @@
     <string name="ImportExport">导入/导出</string>
     <string name="mounting_u_disk">挂载U盘成功</string>
     <string name="removed_u_disk">U盘移除成功</string>
+    <string name="In_preparation_USB">u盘准备中，请稍后重试</string>
+    <string name="No_software_detected">未检测到文件</string>
+
     <string name="setting_dialog_usb_no">usb 未插入</string>
     <string name="file_existed">已存在</string>
     <string name="export_succeeded">导出成功</string>
@@ -31,6 +38,11 @@
     <string name="calibration">校准</string>
     <string name="pause">暂停</string>
     <string name="nextSection">下一节</string>
+    <string name="next">下一个</string>
+    <string name="update_failed">升级失败!</string>
+    <string name="ask_update_software_start">检测到文件&#8194;</string>
+    <string name="ask_update_software_end">,是否进行更新?</string>
+
     <string name="stopit">停止</string>
     <string name="details">详情</string>
     <string name="save">保存</string>
@@ -60,6 +72,8 @@
     <string name="setting_factory">出厂设置</string>
     <string name="senior_setting">高级设置</string>
     <string name="debug_mode">调试模式</string>
+    <string name="dialog_info_communication_failed" translatable="true">设备无法正常通信</string>
+    <string name="RunisExit">正在运行,确定要退出吗</string>
 
     <string name="clear">清除</string>
     <string name="dialog_inout_info_1">未选择外设程序</string>
@@ -97,8 +111,10 @@
     <string name="mixingmode">混匀方式:</string>
     <string name="blendstart">混匀起点</string>
     <string name="debugmodule">调试模块</string>
-    <string name="debuggingfunction">调试功能</string>
+    <string name="Temperaturecorrection">温度修正</string>
     <string name="Localcorrelation">本机相关</string>
+    <string name="dialog_factory_tempe_update">温度修正值（-9.99 ～9.99℃）</string>
+    <string name="dialog_factory_motor_write">写入修正值</string>
 
     <string name="rate">速率</string>
     <string name="mixedmode">混合模式</string>
@@ -133,5 +149,7 @@
     <string name="debug_fan">风扇:</string>
     <string name="Motor">电机:</string>
     <string name="led">led:</string>
+    <string name="softer_version">软件版本:</string>
+    <string name="recovery">恢复出厂设置</string>
 
 </resources>

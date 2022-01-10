@@ -23,6 +23,15 @@ public class DataUtils {
         return all_byte;
     }
 
+    //数据命令接收
+    public static boolean isDataOk(byte[] res) {
+        if (res[0] == ControlParam.response_data && res[1] == ControlParam.response_ok) {
+            Log.i(TAG, "** return info is ok"+res[0]);
+            return true;
+        }
+        Log.d(TAG, "** the return info is error"+res[0]);
+        return false;
+    }
 
 
     //CRC校验
@@ -127,6 +136,31 @@ public class DataUtils {
         return sum;
     }
 
+    /*将int转为低字节在后，高字节在前的byte数组
+ b[0] = 11111111(0xff) & 01100001
+ b[1] = 11111111(0xff) & 00000000
+ b[2] = 11111111(0xff) & 00000000
+ b[3] = 11111111(0xff) & 00000000
+ */
+    public static byte[] IntToByteArray2(int value)
+    {
+        byte[] src = new byte[4];
+        src[0] = (byte) ((value>>24) & 0xFF);
+        src[1] = (byte) ((value>>16)& 0xFF);
+        src[2] = (byte) ((value>>8)&0xFF);
+        src[3] = (byte) (value & 0xFF);
+        return src;
+    }
+    //将高字节在前转为int，低字节在后的byte数组(与IntToByteArray2想对应)
+    public static int ByteArrayToInt2(byte[] bArr) {
+        if(bArr.length!=4){
+            return -1;
+        }
+        return (int) ((((bArr[0] & 0xff) << 24)
+                | ((bArr[1] & 0xff) << 16)
+                | ((bArr[2] & 0xff) << 8)
+                | ((bArr[3] & 0xff) << 0)));
+    }
 
 
     // param int数组转byte[]

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="@dimen/dip_700"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="@dimen/dip_800"
     android:layout_gravity="center"
     android:background="@drawable/setting_dialog_bg"
-    android:layout_height="@dimen/dip_350"
+    android:layout_height="480dp"
     android:orientation="vertical">
 
 
@@ -21,25 +21,23 @@
 
     <RadioGroup
         android:id="@+id/dialog_language_group"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="@dimen/dip_50"
-        android:layout_marginRight="@dimen/dip_50"
+        android:layout_width="@dimen/dip_800"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical">
 
         <RadioButton
             android:id="@+id/dialog_language_btn1"
-            android:layout_width="@dimen/dip_500"
-            android:layout_height="@dimen/dip_100"
+            android:layout_width="@dimen/dip_600"
+            android:layout_height="@dimen/dip_150"
             android:checked="true"
             android:text="@string/chinese"
             android:textSize="@dimen/sp_24" />
 
         <RadioButton
             android:id="@+id/dialog_language_btn2"
-            android:layout_width="@dimen/dip_500"
-            android:layout_height="@dimen/dip_100"
+            android:layout_width="@dimen/dip_600"
+            android:layout_height="@dimen/dip_150"
             android:text="@string/english"
             android:textSize="@dimen/sp_24" />
     </RadioGroup>
@@ -47,13 +45,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dip_100"
+        android:layout_height="@dimen/dip_120"
         android:gravity="center">
 
         <Button
             android:id="@+id/dialog_language_confirm"
-            android:layout_width="@dimen/dip_120"
-            android:layout_height="@dimen/dip_50"
+            android:layout_width="@dimen/dip_250"
+            android:layout_height="@dimen/dip_70"
             android:background="@drawable/selector_background"
             android:text="@string/sure"
             android:textAllCaps="false"
@@ -63,8 +61,8 @@
 
         <Button
             android:id="@+id/dialog_language_cancel"
-            android:layout_width="@dimen/dip_120"
-            android:layout_height="@dimen/dip_50"
+            android:layout_width="@dimen/dip_250"
+            android:layout_height="@dimen/dip_70"
             android:layout_marginLeft="@dimen/dip_100"
             android:background="@drawable/selector_background"
             android:text="@string/cancel"

@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.inputmethodservice.KeyboardView;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -20,7 +22,12 @@ import com.example.thermoshaker.R;
 import com.example.thermoshaker.base.BaseActivity;
 import com.example.thermoshaker.base.Content;
 import com.example.thermoshaker.base.MyApplication;
+import com.example.thermoshaker.model.FileRunProgram;
 import com.example.thermoshaker.model.ProgramInfo;
+import com.example.thermoshaker.model.SystemProgram;
+import com.example.thermoshaker.serial.CommandDateUtil;
+import com.example.thermoshaker.serial.ControlParam;
+import com.example.thermoshaker.serial.DataUtils;
 import com.example.thermoshaker.util.BroadcastManager;
 import com.example.thermoshaker.util.ToastUtil;
 import com.example.thermoshaker.util.dialog.base.CustomkeyDialog;
@@ -34,6 +41,7 @@ import java.io.File;
 import java.util.List;
 public class FileActivity extends BaseActivity implements View.OnClickListener {
     public final static String MSG = FileActivity.class.getName();
+    private static final String TAG = "FileActivity";
 
     private TextView tv_times,tv_number;
     private RecyclerView rv_list;
@@ -96,6 +104,25 @@ public class FileActivity extends BaseActivity implements View.OnClickListener {
 
                     return;
                 }
+                if(!CommandDateUtil.SendDataCommand(ControlParam.DT_FILE, CommandDateUtil.getProgramByte(rvListFileAdapter.getData().get(ChooseFilePos)))){
+                    return;
+                }
+                if (!CommandDateUtil.SendCommand(ControlParam.OT_RUN)) {
+                    //Toast.makeText(RunningActivity.this,"not start running",Toast.LENGTH_SHORT);
+                    //Message msg=new Message();
+                    //msg.what=MyApp.RUNNING_ERROR;
+                    //handler.sendMessage(msg);
+                    return;
+                }
+                byte[] temp = CommandDateUtil.SendQueryCommand(ControlParam.ASK_RUNDATA);
+                if(temp!=null){
+                    FileRunProgram runParam = CommandDateUtil.bioRunParam(temp);
+
+
+                }
+
+
+
                 break;
             case R.id.ll_del:
                 if(ChooseFilePos==-1){
@@ -179,6 +206,8 @@ public class FileActivity extends BaseActivity implements View.OnClickListener {
 //        List<ProgramInfo> data = MyApplication.getInstance().getData();
 //        rvListFileAdapter.setList(data);
         rv_list.setAdapter(rvListFileAdapter);
+        View view = LayoutInflater.from(this).inflate(R.layout.empty_layout,null,false);
+        rvListFileAdapter.setEmptyView(view);
         rvListFileAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
