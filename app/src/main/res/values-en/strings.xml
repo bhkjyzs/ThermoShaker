@@ -150,5 +150,8 @@
     <string name="softer_version">Software Version:</string>
     <string name="recovery">Restore factory settings</string>
     <string name="dialog_info_communication_failed" translatable="true">The device cannot communicate normally</string>
+    <string name="loadingupdate">Loading file……</string>
+    <string name="loading_update_success">Loading complete</string>
+    <string name="loading_update_fail">Loading failed</string>
 
 </resources>

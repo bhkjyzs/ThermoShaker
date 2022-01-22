@@ -1,6 +1,8 @@
 package com.example.thermoshaker.model;
 
-public class SystemProgram {
+import java.io.Serializable;
+
+public class SystemProgram implements Serializable {
 
 
     private int ui_type = 0; //运行界面类型

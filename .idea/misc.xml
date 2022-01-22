@@ -33,14 +33,14 @@
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/drawable/shape_background_no2.xml" value="0.21484375" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/drawable/shape_bg_add_edit.xml" value="0.25" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/activity_add_and_edit.xml" value="0.5596933187294633" />
-        <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/activity_fast.xml" value="0.5" />
+        <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/activity_fast.xml" value="0.33" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/activity_file.xml" value="0.33" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/activity_run.xml" value="0.5" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/activity_setting.xml" value="0.22890625" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/add_name_layout.xml" value="0.14739583333333334" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/add_step_layout.xml" value="0.33" />
-        <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/change_firmware_layout.xml" value="0.20255474452554745" />
+        <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/change_firmware_layout.xml" value="0.5" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/change_language_layout.xml" value="0.29140625" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/change_voice_layout.xml" value="0.5" />
         <entry key="..\:/demo/ThermoShaker/app/src/main/res/layout/choose_programs_layout.xml" value="0.2532299741602067" />

@@ -1,15 +1,29 @@
 package com.example.thermoshaker.ui.setting;
 
+import static com.example.thermoshaker.util.usb.USBBroadCastReceiver.ACTION_USB_PERMISSION;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbManager;
+import android.os.Build;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,21 +38,34 @@ import com.example.thermoshaker.base.MainType;
 import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.SettingListBean;
 import com.example.thermoshaker.util.AppManager;
+import com.example.thermoshaker.util.DataUtil;
 import com.example.thermoshaker.util.dialog.DebugDialog;
 import com.example.thermoshaker.util.dialog.base.CustomDialog;
 import com.example.thermoshaker.util.LanguageUtil;
 import com.example.thermoshaker.util.Utils;
 import com.example.thermoshaker.util.dialog.base.CustomKeyEditDialog;
 import com.example.thermoshaker.util.dialog.DialogInout;
+import com.example.thermoshaker.util.usb.USBBroadCastReceiver;
+import com.example.thermoshaker.util.usb.UsbHelper;
+import com.github.mjdev.libaums.UsbMassStorageDevice;
+import com.github.mjdev.libaums.fs.FileSystem;
+import com.github.mjdev.libaums.fs.UsbFile;
+import com.github.mjdev.libaums.fs.UsbFileInputStream;
+import com.github.mjdev.libaums.fs.UsbFileOutputStream;
+import com.github.mjdev.libaums.fs.UsbFileStreamFactory;
+import com.github.mjdev.libaums.partition.Partition;
+import com.hjq.permissions.Permission;
+import com.hjq.permissions.XXPermissions;
 import com.licheedev.myutils.LogPlus;
 
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -63,7 +90,9 @@ public class SettingActivity extends BaseActivity {
     @Override
     protected void initView() {
         GetViews();
+        initUsb();
     }
+
 
     private void GetViews() {
         listNames.add(getString(R.string.changlanguage)+"");
@@ -82,9 +111,9 @@ public class SettingActivity extends BaseActivity {
         listImgs.add(R.drawable.firmwareupdate);
         listImgs.add(R.drawable.softerwareupdate);
         listImgs.add(R.drawable.nativeinformation);
-        listImgs.add(R.drawable.factory_img);
+        listImgs.add(R.drawable.setting);
         listImgs.add(R.drawable.input);
-        listImgs.add(R.drawable.input);
+        listImgs.add(R.drawable.runsetting_img);
         listImgs.add(R.drawable.inching);
         listImgs.add(R.drawable.return_img);
 
@@ -225,46 +254,47 @@ public class SettingActivity extends BaseActivity {
         DialogDisMiss(nativeInformationDialog);
     }
 
+
+
+
+
+
     /**
      * 软件升级
      */
     private void software() {
-//        CustomDialog softwareDialog = new CustomDialog.Builder(this)
-//                .view(R.layout.software_layout)
-//                .style(R.style.CustomDialog)
-//                .build();
-//        softwareDialog.show();
+        usbWrite();
+
         try {
             MyApplication app = MyApplication.getInstance();
             if (!Content.usb_state.equals(Intent.ACTION_MEDIA_MOUNTED)) {
                 Toast.makeText(this, getText(R.string.setting_dialog_usb_no), Toast.LENGTH_SHORT).show();
+                return;
             }else if(Content.usb_state.equals(Intent.ACTION_MEDIA_CHECKING)){
                 Toast.makeText(this, getText(R.string.In_preparation_USB), Toast.LENGTH_SHORT).show();
 
             }else if(Content.usb_state.equals(Intent.ACTION_MEDIA_MOUNTED)){
 
             }
-                File dir = new File(Content.usb_path);
-//                if (Build.VERSION.SDK_INT == 22)
-//                    dir = new File("/mnt/usb_storage4");
-//                else
-//                    dir = new File("/mnt/usb_storage");
-                File[] files = dir.listFiles();
+            File dir = new File(Content.usb_path);
+            UsbFile root = currentFs.getRootDirectory();
+
+            UsbFile[] files = root.listFiles();
+            for (UsbFile file : files) {
+                Log.d(TAG, file.getName());
+                if (file.isDirectory()) {
+
+                }
+            }
                 Log.d("===", "files：" + (null == files));
                 if (files == null || files.length == 0) {
                     Toast.makeText(this, getText(R.string.No_software_detected), Toast.LENGTH_SHORT).show();
                 } else {
-                    final ArrayList<File> fileList = new ArrayList<File>();
+                    final ArrayList<UsbFile> fileList = new ArrayList<UsbFile>();
 
-                    for (File n : files) {
-                        if (n.isFile() && n.getName().endsWith(".apk") && n.getName().toLowerCase().contains("thermoshaker")) {
-                            final String path = n.getPath();
-                            PackageInfo packageInfo = app.getPackageManager().getPackageArchiveInfo(path,
-                                    PackageManager.GET_ACTIVITIES);
-                            Log.d("===", "apk包名：" + packageInfo.packageName);
-                            if (packageInfo != null && packageInfo.packageName.equals(this.getPackageName())) {
+                    for (UsbFile n : files) {
+                        if (n.getName().endsWith(".apk") && n.getName().contains("TDM_100_")) {
                                 fileList.add(n);
-                            }
                         }
                     }
 
@@ -276,30 +306,31 @@ public class SettingActivity extends BaseActivity {
                                 .style(R.style.CustomDialog)
                                 .build();
                         softwareDialogs.setTag(0);
-                        PackageInfo packageInfo = app.getPackageManager()
-                                .getPackageArchiveInfo(fileList.get(0).getPath(), PackageManager.GET_ACTIVITIES);
+
                         softwareDialogs.show();
 
                         TextView tv_msg = softwareDialogs.findViewById(R.id.tv_msg);
                         tv_msg.setText(getString(R.string.ask_update_software_start) + fileList.get(0).getName() + "("
-                                + packageInfo.versionName + ")" + getString(R.string.ask_update_software_end));
+                                + ")" + getString(R.string.ask_update_software_end));
                         softwareDialogs.findViewById(R.id.btn_sure).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 try {
-                                    File file = fileList.get((Integer) softwareDialogs.getTag());
+                                    UsbFile file = fileList.get((Integer) softwareDialogs.getTag());
                                     MyApplication app = MyApplication.getInstance();
-                                    boolean bool = app
-                                            .exec("pm install -r " + file.getPath() + ";" + MainType.CMD.StartApp.getValue());
+                                    ProgressBar pB_Level_up = softwareDialogs.findViewById(R.id.pB_Level_up);
+                                    softwareDialogs.findViewById(R.id.btn_sure).setVisibility(View.GONE);
+                                    softwareDialogs.findViewById(R.id.btn_next).setVisibility(View.GONE);
+                                    softwareDialogs.findViewById(R.id.btn_cancel).setVisibility(View.GONE);
+                                    tv_msg.setText(R.string.loadingupdate);
+                                    pB_Level_up.setVisibility(View.VISIBLE);
+                                    copyUSbFile(file,pB_Level_up);
 
-
-                                    if (bool == false)
-                                        Toast.makeText(SettingActivity.this, getText(R.string.update_failed), Toast.LENGTH_SHORT).show();
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
-                                softwareDialogs.dismiss();
+//                                softwareDialogs.dismiss();
                             }
                         });
                         softwareDialogs.findViewById(R.id.btn_next).setOnClickListener(new View.OnClickListener() {
@@ -307,13 +338,11 @@ public class SettingActivity extends BaseActivity {
                             public void onClick(View v) {
                                 int pos = (Integer) softwareDialogs.getTag() + 1;
                                 if (pos < fileList.size()) {
-//                                    MyApplication.getInstance().KeySound();
                                     MyApplication app = MyApplication.getInstance();
                                     softwareDialogs.setTag(pos);
-                                    PackageInfo packageInfo = app.getPackageManager().getPackageArchiveInfo(
-                                            fileList.get(pos).getPath(), PackageManager.GET_ACTIVITIES);
+
                                     tv_msg.setText(getString(R.string.ask_update_software_start)
-                                            + fileList.get(pos).getName() + "(" + packageInfo.versionName + ")"
+                                            + fileList.get(pos).getName() + "(" + ")"
                                             + getString(R.string.ask_update_software_end));
                                 } else {
                                     softwareDialogs.dismiss();
@@ -336,6 +365,49 @@ public class SettingActivity extends BaseActivity {
 
 
     }
+    /**
+     * 复制 USB 文件到本地
+     *
+     * @param file USB文件
+     */
+
+    private void copyUSbFile(final UsbFile file,ProgressBar pB_Level_up) {
+
+        //复制到本地的文件路径
+        final String filePath = DataUtil.data_path + File.separator + DataUtil.apk_data_name;
+         boolean result = false;
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                usbHelper.saveUSbFileToLocal(file, filePath,currentFs, new UsbHelper.DownloadProgressListener() {
+                    @Override
+                    public void downloadProgress(final int progress) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                String text = "Progress : " + progress;
+                                Log.d(TAG,text+"");
+                                pB_Level_up.setProgress(progress);
+
+                            }
+                        });
+                    }
+                });
+
+        MyApplication app = MyApplication.getInstance();
+        boolean bool = app
+                .exec("pm install -r " + filePath + ";" + MainType.CMD.StartApp.getValue());
+        if (bool == false)
+            Toast.makeText(SettingActivity.this, getText(R.string.update_failed), Toast.LENGTH_SHORT).show();
+            }
+        }).start();
+
+
+    }
+
 
     /**
      * 固件升级
@@ -483,5 +555,6 @@ public class SettingActivity extends BaseActivity {
 
         }
     }
+
 
 }

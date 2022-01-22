@@ -56,7 +56,7 @@ public class FastActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.Btn_SetTM:
-                showkeyDialog(CustomKeyEditDialog.TYPE.Temp,String.valueOf(0));
+                showkeyDialog(CustomKeyEditDialog.TYPE.Temp,String.valueOf(37));
                 break;
             case R.id.Btn_SetSpeed:
                 showkeyDialog(CustomKeyEditDialog.TYPE.RPM,String.valueOf(1000));
@@ -73,7 +73,7 @@ public class FastActivity extends BaseActivity implements View.OnClickListener {
 
                 break;
             case R.id.ll_lid:
-                showLidkeyDialog(String.valueOf(0));
+                showLidkeyDialog(String.valueOf(38));
                 break;
 
 

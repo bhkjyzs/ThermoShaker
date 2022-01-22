@@ -3,17 +3,20 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
 
     defaultConfig {
         applicationId "com.example.thermoshaker"
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 29
         versionCode 1
-        versionName "thermoshaker_1.0.1.22.1.7"
+        versionName "TDM_100_1.0.1.22.1.22"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            moduleName "serial_port"
+        }
     }
 
 
@@ -27,10 +30,21 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    sourceSets.main {
-        jniLibs.srcDir 'libs'
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
     }
 
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+    sourceSets.main {
+        jniLibs.srcDir 'libs'
+        jni.srcDirs = []
+    }
     signingConfigs {
         config {
             keyAlias 'keys'
@@ -53,7 +67,7 @@ android {
         }
     }
 
-
+    ndkVersion '21.0.6113669'
 }
 
 dependencies {
@@ -69,7 +83,8 @@ dependencies {
     //fastJson
     implementation 'com.alibaba:fastjson:1.1.72.android'
     //串口
-    implementation 'com.licheedev:android-serialport:2.1.3'
+    implementation 'com.licheedev:android-serialport:2.1.2'
+
     //屏幕适配
     implementation 'me.jessyan:autosize:1.2.1'
     //消息传递
@@ -83,7 +98,8 @@ dependencies {
     // 硬件操作工具类
     implementation 'com.licheedev:hardwareutils:1.0.0'
     implementation 'io.github.h07000223:flycoTabLayout:3.0.0'
-    api project(':SerialPortLibrary')
-
+    //usb
+    implementation 'me.jahnen:libaums:0.7.5'
+    implementation 'com.hjq:xxpermissions:5.2'
 
 }

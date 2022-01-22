@@ -1,5 +1,7 @@
 package com.example.thermoshaker.serial;
 
+import static com.example.thermoshaker.serial.DataUtils.ByteArrToHex;
+import static com.example.thermoshaker.serial.DataUtils.isDataOk;
 import static com.example.thermoshaker.serial.DataUtils.translate;
 
 import android.os.SystemClock;
@@ -11,8 +13,7 @@ import com.example.thermoshaker.model.FileRunProgram;
 import com.example.thermoshaker.model.ProgramInfo;
 import com.example.thermoshaker.model.ProgramStep;
 import com.example.thermoshaker.model.SystemProgram;
-import com.kongqw.serialportlibrary.SerialPortManager;
-import com.kongqw.serialportlibrary.listener.OnSerialPortDataListener;
+import com.licheedev.myutils.LogPlus;
 
 import java.util.Date;
 
@@ -26,11 +27,6 @@ public class CommandDateUtil {
     //b5 具体数据
     //b6 校验码
     static byte[] b7 = {(byte) 0x55};
-    //查询需要返回的数据
-    static byte[] resQuery = null;
-    //验证命令通讯是否成功
-    static byte[] resCommend = null;
-
     private final static int num_redo = 1; //重试五次//暂时重试一次
 
     /**
@@ -45,31 +41,21 @@ public class CommandDateUtil {
         byte[] All = DataUtils.byteMergerAll(b1, temp, b5, b7);
         return sendDate(All);
     }
-    public static boolean sendDate(byte[] sendBytes){
-        resCommend=null;
-        MyApplication.getInstance().mSerialPortManager.sendBytes(sendBytes);
-        MyApplication.getInstance().mSerialPortManager.setOnSerialPortDataListener(new OnSerialPortDataListener() {
-            @Override
-            public void onDataReceived(byte[] bytes) {
-                resCommend = bytes;
-            }
-
-            @Override
-            public void onDataSent(byte[] bytes) {
-            }
-        });
+    public static boolean sendDate(byte[] data){
+        byte[] res; //通讯体
+        //发送数据
+        LogPlus.i(TAG, "data: *****  " + ByteArrToHex(data) + "   ********");
         for (int i = 0; i < num_redo; i++) {
-            SystemClock.sleep(1000);
-            if(resCommend!=null){
-                if (DataUtils.isDataOk(resCommend)) {
+            res = SerialPortUtil.sendSerialPort(data);
+            if (res != null) {
+                if (isDataOk(res)) {
 
-                    Log.i(TAG, "the process is ok");
+                    LogPlus.i(TAG, "the process is ok");
                     return true;
                 }
             }
-
         }
-
+        LogPlus.d(TAG, "the process is error");
         return false;
     }
 
@@ -85,34 +71,31 @@ public class CommandDateUtil {
         byte[] All = DataUtils.byteMergerAll(b1, temp, b5, b7);
         return sendQueryDate(All);
     }
-    public static byte[] sendQueryDate(byte[] sendBytes){
-        resQuery=null;
-        MyApplication.getInstance().mSerialPortManager.sendBytes(sendBytes);
-        MyApplication.getInstance().mSerialPortManager.setOnSerialPortDataListener(new OnSerialPortDataListener() {
-            @Override
-            public void onDataReceived(byte[] bytes) {
-                resQuery = bytes;
+    public static byte[] sendQueryDate(byte[] data){
+        byte[] res; //通讯体
+        //发送数据
+        LogPlus.i(TAG, "data: *****  " + ByteArrToHex(data) + "   ********");
+        for (int i = 0; i < num_redo; i++) {
+            res = SerialPortUtil.sendSerialPort(data);
+            if (res != null) {
+                LogPlus.e(TAG, "the process is ok");
+                return res;
             }
-
-            @Override
-            public void onDataSent(byte[] bytes) {
-            }
-        });
-        return resQuery;
+        }
+        LogPlus.e(TAG, "the process is error");
+        return null;
     }
     /**
      * 发送数据通讯
      * @param commend
      */
-    public static boolean SendDataCommand(byte commend,byte[] body){
+    public static byte[] SendDataCommand(byte commend,byte[] body){
         byte[] b2 = {ControlParam.head_data};
         byte[] b3 = {commend};
         byte[] temp = DataUtils.byteMergerAll(b2, b3, body);
         byte[] b5 = DataUtils.HexToByteArr(DataUtils.crc16(temp));
         byte[] All = DataUtils.byteMergerAll(b1, temp, b5, b7);
-
-
-        return MyApplication.getInstance().mSerialPortManager.sendBytes(All);
+        return sendQueryDate(All);
     }
 
 

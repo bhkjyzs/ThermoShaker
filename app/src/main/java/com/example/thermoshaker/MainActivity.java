@@ -1,9 +1,13 @@
 package com.example.thermoshaker;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +15,7 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.hardware.usb.UsbDevice;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -20,11 +25,13 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.example.thermoshaker.base.BaseActivity;
+import com.example.thermoshaker.base.Content;
 import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.ProgramInfo;
 import com.example.thermoshaker.serial.DataUtils;
@@ -34,8 +41,12 @@ import com.example.thermoshaker.ui.run.RunActivity;
 import com.example.thermoshaker.ui.setting.SettingActivity;
 import com.example.thermoshaker.util.LanguageUtil;
 import com.example.thermoshaker.util.ToastUtil;
+import com.example.thermoshaker.util.Utils;
 import com.example.thermoshaker.util.dialog.base.CustomkeyDialog;
-import com.kongqw.serialportlibrary.listener.OnSerialPortDataListener;
+import com.example.thermoshaker.util.usb.USBBroadCastReceiver;
+import com.example.thermoshaker.util.usb.UsbHelper;
+import com.hjq.permissions.Permission;
+import com.hjq.permissions.XXPermissions;
 import com.licheedev.myutils.LogPlus;
 
 import org.jetbrains.annotations.NotNull;
@@ -63,6 +74,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         return instance;
     }
 
+
+
+
     private Handler handler =  new Handler(Looper.myLooper()){
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -88,7 +102,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void initView() {
         instance = this;
-
         // 隐藏状态栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //        /* 横屏或竖屏 */
@@ -99,10 +112,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         switchLauncher(this, componentName);
 //         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         initGetView();
-
+        PersMiss();
+//        Utils.usbWrite();
+        initUsb();
+        usbWrite();
 //     Utils.startDeskLaunch();
 
     }
+
+    private void PersMiss() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            //未授权，提起权限申请
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS}, 100);
+            return;
+        }
+    }
+
+
 
     @Override
     protected void onResume() {
@@ -237,7 +265,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         tv_time.setText(simpleDateFormat.format(date));
         SimpleDateFormat simpleDateFormatDate = new SimpleDateFormat("yyyy/MM/dd EEEE",temp);// HH:mm:ss
         tv_date.setText(simpleDateFormatDate.format(date));
-
+//        tv_time.setVisibility(View.GONE);
     }
 
     private void switchLauncher(Context context, ComponentName activity) {
@@ -299,7 +327,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if(handler!=null){
             handler.removeCallbacks(null);
         }
-        MyApplication.getInstance().CloseSerialPort();
+
+
     }
 
 
@@ -324,4 +353,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         }
     }
+
+
+
+
+
+
+
+
+
 }

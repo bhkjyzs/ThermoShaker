@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 public class DataUtil {
     public static final String data_path = Environment.getExternalStorageDirectory().toString() + "/thermoshaker/";
     public static final String data_name = "UserFiles/";
+    public static final String apk_data_name = "updateApks.apk";
 
 
     public static boolean writeData(String data, String file_path, String file_name, boolean append) {

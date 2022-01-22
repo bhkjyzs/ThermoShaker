@@ -291,7 +291,7 @@
     </TextView>
     <Button
         android:id="@+id/Btn_SetSpeed"
-        android:text="2500 RPM"
+        android:text="1000 RPM"
         android:textSize="@dimen/sp_30"
         app:layout_constraintLeft_toRightOf="@+id/tv_btm_speed"
         app:layout_constraintBottom_toBottomOf="@+id/tv_btm_speed"

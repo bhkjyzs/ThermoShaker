@@ -24,7 +24,6 @@ import com.example.thermoshaker.ui.adapter.RVStepListAdapter;
 import com.example.thermoshaker.ui.file.FileActivity;
 import com.example.thermoshaker.util.dialog.TipsDialog;
 import com.example.thermoshaker.util.key.Util;
-import com.kongqw.serialportlibrary.listener.OnSerialPortDataListener;
 import com.licheedev.myutils.LogPlus;
 
 public class RunActivity extends BaseActivity implements View.OnClickListener {

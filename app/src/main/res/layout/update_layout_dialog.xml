@@ -33,7 +33,27 @@
             tools:ignore="MissingConstraints">
 
         </TextView>
+        <ProgressBar
 
+            android:layout_width="match_parent"
+            android:max="100"
+            android:progress="0"
+            android:secondaryProgress="100"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="@dimen/dip_20"
+            android:layout_marginRight="@dimen/dip_20"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressDrawable="@drawable/progressbar_color"
+            android:id="@+id/pB_Level_up"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/dip_20"
+            app:layout_constraintTop_toBottomOf="@+id/tv_msg"
+            android:layout_height="@dimen/dip_12"
+            android:background="@drawable/progressbar_color"
+            tools:ignore="MissingConstraints">
+
+        </ProgressBar>
         <Button
             android:id="@+id/btn_sure"
             android:text="@string/sure"

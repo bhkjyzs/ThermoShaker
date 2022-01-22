@@ -1,6 +1,8 @@
 package com.example.thermoshaker.model;
 
-public class FileRunProgram {
+import java.io.Serializable;
+
+public class FileRunProgram implements Serializable {
 
     private int CURRunStep;//当前步骤
     private int ALLRunStepNum;//总步骤
