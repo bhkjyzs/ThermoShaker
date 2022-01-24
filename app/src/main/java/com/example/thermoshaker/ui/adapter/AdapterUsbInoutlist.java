@@ -13,27 +13,28 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.model.ProgramInfo;
+import com.github.mjdev.libaums.fs.UsbFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterInout extends BaseQuickAdapter<ProgramInfo, BaseViewHolder> {
+public class AdapterUsbInoutlist extends BaseQuickAdapter<UsbFile, BaseViewHolder> {
     private List<String> positionList = new ArrayList<>();
 
-    public AdapterInout(int layoutResId) {
+    public AdapterUsbInoutlist(int layoutResId) {
         super(layoutResId);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    protected void convert(@NonNull BaseViewHolder baseViewHolder, ProgramInfo programInfo) {
+    protected void convert(@NonNull BaseViewHolder baseViewHolder, UsbFile usbFile) {
 
         LinearLayout view = baseViewHolder.getView(R.id.mll);
         TextView num = baseViewHolder.getView(R.id.item_inout_number);
         num.setText(baseViewHolder.getAdapterPosition()+1+"");
 
         TextView name = baseViewHolder.getView(R.id.item_inout_name);
-        name.setText(programInfo.getFileName()+"");
+        name.setText(usbFile.getName()+"");
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

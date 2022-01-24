@@ -70,6 +70,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private static MainActivity instance;
 
+    private static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
+
     public static MainActivity getInstance() {
         return instance;
     }
@@ -120,6 +122,49 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
+    public void initUsb() {
+
+        if (XXPermissions.isHasPermission(this, Permission.Group.STORAGE)) {
+
+        }
+
+        //绑定广播
+        PendingIntent mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
+        IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
+        //注册接收广播
+        registerReceiver(mUsbReceiver, filter);
+
+        usbHelper  = new UsbHelper(this, new USBBroadCastReceiver.UsbListener() {
+            @Override
+            public void insertUsb(UsbDevice device_add) {
+                Log.d(TAG,device_add.toString()+"     device_add");
+                Content.usb_state = Intent.ACTION_MEDIA_MOUNTED;
+                ToastUtil.show(MainActivity.this,getString(R.string.mounting_u_disk));
+
+            }
+
+            @Override
+            public void removeUsb(UsbDevice device_remove) {
+                Log.d(TAG,device_remove.toString()+"     device_remove");
+                Content.usb_state = Intent.ACTION_MEDIA_EJECT;
+                ToastUtil.show(MainActivity.this,getString(R.string.removed_u_disk));
+
+            }
+
+            @Override
+            public void getReadUsbPermission(UsbDevice usbDevice) {
+                Log.d(TAG,usbDevice.toString()+"     getReadUsbPermission");
+                Content.usb_state = Intent.ACTION_MEDIA_MOUNTED;
+//                ToastUtil.show(BaseActivity.this,getString(R.string.mounting_u_disk));
+            }
+
+            @Override
+            public void failedReadUsb(UsbDevice usbDevice) {
+                Log.d(TAG,usbDevice.toString()+"    failedReadUsb");
+
+            }
+        });
+    }
     private void PersMiss() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -130,6 +175,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    private BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action == null) {
+                return;
+            }
+            switch (action) {
+                case ACTION_USB_PERMISSION:
+                    Log.d(TAG, "onReceive: 接收到广播");
+                    break;
+            }
+        }
+    };
 
 
     @Override
@@ -327,7 +386,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if(handler!=null){
             handler.removeCallbacks(null);
         }
-
+        if(mUsbReceiver!=null){
+            unregisterReceiver(mUsbReceiver);
+        }
 
     }
 

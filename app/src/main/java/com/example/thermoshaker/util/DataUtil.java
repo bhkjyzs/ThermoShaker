@@ -10,7 +10,10 @@ import java.io.FileOutputStream;
 public class DataUtil {
     public static final String data_path = Environment.getExternalStorageDirectory().toString() + "/thermoshaker/";
     public static final String data_name = "UserFiles/";
+    //软件升级文件名
     public static final String apk_data_name = "updateApks.apk";
+    //固件升级文件名
+    public static final String firmware_data_name = "updateApks";
 
 
     public static boolean writeData(String data, String file_path, String file_name, boolean append) {
@@ -18,14 +21,12 @@ public class DataUtil {
         try {
             // 判断当前的手机是否有sd卡
             String state = Environment.getExternalStorageState();
-
             if (!Environment.MEDIA_MOUNTED.equals(state)) {
                 // 已经挂载了sd卡
                 return false;
             }
             File file = makeFilePath(file_path, file_name);
             FileOutputStream fos = new FileOutputStream(file, append);
-
             fos.write(data.getBytes());
             fos.flush();
             fos.close();

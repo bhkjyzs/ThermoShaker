@@ -153,5 +153,7 @@
     <string name="loadingupdate">Loading file……</string>
     <string name="loading_update_success">Loading complete</string>
     <string name="loading_update_fail">Loading failed</string>
+    <string name="Transmitting">Transmitting……</string>
+    <string name="Transmissioncomplete">Transmission Complete</string>
 
 </resources>

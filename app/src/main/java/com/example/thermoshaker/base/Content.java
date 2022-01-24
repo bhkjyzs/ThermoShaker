@@ -15,7 +15,6 @@ public class Content {
 
     public static String usb_state = Intent.ACTION_MEDIA_EJECT; //usb挂载状态
     public static String usb_path = ""; //usb挂载地址
-    public static FileSystem currentFs;//挂载的U盘
 
     //设备是否正常通信
     public static boolean isCommunication = false;

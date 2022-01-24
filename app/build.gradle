@@ -11,7 +11,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
-        versionName "TDM_100_1.0.1.22.1.22"
+        versionName "TDM_100_1.0.1.22.1.24"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         ndk {

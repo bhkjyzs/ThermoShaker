@@ -31,7 +31,7 @@
             android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/tv_title"
             android:layout_marginTop="@dimen/dip_12"
-            android:textSize="@dimen/sp_20"
+            android:textSize="@dimen/sp_25"
             app:layout_constraintLeft_toLeftOf="@+id/cl_local"
             app:layout_constraintRight_toRightOf="@+id/cl_local"
 
@@ -45,7 +45,7 @@
             android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/tv_title"
             android:layout_marginTop="@dimen/dip_12"
-            android:textSize="@dimen/sp_20"
+            android:textSize="@dimen/sp_25"
             app:layout_constraintLeft_toLeftOf="@+id/cl_usb"
             app:layout_constraintRight_toRightOf="@+id/cl_usb"
 

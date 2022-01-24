@@ -154,5 +154,7 @@
     <string name="loadingupdate">正在加载文件……</string>
     <string name="loading_update_success">加载完毕</string>
     <string name="loading_update_fail">加载失败</string>
+    <string name="Transmitting">正在传输……</string>
+    <string name="Transmissioncomplete">传输完成</string>
 
 </resources>

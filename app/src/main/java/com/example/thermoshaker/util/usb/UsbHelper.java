@@ -1,6 +1,7 @@
 package com.example.thermoshaker.util.usb;
 
 
+import static com.example.thermoshaker.base.BaseActivity.currentFs;
 import static com.example.thermoshaker.util.usb.USBBroadCastReceiver.ACTION_USB_PERMISSION;
 
 import android.app.PendingIntent;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbManager;
+import android.util.Log;
 
 import com.github.mjdev.libaums.UsbMassStorageDevice;
 import com.github.mjdev.libaums.fs.FileSystem;
@@ -131,34 +133,47 @@ public class UsbHelper {
      * 复制文件到 USB
      *
      * @param targetFile       需要复制的文件
-     * @param saveFolder       复制的目标文件夹
+     * @param
      * @param progressListener 下载进度回调
      * @return 复制结果
      */
-    public boolean saveSDFileToUsb(File targetFile, UsbFile saveFolder, DownloadProgressListener progressListener) {
+    public boolean saveSDFileToUsb(File targetFile,FileSystem currentFs, DownloadProgressListener progressListener) {
         boolean result;
         try {
-            //USB文件是否存在
-            boolean isExist = false;
-            UsbFile saveFile = null;
-            for (UsbFile usbFile : saveFolder.listFiles()) {
-                if (usbFile.getName().equals(targetFile.getName())) {
-                    isExist = true;
-                    saveFile = usbFile;
-                }
+
+            UsbFile targetFileName = currentFs.getRootDirectory().search(targetFile.getName());
+            if (targetFileName == null) {
+                Log.d(TAG, "targetFileName: targetFileName为空");
+            } else {
+                Log.d(TAG, "targetFileName: targetFileName不为空");
+//                deleteFile(foo1);
             }
-            if (isExist) {
-                //文件已存在，删除文件
-                saveFile.delete();
-            }
-            //创建新文件
-            saveFile = saveFolder.createFile(targetFile.getName());
+            UsbFile file = currentFs.getRootDirectory().createFile(targetFile.getName());
+
+
+
+
+//            //USB文件是否存在
+//            boolean isExist = false;
+//            UsbFile saveFile = null;
+//            for (UsbFile usbFile : saveFolder.listFiles()) {
+//                if (usbFile.getName().equals(targetFile.getName())) {
+//                    isExist = true;
+//                    saveFile = usbFile;
+//                }
+//            }
+//            if (isExist) {
+//                //文件已存在，删除文件
+//                saveFile.delete();
+//            }
+//            //创建新文件
+//            saveFile = saveFolder.createFile(targetFile.getName());
             //开始写入
             FileInputStream fis = new FileInputStream(targetFile);//读取选择的文件的
             int avi = fis.available();
-            UsbFileOutputStream uos = new UsbFileOutputStream(saveFile);
+            UsbFileOutputStream uos = new UsbFileOutputStream(file);
             int bytesRead;
-            byte[] buffer = new byte[1024 * 8];
+            byte[] buffer = new byte[currentFs.getChunkSize()];
             int writeCount = 0;
             while ((bytesRead = fis.read(buffer)) != -1) {
                 uos.write(buffer, 0, bytesRead);

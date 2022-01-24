@@ -66,6 +66,7 @@
             android:background="@drawable/check_select"
             android:layout_width="@dimen/dip_33"
             android:checked="true"
+            android:enabled="false"
             android:layout_height="@dimen/dip_33"
             android:layout_marginLeft="@dimen/dip_20"
             tools:ignore="MissingConstraints">

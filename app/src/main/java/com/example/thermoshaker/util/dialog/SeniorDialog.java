@@ -196,6 +196,28 @@ public class SeniorDialog {
         RVListSeniorDicAdapter rvListSeniorAdapterDirection = new  RVListSeniorDicAdapter(R.layout.senior_set_layout_list_item);
         rvListSeniorAdapterDirection.setList(listDirection);
         rv_directionlist.setAdapter(rvListSeniorAdapterDirection);
+        switch (programStep.getDirection()){
+            case Forward:
+                directionPostion =0;
+                break;
+            case Reversal:
+                directionPostion =1;
+                break;
+            case ForwardAndReverse:
+                directionPostion =2;
+                break;
+
+        }
+        rvListSeniorAdapterDirection.notifyDataSetChanged();
+        if(programStep.getMixingMode()==0){
+            cb_continuity.setChecked(true);
+            cb_intermission.setChecked(false);
+        }else {
+            cb_continuity.setChecked(false);
+            cb_intermission.setChecked(true);
+        }
+
+
         rvListSeniorAdapterDirection.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
@@ -237,6 +259,7 @@ public class SeniorDialog {
 
             }
         });
+        tvConTime.setText(MyApplication.getInstance().dateFormat.format(programStep.getContinued())+"");
         tvConTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -258,6 +281,8 @@ public class SeniorDialog {
 
             }
         });
+        tvintTime.setText(MyApplication.getInstance().dateFormat.format(programStep.getIntermission())+"");
+
         tvintTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

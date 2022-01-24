@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="@dimen/dip_300"
     android:id="@+id/mll"
+    android:layout_margin="@dimen/dip_5"
     android:layout_height="@dimen/dip_50">
 
 
@@ -11,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/sp_18"
-        android:textSize="@dimen/sp_18"
+        android:textSize="@dimen/sp_20"
         android:text="序号"
         android:gravity="center"/>
     <TextView
@@ -19,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/dip_30"
-        android:textSize="@dimen/sp_18"
+        android:textSize="@dimen/sp_20"
         android:text="程序名"
         android:gravity="center"/>
 
