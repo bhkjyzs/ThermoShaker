@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:keyboard="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
-    android:focusable="true"
     xmlns:tl="http://schemas.android.com/apk/res-auto"
-    android:focusableInTouchMode="true"
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
@@ -20,7 +18,7 @@
 
         <TextView
             android:background="@color/app_bg"
-            android:text="@string/debug_mode"
+            android:text="@string/factory_mode"
             android:gravity="center"
             android:textSize="@dimen/sp_25"
             android:textColor="@color/white"
@@ -82,8 +80,20 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+    <com.example.thermoshaker.util.key.FloatingKeyboard
+        android:id="@+id/keyboardview"
+        android:layout_width="750dp"
+        android:layout_height="320dp"
+        android:background="@android:color/transparent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:keyTextColor="@color/white"
+        android:keyBackground="@drawable/bio_keyboard_click"
+
+        android:visibility="gone"
+        tools:ignore="MissingConstraints" />
 
 
 
 
-</LinearLayout>
+</RelativeLayout>

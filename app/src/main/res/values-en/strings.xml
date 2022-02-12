@@ -5,13 +5,20 @@
     <string name="file">file</string>
     <string name="setting">set up</string>
     <string name="showfast">Show</string>
-
+    <string name="bio_hh">h</string>
+    <string name="bio_mm">m</string>
     <string name="run">run</string>
     <string name="Fast">Fast</string>
     <string name="Runsettings">Run settings</string>
     <!--对话框 声音设置-->
-    <string name="dialog_voice_1">Alertor Voice</string>
-    <string name="dialog_voice_2">Program Finish Voice</string>
+    <string name="dialog_voice_1">Key prompt tone</string>
+    <string name="dialog_voice_2">Alarm tone</string>
+
+    <string name="dialog_voice_3">Program Finish Voice</string>
+    <string name="dialog_voice_4">Temperature reaching sound</string>
+    <string name="dialog_hardup_running">Running...</string>
+    <string name="dialog_hardup_stop">Finish</string>
+    <string name="dialog_hardup_fail">Failed</string>
     <string name="inching">inching</string>
     <string name="addfile">add</string>
     <string name="edit">edit</string>
@@ -66,6 +73,8 @@
     <string name="setting_factory">Factory</string>
     <string name="senior_setting">Senior Setting</string>
     <string name="debug_mode">Debug mode</string>
+    <string name="factory_mode">Factory mode</string>
+
     <string name="debugmodule">Debug module</string>
     <string name="Temperaturecorrection">Temperature correction</string>
     <string name="Localcorrelation">Local correlation</string>
@@ -147,6 +156,8 @@
     <string name="debug_fan">Fan:</string>
     <string name="Motor">Motor:</string>
     <string name="led">led:</string>
+    <string name="Lid">Lid:</string>
+
     <string name="softer_version">Software Version:</string>
     <string name="recovery">Restore factory settings</string>
     <string name="dialog_info_communication_failed" translatable="true">The device cannot communicate normally</string>
@@ -155,5 +166,106 @@
     <string name="loading_update_fail">Loading failed</string>
     <string name="Transmitting">Transmitting……</string>
     <string name="Transmissioncomplete">Transmission Complete</string>
+    <string name="writein">write in</string>
+    <string name="run_state_stop">Stop</string>
+    <string name="run_state_run">Running</string>
+    <string name="run_state_pause">Pause</string>
+    <string name="run_state_incubate">Incubating</string>
+    <string name="run_state_warmup">Warm up</string>
+
+    <!-- 错误 -->
+    <string name="err_SEC_UNKNOWN">Unknown errors in equipment</string>
+    <string name="err_SEC_MODSOR1OPEN">Block sensor 1 open</string>
+    <string name="err_SEC_MODSOR1SHORT">Block sensor 1 short</string>
+    <string name="err_SEC_MODSOR2OPEN">Block sensor 2 open</string>
+    <string name="err_SEC_MODSOR2SHORT">Block sensor 2 short</string>
+    <string name="err_SEC_MODSOR3OPEN">Block sensor 3 open</string>
+    <string name="err_SEC_MODSOR3SHORT">Block sensor 3 short</string>
+    <string name="err_SEC_MODSOR4OPEN">Block sensor 4 open</string>
+    <string name="err_SEC_MODSOR4SHORT">Block sensor 4 short</string>
+    <string name="err_SEC_MODSOR5OPEN">Block sensor 5 open</string>
+    <string name="err_SEC_MODSOR5SHORT">Block sensor 5 short</string>
+    <string name="err_SEC_MODSOR6OPEN">Block sensor 6 open</string>
+    <string name="err_SEC_MODSOR6SHORT">Block sensor 6 short</string>
+    <string name="err_SEC_LIDSORAOPEN">Lid A sensor open</string>
+    <string name="err_SEC_LIDSORASHORT">Lid A sensor short</string>
+    <string name="err_SEC_LIDSORBOPEN">Lid B sensor open</string>
+    <string name="err_SEC_LIDSORBSHORT">Lid B sensor short</string>
+    <string name="err_SEC_LIDSORCOPEN">Lid C sensor open</string>
+    <string name="err_SEC_LIDSORCSHORT">Lid C sensor short</string>
+    <string name="err_SEC_RADSORAOPEN">Rad A sensor open</string>
+    <string name="err_SEC_RADSORASHORT">Rad A sensor short</string>
+    <string name="err_SEC_RADSORBOPEN">Rad B sensor open</string>
+    <string name="err_SEC_RADSORBSHORT">Rad B sensor short</string>
+    <string name="err_SEC_RADSORCOPEN">Rad C sensor open</string>
+    <string name="err_SEC_RADSORCSHORT">Rad C sensor short</string>
+    <string name="err_SEC_INSIDESOROPEN">Inside sensor open</string>
+    <string name="err_SEC_INSIDESORSHORT">Inside sensor short</string>
+    <string name="err_SEC_INSIDESORERROR">Inside sensor Failure</string>
+    <string name="err_SEC_MOD1TOOHEAT">Block 1 Temp too heat</string>
+    <string name="err_SEC_MOD1TOOCOOL">Block 1 Temp too cool</string>
+    <string name="err_SEC_MOD2TOOHEAT">Block 2 Temp too heat</string>
+    <string name="err_SEC_MOD2TOOCOOL">Block 2 Temp too cool</string>
+    <string name="err_SEC_MOD3TOOHEAT">Block 3 Temp too heat</string>
+    <string name="err_SEC_MOD3TOOCOOL">Block 3 Temp too cool</string>
+    <string name="err_SEC_MOD4TOOHEAT">Block 4 Temp too heat</string>
+    <string name="err_SEC_MOD4TOOCOOL">Block 4 Temp too cool</string>
+    <string name="err_SEC_MOD5TOOHEAT">Block 5 Temp too heat</string>
+    <string name="err_SEC_MOD5TOOCOOL">Block 5 Temp too cool</string>
+    <string name="err_SEC_MOD6TOOHEAT">Block 6 Temp too heat</string>
+    <string name="err_SEC_MOD6TOOCOOL">Block 6 Temp too cool</string>
+    <string name="err_SEC_LIDATOOHEAT">Lid A Temp too heat</string>
+    <string name="err_SEC_LIDATOOCOOL">Lid A Temp too cool</string>
+    <string name="err_SEC_LIDSORAERROR">Lid A Temp too Failure</string>
+    <string name="err_SEC_LIDBTOOHEAT">Lid B Temp too heat</string>
+    <string name="err_SEC_LIDBTOOCOOL">Lid B Temp too cool</string>
+    <string name="err_SEC_LIDSORBERROR">Lid B Temp too Failure</string>
+    <string name="err_SEC_LIDCTOOHEAT">Lid C Temp too heat</string>
+    <string name="err_SEC_LIDCTOOCOOL">Lid C Temp too cool</string>
+    <string name="err_SEC_LIDSORCERROR">Lid C Temp too Failure</string>
+    <string name="err_SEC_RADATOOHEAT">Cooling fin 1 over temperature</string>
+    <string name="err_SEC_RADATOOCOOL">Cooling fin 1 temperature too low</string>
+    <string name="err_SEC_RADSORAERROE">Cooling fin 1 temperature Failure</string>
+    <string name="err_SEC_RADBTOOHEAT">Cooling fin 2 over temperature</string>
+    <string name="err_SEC_RADBTOOCOOL">Cooling fin 2 temperature too low</string>
+    <string name="err_SEC_RADSORBERROE">Cooling fin 2 temperature Failure</string>
+    <string name="err_SEC_RADCTOOHEAT">Cooling fin 3 over temperature</string>
+    <string name="err_SEC_RADCTOOCOOL">Cooling fin 3 temperature too low</string>
+    <string name="err_SEC_RADSORCERROE">Cooling fin 3 temperature Failure</string>
+    <string name="err_SEC_MOD1HEATERR">Block 1 Heating Failure</string>
+    <string name="err_SEC_MOD1COOLERR">Block 1 Cooling Failure</string>
+    <string name="err_SEC_MOD2HEATERR">Block 2 Heating Failure</string>
+    <string name="err_SEC_MOD2COOLERR">Block 2 Cooling Failure</string>
+    <string name="err_SEC_MOD3HEATERR">Block 3 Heating Failure</string>
+    <string name="err_SEC_MOD3COOLERR">Block 3 Cooling Failure</string>
+    <string name="err_SEC_MOD4HEATERR">Block 4 Heating Failure</string>
+    <string name="err_SEC_MOD4COOLERR">Block 4 Cooling Failure</string>
+    <string name="err_SEC_MOD5HEATERR">Block 5 Heating Failure</string>
+    <string name="err_SEC_MOD5COOLERR">Block 5 Cooling Failure</string>
+    <string name="err_SEC_MOD6HEATERR">Block 6 Heating Failure</string>
+    <string name="err_SEC_MOD6COOLERR">Block 6 Cooling Failure</string>
+    <string name="err_SEC_LIDAERRHEAT">Lid A Heating Failure</string>
+    <string name="err_SEC_LIDAERRCOOL">Lid A Cooling Failure</string>
+    <string name="err_SEC_LIDBERRHEAT">Lid B Heating Failure</string>
+    <string name="err_SEC_LIDBERRCOOL">Lid B Cooling Failure</string>
+    <string name="err_SEC_LIDCERRHEAT">Lid C Heating Failure</string>
+    <string name="err_SEC_LIDCERRCOOL">Lid C Cooling Failure</string>
+    <string name="err_SEC_RADAERRHEAT">Rad A Heating Failure</string>
+    <string name="err_SEC_RADAERRCOOL">Rad A Cooling Failure</string>
+    <string name="err_SEC_RADBERRHEAT">Rad B Heating Failure</string>
+    <string name="err_SEC_RADBERRCOOL">Rad B Heating Failure</string>
+    <string name="err_SEC_RADCERRHEAT">Rad C Heating Failure</string>
+    <string name="err_SEC_RADCERRCOOL">Rad C Heating Failure</string>
+    <string name="err_SEC_LIDAHEATERR">Lid A Can not heat</string>
+    <string name="err_SEC_LIDACTRLERR">Lid A Work uncontrollably all the time</string>
+    <string name="err_SEC_LIDBHEATERR">Lid B Can not heat</string>
+    <string name="err_SEC_LIDBCTRLERR">Lid B Work uncontrollably all the time</string>
+    <string name="err_SEC_LIDCHEATERR">Lid C Can not heat</string>
+    <string name="err_SEC_LIDCCTRLERR">Lid C Work uncontrollably all the time</string>
+    <string name="err_SEC_FANNOTWORK">Fans do not work or ducts are blocked</string>
+    <string name="err_SEC_FANCTRLERR">Fans Work uncontrollably all the time </string>
+    <string name="err_SEC_CONTROLTOOHEAT">Motherboard temperature is too high</string>
+    <string name="err_SEC_MODEMPTY">Module not placed</string>
+
 
 </resources>

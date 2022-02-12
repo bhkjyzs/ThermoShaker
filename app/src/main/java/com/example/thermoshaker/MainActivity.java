@@ -23,10 +23,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
@@ -35,13 +37,21 @@ import com.example.thermoshaker.base.Content;
 import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.ProgramInfo;
 import com.example.thermoshaker.serial.DataUtils;
+import com.example.thermoshaker.serial.uart.UartClass;
+import com.example.thermoshaker.serial.uart.UartServer;
+import com.example.thermoshaker.serial.uart.UartType;
+import com.example.thermoshaker.serial.uart.running.TdfileRunType;
 import com.example.thermoshaker.ui.fast.FastActivity;
 import com.example.thermoshaker.ui.file.FileActivity;
 import com.example.thermoshaker.ui.run.RunActivity;
 import com.example.thermoshaker.ui.setting.SettingActivity;
+import com.example.thermoshaker.util.BroadcastManager;
+import com.example.thermoshaker.util.DataUtil;
 import com.example.thermoshaker.util.LanguageUtil;
 import com.example.thermoshaker.util.ToastUtil;
 import com.example.thermoshaker.util.Utils;
+import com.example.thermoshaker.util.dialog.DebugDialog;
+import com.example.thermoshaker.util.dialog.base.CustomKeyEditDialog;
 import com.example.thermoshaker.util.dialog.base.CustomkeyDialog;
 import com.example.thermoshaker.util.usb.USBBroadCastReceiver;
 import com.example.thermoshaker.util.usb.UsbHelper;
@@ -60,35 +70,81 @@ import java.util.Locale;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "MainActivity";
-    private int update_system_time=1;
-    private int update_system=1000;
+    public final static String MSG = MainActivity.class.getName();
+
+    private int update_system_time = 1;
+    private int update_system = 1000;
     private int ChooseFilePos = -1;
 
 
-    private LinearLayout ll_file,ll_setting,ll_run,ll_fast;
-    private TextView tv_date,tv_time,tv_file,tv_setting,tv_running,tv_inching;
+    private LinearLayout ll_file, ll_setting, ll_run, ll_fast;
+    private TextView tv_date, tv_time, tv_file, tv_setting, tv_running, tv_inching;
 
     private static MainActivity instance;
 
     private static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
 
+    private final int msgUart = 2;// 动画的消息号
+    private final int msgUartDelayed = 2000;
+    private int errorDispTime = 10 * 1000 / msgUartDelayed; // 错误报警时间
+    private Intent intentUart; // 给定时器查询运行数据
+
+    private Button dialog_factory_no_msg;
+    private LinearLayout mll_haveMsg;
+    private TextView tv_con_msg;
     public static MainActivity getInstance() {
         return instance;
     }
 
 
-
-
-    private Handler handler =  new Handler(Looper.myLooper()){
+    private Handler handler = new Handler(Looper.myLooper()) {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            MyApplication app = MyApplication.getInstance();
+
+            switch (msg.what) {
                 case 1:
                     updateSystemTime();
-                    handler.sendEmptyMessageDelayed(update_system_time,update_system);
+                    handler.sendEmptyMessageDelayed(update_system_time, update_system);
                     break;
+                case msgUart:
+                    try {
+                        /* 如果没有运行,则两秒发送取运行数据 */
+                        if (app.isRunWork == false) {
+                            sendBroadcast(intentUart);
+                            /* 报警信息,间隔十秒 */
+                            if (errorDispTime < 1) {
+                                if (app.appClass.isUartReady() == false) {
+//                                    dialog_factory_no_msg.setVisibility(View.VISIBLE);
+//                                    mll_haveMsg.setVisibility(View.GONE);
+//                                    tv_con_msg.setVisibility(View.VISIBLE);
+                                    errorDispTime = 10 * 1000 / msgUartDelayed;
+//                                    BroadcastManager.getInstance(MyApplication.getInstance()).sendBroadcast(ERROR_ACTION,getString(R.string.dialog_info_communication_failed)+"");
 
+                                } else {
+//                                    dialog_factory_no_msg.setVisibility(View.GONE);
+//                                    mll_haveMsg.setVisibility(View.VISIBLE);
+//                                    tv_con_msg.setVisibility(View.GONE);
+
+                                    String str = app.runningClass.getSystemErrCodeStr();
+                                    if (!str.equals("")) {
+                                        errorDispTime = 10 * 1000 / msgUartDelayed;
+                                        BroadcastManager.getInstance(MyApplication.getInstance()).sendBroadcast(ERROR_ACTION,str+"");
+
+                                    }
+                                }
+                            } else {
+                                errorDispTime--;
+                            }
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    handler.sendEmptyMessageDelayed(msgUart, msgUartDelayed);
+                    break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + msg.what);
             }
@@ -116,10 +172,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initGetView();
         PersMiss();
 //        Utils.usbWrite();
+        openLoopQuery();
         initUsb();
         usbWrite();
 //     Utils.startDeskLaunch();
 
+    }
+
+    private void openLoopQuery() {
+        /* 注册广播 */
+        registerReceiver(recevier, new IntentFilter(MSG));
+        /* 用于循环查询 */
+        intentUart = new Intent(UartServer.MSG);
+        intentUart.putExtra("serialport", new UartClass(MSG, UartType.ASK_RUNDATA_BYTE));
+        handler.sendEmptyMessageDelayed(msgUart, msgUartDelayed);
+        //系统参数，开机查询一次
+        Intent intentSystem = new Intent(UartServer.MSG);
+        intentSystem.putExtra("serialport", new UartClass(MSG, UartType.ASK_SYSTEM_BYTE));
+        sendBroadcast(intentSystem);
+        //温度参数，开机查询一次
+        Intent intent2 = new Intent(UartServer.MSG);
+        intent2.putExtra("serialport", new UartClass(MSG, UartType.ASK_TEMPADJ_BYTE));
+        sendBroadcast(intent2);
     }
 
     public void initUsb() {
@@ -134,43 +208,44 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         //注册接收广播
         registerReceiver(mUsbReceiver, filter);
 
-        usbHelper  = new UsbHelper(this, new USBBroadCastReceiver.UsbListener() {
+        usbHelper = new UsbHelper(this, new USBBroadCastReceiver.UsbListener() {
             @Override
             public void insertUsb(UsbDevice device_add) {
-                Log.d(TAG,device_add.toString()+"     device_add");
+                Log.d(TAG, device_add.toString() + "     device_add");
                 Content.usb_state = Intent.ACTION_MEDIA_MOUNTED;
-                ToastUtil.show(MainActivity.this,getString(R.string.mounting_u_disk));
+                ToastUtil.show(MainActivity.this, getString(R.string.mounting_u_disk));
 
             }
 
             @Override
             public void removeUsb(UsbDevice device_remove) {
-                Log.d(TAG,device_remove.toString()+"     device_remove");
+                Log.d(TAG, device_remove.toString() + "     device_remove");
                 Content.usb_state = Intent.ACTION_MEDIA_EJECT;
-                ToastUtil.show(MainActivity.this,getString(R.string.removed_u_disk));
+                ToastUtil.show(MainActivity.this, getString(R.string.removed_u_disk));
 
             }
 
             @Override
             public void getReadUsbPermission(UsbDevice usbDevice) {
-                Log.d(TAG,usbDevice.toString()+"     getReadUsbPermission");
+                Log.d(TAG, usbDevice.toString() + "     getReadUsbPermission");
                 Content.usb_state = Intent.ACTION_MEDIA_MOUNTED;
 //                ToastUtil.show(BaseActivity.this,getString(R.string.mounting_u_disk));
             }
 
             @Override
             public void failedReadUsb(UsbDevice usbDevice) {
-                Log.d(TAG,usbDevice.toString()+"    failedReadUsb");
+                Log.d(TAG, usbDevice.toString() + "    failedReadUsb");
 
             }
         });
     }
+
     private void PersMiss() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             //未授权，提起权限申请
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS}, 100);
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS}, 100);
             return;
         }
     }
@@ -194,9 +269,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG,"onResume");
-
-        if(tv_date!=null){
+        Log.d(TAG, "onResume");
+        if (tv_date != null) {
             tv_file.setText(getString(R.string.file));
             tv_setting.setText(getString(R.string.setting));
             tv_running.setText(getString(R.string.run));
@@ -206,6 +280,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initGetView() {
+        tv_con_msg = findViewById(R.id.tv_con_msg);
+        mll_haveMsg = findViewById(R.id.mll_haveMsg);
+        dialog_factory_no_msg = findViewById(R.id.dialog_factory_no_msg);
         tv_inching = findViewById(R.id.tv_inching);
         tv_running = findViewById(R.id.tv_running);
         tv_setting = findViewById(R.id.tv_setting);
@@ -219,6 +296,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ll_file.setOnClickListener(this);
         ll_setting.setOnClickListener(this);
         ll_run.setOnClickListener(this);
+        dialog_factory_no_msg.setOnClickListener(this);
         ll_fast.setOnClickListener(this);
 
 
@@ -226,7 +304,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        MyApplication.getInstance().KeySound();
+        switch (v.getId()) {
+            case R.id.dialog_factory_no_msg:
+                factoryDialog();
+                break;
             case R.id.ll_file:
                 startActivity(new Intent(MainActivity.this, FileActivity.class));
                 overridePendingTransition(0, 0);
@@ -256,7 +338,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 选择运行程序
      */
     private void ChoosePrograms() {
-        ChooseFilePos=-1;
+        ChooseFilePos = -1;
         List<ProgramInfo> dataRefre = MyApplication.getInstance().getDataRefre();
 
         CustomkeyDialog customkeyDialog = new CustomkeyDialog.Builder(this)
@@ -265,22 +347,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 .build();
         customkeyDialog.show();
         RecyclerView rv_list = customkeyDialog.findViewById(R.id.rv_list);
-        rv_list.setLayoutManager(new GridLayoutManager(MainActivity.this,6));
+        rv_list.setLayoutManager(new GridLayoutManager(MainActivity.this, 6));
         RVListFileAdapter rvListFileAdapter = new RVListFileAdapter(R.layout.file_list_item);
-        View view = LayoutInflater.from(this).inflate(R.layout.empty_layout,null,false);
+        View view = LayoutInflater.from(this).inflate(R.layout.empty_layout, null, false);
         rvListFileAdapter.setEmptyView(view);
         customkeyDialog.findViewById(R.id.dialog_inout_run).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ChooseFilePos==-1){
-                    ToastUtil.show(MainActivity.this,getString(R.string.pleasechoosefile));
+                if (ChooseFilePos == -1) {
+                    ToastUtil.show(MainActivity.this, getString(R.string.pleasechoosefile));
 
                     return;
                 }
-                Intent intent = new Intent(MainActivity.this, RunActivity.class);
-                intent.putExtra("programInfo",dataRefre.get(ChooseFilePos));
-                startActivity(intent);
-                overridePendingTransition(0, 0);
+                runFile(dataRefre.get(ChooseFilePos));
+
                 customkeyDialog.dismiss();
             }
         });
@@ -303,26 +383,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         });
 
 
-
     }
 
     @Override
     protected void initDate() {
         updateSystemTime();
-        handler.sendEmptyMessageDelayed(update_system_time,update_system);
+        handler.sendEmptyMessageDelayed(update_system_time, update_system);
 
     }
-    public void updateSystemTime(){
+
+    public void updateSystemTime() {
 
         Locale temp = LanguageUtil.getLocale(this);
-        if(temp==null){
-             temp = Locale.CHINA;
+        if (temp == null) {
+            temp = Locale.CHINA;
         }
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm",temp);// HH:mm:ss
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", temp);// HH:mm:ss
         //获取当前时间
         Date date = new Date(System.currentTimeMillis());
         tv_time.setText(simpleDateFormat.format(date));
-        SimpleDateFormat simpleDateFormatDate = new SimpleDateFormat("yyyy/MM/dd EEEE",temp);// HH:mm:ss
+        SimpleDateFormat simpleDateFormatDate = new SimpleDateFormat("yyyy/MM/dd EEEE", temp);// HH:mm:ss
         tv_date.setText(simpleDateFormatDate.format(date));
 //        tv_time.setVisibility(View.GONE);
     }
@@ -383,13 +463,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(handler!=null){
+        if (handler != null) {
             handler.removeCallbacks(null);
         }
-        if(mUsbReceiver!=null){
+        if (mUsbReceiver != null) {
             unregisterReceiver(mUsbReceiver);
         }
-
+        if (recevier != null) {
+            unregisterReceiver(recevier);
+        }
     }
 
 
@@ -403,11 +485,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         @Override
         protected void convert(@NotNull BaseViewHolder baseViewHolder, ProgramInfo s) {
             LinearLayout mll_ = baseViewHolder.getView(R.id.mll_);
-            baseViewHolder.setText(R.id.tv_fileName,s.getFileName()+"");
-            if(ChooseFilePos == baseViewHolder.getAdapterPosition()){
+            baseViewHolder.setText(R.id.tv_fileName, s.getFileName() + "");
+            if (ChooseFilePos == baseViewHolder.getAdapterPosition()) {
                 mll_.setBackground(getResources().getDrawable(R.drawable.file_bg_shape_true));
 
-            }else {
+            } else {
                 mll_.setBackground(getResources().getDrawable(R.drawable.file_bg_shape));
             }
 
@@ -416,11 +498,88 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
+    /* 串口心跳包 */
+    private BroadcastReceiver recevier = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try {
+                byte[] bin = intent.getByteArrayExtra("serialport");
+                if (bin != null) {
+                    MyApplication app = MyApplication.getInstance();
+                    if (app.runningClass.analysis(bin)) {
+                        app.appClass.setUartReady(true);
+                        //做运行逻辑处理
+                        if(app.runningClass.getRunState()== TdfileRunType.RunStateEnum.START.getValue()){
+                            //正在运行
+                            switch (app.runningClass.getARunFileDefectEnum()){
+                                case FULL:
+                                    //有文件，获取本地文件，跳转到运行界面
+                                    String temp = DataUtil.readData(DataUtil.data_path + DataUtil.param_name + "temp.Naes");
+                                    ProgramInfo programInfo = JSON.parseObject(temp, ProgramInfo.class);
+                                    Intent intentRun = new Intent(MainActivity.this, RunActivity.class);
+                                    intentRun.putExtra("programInfo", programInfo);
+                                    startActivity(intentRun);
+                                    overridePendingTransition(0, 0);
+                                    app.isRunWork = true;
+                                    break;
+                                case EMPTY:
+
+                                    break;
+                            }
+                        }else {
+                            //无运行
+                        }
 
 
+                        return;
+                    }
+                    /* 系统初始化处理 */
+                    if (app.systemClass.analysis(bin)) {
+                        app.appClass.setUartReady(true);
+                        app.appClass.setMachineNumber(app.systemClass.getDeviceNum());
+                        app.appClass.setSystemInit(true);
+                        return;
+                    }
+                    /* 温度初始化处理 */
+                    if (app.adjustClass.analysis(bin)) {
+                        return;
+                    }
+
+                }
 
 
+            } catch (Exception e) {
+
+            }
 
 
+        }
+    };
+    private void factoryDialog() {
+
+        CustomKeyEditDialog customKeyEditDialog = new CustomKeyEditDialog(this);
+        customKeyEditDialog.show();
+        customKeyEditDialog.init(getString(R.string.setting_factory) + "", CustomKeyEditDialog.TYPE.Null, 0);
+        customKeyEditDialog.setOnDialogLister(new CustomKeyEditDialog.onDialogLister() {
+            @Override
+            public void onConfirm() {
+                switch (customKeyEditDialog.getOutStr()) {
+                    case "11111":
+                        Utils.startDeskLaunch();
+                        Toast.makeText(MainActivity.this, "密码正确", Toast.LENGTH_SHORT).show();
+
+                        break;
+
+                    default:
+
+                        Toast.makeText(MainActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
+
+                        break;
+                }
+
+            }
+        });
+
+    }
 
 }

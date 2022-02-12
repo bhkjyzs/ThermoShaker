@@ -16,7 +16,8 @@ public class FastActivity extends BaseActivity implements View.OnClickListener {
     private LinearLayout ll_lid;
     private TextView tv_times,tv_lidTm;
     private Button btnReturn,btnRun,Btn_SetTM,Btn_SetSpeed,Btn_SetTime;
-
+    private int run_flag=0;//0是没有运行 1 是正在运行，2是暂停
+    private boolean isRuning = false;//当前快速模式是否运行过
     @Override
     protected int getLayout() {
         return R.layout.activity_fast;
@@ -25,8 +26,6 @@ public class FastActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void initView() {
         GetViews();
-
-
     }
 
     private void GetViews() {
@@ -70,7 +69,13 @@ public class FastActivity extends BaseActivity implements View.OnClickListener {
                 finish();
                 break;
             case R.id.btnRun:
-
+                run_flag=1;
+                Btn_SetTM.setEnabled(false);
+                Btn_SetTM.setTextColor(getResources().getColor(R.color.gray));
+                Btn_SetSpeed.setEnabled(false);
+                Btn_SetSpeed.setTextColor(getResources().getColor(R.color.gray));
+                Btn_SetTime.setEnabled(false);
+                Btn_SetTime.setTextColor(getResources().getColor(R.color.gray));
                 break;
             case R.id.ll_lid:
                 showLidkeyDialog(String.valueOf(38));
@@ -110,17 +115,10 @@ public class FastActivity extends BaseActivity implements View.OnClickListener {
                         Btn_SetTM.setText(customKeyEditDialog.getOutStr()+"");
                         break;
                     case Time:
-                            Btn_SetTime.setText(customKeyEditDialog.getOutTime()+"");
-
-
+                        Btn_SetTime.setText(customKeyEditDialog.getOutTime()+"");
                         break;
-
                 }
-
             }
         });
-
     }
-
-
 }

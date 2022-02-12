@@ -21,12 +21,14 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.example.thermoshaker.MainActivity;
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.base.BaseActivity;
 import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.ProgramInfo;
 import com.example.thermoshaker.model.ProgramStep;
 import com.example.thermoshaker.model.TabEntity;
+import com.example.thermoshaker.ui.run.RunActivity;
 import com.example.thermoshaker.util.BroadcastManager;
 import com.example.thermoshaker.util.ToastUtil;
 import com.example.thermoshaker.util.dialog.base.CustomKeyEditDialog;
@@ -358,6 +360,11 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
 
                 break;
             case R.id.ll_run:
+
+                Intent intent = new Intent(AddAndEditActivity.this, RunActivity.class);
+                intent.putExtra("programInfo",programInfo);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
 
                 break;
             case R.id.ll_del:

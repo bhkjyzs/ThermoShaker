@@ -2,6 +2,7 @@ package com.example.thermoshaker.util.key;
 
 /**
  * Created by hj on 2018/12/18.
+ *
  */
 public class KeyModel {
 

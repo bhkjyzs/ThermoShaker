@@ -5,13 +5,18 @@
     <string name="file">文件</string>
     <string name="setting">设置</string>
     <string name="showfast">展示</string>
-
+    <string name="bio_hh">小时</string>
+    <string name="bio_mm">分钟</string>
     <string name="run">运行</string>
     <string name="inching">点动</string>
     <string name="Runsettings">运行设置</string>
     <!--对话框 声音设置-->
-    <string name="dialog_voice_1">报警提示音</string>
-    <string name="dialog_voice_2">程序结束提示音</string>
+    <string name="dialog_voice_1">按键提示音</string>
+    <string name="dialog_voice_2">报警提示音</string>
+
+    <string name="dialog_voice_3">程序结束提示音</string>
+    <string name="dialog_voice_4">温度到达提示音</string>
+
     <string name="addfile">添加</string>
     <string name="edit">编辑</string>
     <string name="del">删除</string>
@@ -72,6 +77,8 @@
     <string name="setting_factory">出厂设置</string>
     <string name="senior_setting">高级设置</string>
     <string name="debug_mode">调试模式</string>
+    <string name="factory_mode">工厂模式</string>
+
     <string name="dialog_info_communication_failed" translatable="true">设备无法正常通信</string>
     <string name="RunisExit">正在运行,确定要退出吗</string>
 
@@ -149,6 +156,10 @@
     <string name="debug_fan">风扇:</string>
     <string name="Motor">电机:</string>
     <string name="led">led:</string>
+    <string name="Lid">Lid:</string>
+    <string name="dialog_hardup_running">正在升级...</string>
+    <string name="dialog_hardup_stop">升级结束</string>
+    <string name="dialog_hardup_fail">升级失败</string>
     <string name="softer_version">软件版本:</string>
     <string name="recovery">恢复出厂设置</string>
     <string name="loadingupdate">正在加载文件……</string>
@@ -156,5 +167,106 @@
     <string name="loading_update_fail">加载失败</string>
     <string name="Transmitting">正在传输……</string>
     <string name="Transmissioncomplete">传输完成</string>
+    <string name="writein">写入</string>
+    <string name="run_state_stop">停止</string>
+    <string name="run_state_run">运行中</string>
+    <string name="run_state_pause">暂停</string>
+    <string name="run_state_incubate">孵育中</string>
+    <string name="run_state_warmup">预热</string>
+
+    <!-- 错误 -->
+    <string name="err_SEC_UNKNOWN">设备未知的错误</string>
+    <string name="err_SEC_MODSOR1OPEN">模块传感器1开路</string>
+    <string name="err_SEC_MODSOR1SHORT">模块传感器1短路</string>
+    <string name="err_SEC_MODSOR2OPEN">模块传感器2开路</string>
+    <string name="err_SEC_MODSOR2SHORT">模块传感器2短路</string>
+    <string name="err_SEC_MODSOR3OPEN">模块传感器3开路</string>
+    <string name="err_SEC_MODSOR3SHORT">模块传感器3短路</string>
+    <string name="err_SEC_MODSOR4OPEN">模块传感器4开路</string>
+    <string name="err_SEC_MODSOR4SHORT">模块传感器4短路</string>
+    <string name="err_SEC_MODSOR5OPEN">模块传感器5开路</string>
+    <string name="err_SEC_MODSOR5SHORT">模块传感器5短路</string>
+    <string name="err_SEC_MODSOR6OPEN">模块传感器6开路</string>
+    <string name="err_SEC_MODSOR6SHORT">模块传感器6短路</string>
+    <string name="err_SEC_LIDSORAOPEN">热盖传感器A开路</string>
+    <string name="err_SEC_LIDSORASHORT">热盖传感器A短路</string>
+    <string name="err_SEC_LIDSORAERROR" translatable="false">热盖传感器A故障</string>
+    <string name="err_SEC_LIDSORBOPEN">热盖传感器B开路</string>
+    <string name="err_SEC_LIDSORBSHORT">热盖传感器B短路</string>
+    <string name="err_SEC_LIDSORBERROR" translatable="false">热盖传感器B故障</string>
+    <string name="err_SEC_LIDSORCOPEN">热盖传感器C开路</string>
+    <string name="err_SEC_LIDSORCSHORT">热盖传感器C短路</string>
+    <string name="err_SEC_LIDSORCERROR" translatable="false">热盖传感器C故障</string>
+    <string name="err_SEC_RADSORAOPEN">散热器传感器A开路</string>
+    <string name="err_SEC_RADSORASHORT">散热器传感器A短路</string>
+    <string name="err_SEC_RADSORAERROE" translatable="false">散热器传感器A故障</string>
+    <string name="err_SEC_RADSORBOPEN">散热器传感器B开路</string>
+    <string name="err_SEC_RADSORBSHORT">散热器传感器B短路</string>
+    <string name="err_SEC_RADSORBERROE" translatable="false">散热器传感器B故障</string>
+    <string name="err_SEC_RADSORCOPEN">散热器传感器C开路</string>
+    <string name="err_SEC_RADSORCSHORT">散热器传感器C短路</string>
+    <string name="err_SEC_RADSORCERROE" translatable="false">散热器传感器C故障</string>
+    <string name="err_SEC_INSIDESOROPEN">内部传感器开路</string>
+    <string name="err_SEC_INSIDESORSHORT">内部传感器短路</string>
+    <string name="err_SEC_INSIDESORERROR">内部传感器故障</string>
+    <string name="err_SEC_MOD1TOOHEAT">模块1温度过高</string>
+    <string name="err_SEC_MOD1TOOCOOL">模块1温度过低</string>
+    <string name="err_SEC_MOD2TOOHEAT">模块2温度过高</string>
+    <string name="err_SEC_MOD2TOOCOOL">模块2温度过低</string>
+    <string name="err_SEC_MOD3TOOHEAT">模块3温度过高</string>
+    <string name="err_SEC_MOD3TOOCOOL">模块3温度过低</string>
+    <string name="err_SEC_MOD4TOOHEAT">模块4温度过高</string>
+    <string name="err_SEC_MOD4TOOCOOL">模块4温度过低</string>
+    <string name="err_SEC_MOD5TOOHEAT">模块5温度过高</string>
+    <string name="err_SEC_MOD5TOOCOOL">模块5温度过低</string>
+    <string name="err_SEC_MOD6TOOHEAT">模块6温度过高</string>
+    <string name="err_SEC_MOD6TOOCOOL">模块6温度过低</string>
+    <string name="err_SEC_LIDATOOHEAT">热盖A温度过高</string>
+    <string name="err_SEC_LIDATOOCOOL">热盖A温度过低</string>
+    <string name="err_SEC_LIDBTOOHEAT">热盖B温度过高</string>
+    <string name="err_SEC_LIDBTOOCOOL">热盖B温度过低</string>
+    <string name="err_SEC_LIDCTOOHEAT">热盖C温度过高</string>
+    <string name="err_SEC_LIDCTOOCOOL">热盖C温度过低</string>
+    <string name="err_SEC_RADATOOHEAT">散热器A温度过高</string>
+    <string name="err_SEC_RADATOOCOOL">散热器A温度过低</string>
+    <string name="err_SEC_RADBTOOHEAT">散热器B温度过高</string>
+    <string name="err_SEC_RADBTOOCOOL">散热器B温度过低</string>
+    <string name="err_SEC_RADCTOOHEAT">散热器C温度过高</string>
+    <string name="err_SEC_RADCTOOCOOL">散热器C温度过低</string>
+    <string name="err_SEC_MOD1HEATERR">模块1升温故障</string>
+    <string name="err_SEC_MOD1COOLERR">模块1降温故障</string>
+    <string name="err_SEC_MOD2HEATERR">模块2升温故障</string>
+    <string name="err_SEC_MOD2COOLERR">模块2降温故障</string>
+    <string name="err_SEC_MOD3HEATERR">模块3升温故障</string>
+    <string name="err_SEC_MOD3COOLERR">模块3降温故障</string>
+    <string name="err_SEC_MOD4HEATERR">模块4升温故障</string>
+    <string name="err_SEC_MOD4COOLERR">模块4降温故障</string>
+    <string name="err_SEC_MOD5HEATERR">模块5升温故障</string>
+    <string name="err_SEC_MOD5COOLERR">模块5降温故障</string>
+    <string name="err_SEC_MOD6HEATERR">模块6升温故障</string>
+    <string name="err_SEC_MOD6COOLERR">模块6降温故障</string>
+    <string name="err_SEC_LIDAERRHEAT">热盖A升温故障</string>
+    <string name="err_SEC_LIDAERRCOOL">热盖A降温故障</string>
+    <string name="err_SEC_LIDBERRHEAT">热盖B升温故障</string>
+    <string name="err_SEC_LIDBERRCOOL">热盖B降温故障</string>
+    <string name="err_SEC_LIDCERRHEAT">热盖C升温故障</string>
+    <string name="err_SEC_LIDCERRCOOL">热盖C降温故障</string>
+    <string name="err_SEC_RADAERRHEAT">散热器A升温故障</string>
+    <string name="err_SEC_RADAERRCOOL">散热器A降温故障</string>
+    <string name="err_SEC_RADBERRHEAT">散热器B升温故障</string>
+    <string name="err_SEC_RADBERRCOOL">散热器B降温故障</string>
+    <string name="err_SEC_RADCERRHEAT">散热器C升温故障</string>
+    <string name="err_SEC_RADCERRCOOL">散热器C降温故障</string>
+    <string name="err_SEC_LIDAHEATERR">热盖A不能升温</string>
+    <string name="err_SEC_LIDACTRLERR">热盖A不受控一直工作</string>
+    <string name="err_SEC_LIDBHEATERR">热盖B不能升温</string>
+    <string name="err_SEC_LIDBCTRLERR">热盖B不受控一直工作</string>
+    <string name="err_SEC_LIDCHEATERR">热盖C不能升温</string>
+    <string name="err_SEC_LIDCCTRLERR">热盖C不受控一直工作</string>
+    <string name="err_SEC_FANNOTWORK">风扇不工作或风道堵塞</string>
+    <string name="err_SEC_FANCTRLERR">风扇不受控一直工作 </string>
+    <string name="err_SEC_CONTROLTOOHEAT">主控板温度过高</string>
+    <string name="err_SEC_MODEMPTY">模块未放置 </string>
+
 
 </resources>

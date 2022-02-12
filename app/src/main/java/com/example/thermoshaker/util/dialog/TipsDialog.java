@@ -95,7 +95,6 @@ public class TipsDialog extends Dialog {
 
     @Override
     public void show() {
-        super.show();
         if (this.getWindow() != null) {
             this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);

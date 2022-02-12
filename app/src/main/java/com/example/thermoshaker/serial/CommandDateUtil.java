@@ -59,6 +59,19 @@ public class CommandDateUtil {
         return false;
     }
 
+    //发送升级包
+    public static byte[] sendDataUpdate(byte[] data,int time) {
+        byte[] res; //通讯体
+
+        //发送数据
+        Log.i(TAG, "data: *****  " + ByteArrToHex(data) + "   ********");
+        res = SerialPortUtil.sendSerialPort_1(data,time);
+        if (res != null) {
+            Log.e(TAG, "the send is succeed:" + res);
+            return res;
+        }
+        return null;
+    }
     /**
      * 发送查询通讯
      * @param commend
@@ -103,102 +116,7 @@ public class CommandDateUtil {
 
 
 
-    /**
-     * 文件数据
-     * @param programInfo
-     * @return
-     */
-    public static byte[] getProgramByte(ProgramInfo programInfo) {
-        byte[] bytes = new byte[116];
-        //升温设置
-        // 0：升温动作同步
-        //1：先升温后动作
-        //2-51：升温到低于目标温度（1-50℃）开始动作
-        bytes[0] = 0;
-        //程序提前几步开始加热   1-3：程序提前1-3步开始加热
-        bytes[1] = 1;
-        //加热通道开关  0：对应加热通道关闭   1：对应加热通道开启
-        bytes[2] = 0;
-        //步骤总数
-        bytes[3] = (byte) (programInfo.getStepList().size()+1);
-        //当前步骤 当前程序开始运行步骤
-        bytes[4] = (byte) (1);
-        //循环开关
-        bytes[5] = (byte) (programInfo.isLoopEnable()==true? 0:1);
-        //开始步骤
-        bytes[6] = (byte) programInfo.getLoopStart();
-        //结束步骤
-        bytes[7] = (byte) programInfo.getLoopEnd();
-        //循环次数
-        bytes[8] = (byte) programInfo.getLoopNum();
-        //热盖温度
-        intTobyteArray(Math.round(programInfo.getLidTm()*100F),bytes,9);
-        for (int i = 0; i < programInfo.getStepList().size(); i++) {
-            int index = 11 + i * 5;
-            ProgramStep programStep = programInfo.getStepList().get(i);
-            //设置温度
-            intTobyteArray(Math.round(programStep.getTemperature()*100F),bytes,0+index);
-            //升温速率
-            if(programStep.getUpSpeed()==3.0){
-                bytes[2+index] = 4;
 
-            }else if(programStep.getUpSpeed()==2.0){
-                bytes[2+index] = 3;
-
-            }else if(programStep.getUpSpeed()==1.0){
-                bytes[2+index] = 2;
-
-            }else if(programStep.getUpSpeed()==0.1){
-                bytes[2+index] = 1;
-
-            }
-            //降温速率
-            if(programStep.getDownSpeed()==1.0){
-                bytes[3+index] = 3;
-
-            }else if(programStep.getDownSpeed()==0.5){
-                bytes[3+index] = 2;
-
-            }else if(programStep.getDownSpeed()==0.1){
-                bytes[3+index] = 1;
-            }
-
-            //电机转速
-            intTobyteArray(programStep.getZSpeed(),bytes,4+index);
-            //方向
-            switch (programStep.getDirection())
-            {
-                case Forward:
-                    bytes[6+index] =0;
-                    break;
-                case Reversal:
-                    bytes[6+index] =1;
-                    break;
-                case ForwardAndReverse:
-                    bytes[6+index] =2;
-                    break;
-            }
-            //步骤时间
-            Date date = new Date(programStep.getTime());
-            intTobyteArrayTime(Math.round(date.getTime()/1000L),bytes,7+index);
-            //混匀方式
-            bytes[11+index] = (byte) programStep.getMixingMode();
-            //持续时间
-            Date dateContinue = new Date(programStep.getContinued());
-            intTobyteArray(Math.round(dateContinue.getTime()/1000L),bytes,12+index);
-            //间隔时间
-            Date dateIntermission = new Date(programStep.getIntermission());
-            intTobyteArray(Math.round(dateIntermission.getTime()/1000L),bytes,14+index);
-            //混合起点
-            bytes[16+index] = (byte) programStep.getBlendStart();
-
-
-
-        }
-
-
-        return bytes;
-    }
 
     /**
      * 系统数据

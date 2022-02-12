@@ -39,7 +39,7 @@ public class Utils {
 
     private static final String TAG = "Utils";
 
-    public static void startDeskLaunch(){      /* 启动桌面 */
+    public static void startDeskLaunch() {      /* 启动桌面 */
         try {
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -56,24 +56,33 @@ public class Utils {
     }
 
 
+    /* byte转int */
+    public static int byteArrayToInt( final byte[] buffer, int offset){
+        int value = (buffer[offset] & 0xff) << 8;
+        value += buffer[offset + 1] & 0xff;
+        /* 判断最高位是否为负 */
+        if (value >> 15 == 1)
+            value = value | 0xffff0000;
+        return value;
+    }
 
+    /* int转byte */
+    public static void intTobyteArray( int value, byte[] buffer, int offset){
+        buffer[offset] = (byte) (value >> 8);
+        buffer[offset + 1] = (byte) value;
+    }
+    /* byte转int */
+    public static int byteArrayToInt4( final byte[] buffer, int offset){
+        int value = (buffer[offset] & 0xff) << 8;
+        value += buffer[offset + 1] & 0xff;
+        value += buffer[offset + 2] & 0xff;
+        value += buffer[offset + 3] & 0xff;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        /* 判断最高位是否为负 */
+        if (value >> 15 == 1)
+            value = value | 0xffff0000;
+        return value;
+    }
 
 
 }

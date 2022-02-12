@@ -4,8 +4,10 @@ import static com.example.thermoshaker.util.usb.USBBroadCastReceiver.ACTION_USB_
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -17,6 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -30,12 +33,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
+import com.alibaba.fastjson.JSON;
 import com.example.thermoshaker.MainActivity;
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.model.Event;
+import com.example.thermoshaker.model.ProgramInfo;
+import com.example.thermoshaker.model.ProgramStep;
+import com.example.thermoshaker.serial.CommandDateUtil;
+import com.example.thermoshaker.serial.uart.UartClass;
+import com.example.thermoshaker.serial.uart.UartServer;
+import com.example.thermoshaker.serial.uart.UartType;
+import com.example.thermoshaker.ui.run.RunActivity;
 import com.example.thermoshaker.util.AppManager;
 import com.example.thermoshaker.util.BroadcastManager;
 import com.example.thermoshaker.util.CloseBarUtil;
+import com.example.thermoshaker.util.DataUtil;
 import com.example.thermoshaker.util.EventBusUtils;
 import com.example.thermoshaker.util.LanguageUtil;
 import com.example.thermoshaker.util.ToastUtil;
@@ -47,6 +59,7 @@ import com.github.mjdev.libaums.UsbMassStorageDevice;
 import com.github.mjdev.libaums.fs.FileSystem;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
+import com.licheedev.myutils.LogPlus;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -63,6 +76,7 @@ public abstract class BaseActivity extends Activity {
     private int update_system=1000;
     private TextView tv_times;
     private TipsDialog tipsDialog;
+    public boolean isHide = true;//页面是否可见
     public static final String ERROR_ACTION = "ERROR_ACTION";
     private static String[] PERMISSIONS_STORAGE = {
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -136,7 +150,6 @@ public abstract class BaseActivity extends Activity {
         }
 
         bradCast();
-//        celiang();
 
     }
 
@@ -172,35 +185,47 @@ public abstract class BaseActivity extends Activity {
         BroadcastManager.getInstance(this).addAction(ERROR_ACTION, new BroadcastReceiver(){
             @Override
             public void onReceive(Context arg0, Intent intent) {
-                String command = intent.getAction();
+                String result = intent.getStringExtra("result");
+                if(isHide){
+
                 if(tipsDialog==null){
-                    tipsDialog = new TipsDialog(BaseActivity.this,getString(R.string.dialog_info_communication_failed));
+                    tipsDialog = new TipsDialog(BaseActivity.this,result+"");
                     tipsDialog.show();
                 }else {
                     if(!tipsDialog.isShowing()){
                         tipsDialog.show();
                     }
                 }
-
+                }
 
             }
         });
     };
 
 
-    private void celiang() {
-        DisplayMetrics dm = new DisplayMetrics();
-        dm = getResources().getDisplayMetrics();
-        float density = dm.density; // 屏幕密度（像素比例：0.75/1.0/1.5/2.0）
-        int densityDPI = dm.densityDpi; // 屏幕密度（每寸像素：120/160/240/320）
-        float xdpi = dm.xdpi;
-        float ydpi = dm.ydpi;
-        Log.e(TAG , "xdpi=" + xdpi + "; ydpi=" + ydpi);
-        Log.e(TAG, "density=" + density + "; densityDPI=" + densityDPI);
-        int screenWidth = dm.widthPixels; // 屏幕宽（像素，如：480px）
-        int screenHeight = dm.heightPixels; // 屏幕高（像素，如：800px）
-        Log.e(TAG , "screenWidth=" + screenWidth + "; screenHeight=" + screenHeight);
+
+    public void runFile(ProgramInfo programInfo){
+
+        if(getProgramByte(programInfo)){
+            Intent intentRun = new Intent(UartServer.MSG);
+            intentRun.putExtra("serialport", new UartClass(null, UartType.OT_RUN_BYTE));
+            sendBroadcast(intentRun);
+            SystemClock.sleep(500);
+            String jsonOutput = JSON.toJSONString(programInfo);
+            DataUtil.writeData(jsonOutput, DataUtil.data_path + DataUtil.param_name, "temp.Naes", false);
+            Intent intent = new Intent(this, RunActivity.class);
+            intent.putExtra("programInfo", programInfo);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+            MyApplication.getInstance().isRunWork = true;
+
+        };
+
     }
+
+
+
+
 
 
 
@@ -209,6 +234,7 @@ public abstract class BaseActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
+        isHide = false;
 
     }
 
@@ -238,7 +264,7 @@ public abstract class BaseActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        isHide = true;
     }
 
     @Override
@@ -251,6 +277,8 @@ public abstract class BaseActivity extends Activity {
         if(handler!=null){
             handler.removeCallbacks(null);
         }
+        BroadcastManager.getInstance(this).destroy(ERROR_ACTION);
+
     }
     public void hideBottomUIMenu() {
         //隐藏虚拟按键，并且全屏
@@ -284,5 +312,136 @@ public abstract class BaseActivity extends Activity {
     }
 
 
+    /**
+     * 文件数据
+     * @param programInfo
+     * @return
+     */
+    public boolean getProgramByte(ProgramInfo programInfo) {
+        try {
+
+
+        byte[] bytes = new byte[116];
+        //升温设置
+        // 0：升温动作同步
+        //1：先升温后动作
+        //2-51：升温到低于目标温度（1-50℃）开始动作
+        bytes[0] = 0;
+        //程序提前几步开始加热   1-3：程序提前1-3步开始加热
+        bytes[1] = 1;
+        //加热通道开关  0：对应加热通道关闭   1：对应加热通道开启
+        bytes[2] = 0;
+        //步骤总数
+        bytes[3] = (byte) (programInfo.getStepList().size()+1);
+        //当前步骤 当前程序开始运行步骤
+        bytes[4] = (byte) (1);
+        //循环开关
+        bytes[5] = (byte) (programInfo.isLoopEnable()==true? 0:1);
+        //开始步骤
+        bytes[6] = (byte) programInfo.getLoopStart();
+        //结束步骤
+        bytes[7] = (byte) programInfo.getLoopEnd();
+        //循环次数
+        bytes[8] = (byte) programInfo.getLoopNum();
+        //热盖温度
+        intTobyteArray(Math.round(programInfo.getLidTm()*100F),bytes,9);
+        for (int i = 0; i < programInfo.getStepList().size(); i++) {
+            int index = 11 + i * 5;
+            ProgramStep programStep = programInfo.getStepList().get(i);
+            //设置温度
+            intTobyteArray(Math.round(programStep.getTemperature()*100F),bytes,0+index);
+            //升温速率
+            if(programStep.getUpSpeed()==3.0){
+                bytes[2+index] = 4;
+
+            }else if(programStep.getUpSpeed()==2.0){
+                bytes[2+index] = 3;
+
+            }else if(programStep.getUpSpeed()==1.0){
+                bytes[2+index] = 2;
+
+            }else if(programStep.getUpSpeed()==0.1){
+                bytes[2+index] = 1;
+
+            }
+            //降温速率
+            if(programStep.getDownSpeed()==1.0){
+                bytes[3+index] = 3;
+
+            }else if(programStep.getDownSpeed()==0.5){
+                bytes[3+index] = 2;
+
+            }else if(programStep.getDownSpeed()==0.1){
+                bytes[3+index] = 1;
+            }
+
+            //电机转速
+            intTobyteArray(programStep.getZSpeed(),bytes,4+index);
+            //方向
+            switch (programStep.getDirection())
+            {
+                case Forward:
+                    bytes[6+index] =0;
+                    break;
+                case Reversal:
+                    bytes[6+index] =1;
+                    break;
+                case ForwardAndReverse:
+                    bytes[6+index] =2;
+                    break;
+            }
+            //步骤时间
+            Date date = new Date(programStep.getTime());
+            intTobyteArrayTime(Math.round(date.getTime()/1000L),bytes,7+index);
+            //混匀方式
+            bytes[11+index] = (byte) programStep.getMixingMode();
+            //持续时间
+            Date dateContinue = new Date(programStep.getContinued());
+            intTobyteArray(Math.round(dateContinue.getTime()/1000L),bytes,12+index);
+            //间隔时间
+            Date dateIntermission = new Date(programStep.getIntermission());
+            intTobyteArray(Math.round(dateIntermission.getTime()/1000L),bytes,14+index);
+            //混合起点
+            bytes[16+index] = (byte) programStep.getBlendStart();
+
+
+
+        }
+
+        /* 发送运行文件 */
+        int size = 116;
+        byte[] array = new byte[size + 8];
+        array[0] = (byte) 0xaa;
+        array[1] = (byte) 0x3d;
+        array[2] = (byte) 0xda;
+        array[3] = (byte) (size >> 8);
+        array[4] = (byte) size;
+
+        System.arraycopy(bytes, 0, array, 5, size);
+
+        Intent intent2 = new Intent(UartServer.MSG);
+        intent2.putExtra("serialport", new UartClass(null, array));
+        sendBroadcast(intent2);
+            return true;
+
+        }catch (Exception e){
+            LogPlus.d(e.getMessage()+"");
+        }
+
+        return false;
+    }
+    /* int转byte */
+    public static void intTobyteArray(int value, byte[] buffer, int offset) {
+        buffer[offset] = (byte) (value >> 8);
+        buffer[offset + 1] = (byte) value;
+    }
+    //int转化为byte数组 len为字节数
+    public static void intTobyteArrayTime(int value, byte[] buffer, int offset) {
+        buffer[offset] = (byte) (value >> 8);
+        buffer[offset + 1] = (byte) value;
+        buffer[offset + 2] = (byte) value;
+        buffer[offset + 3] = (byte) value;
+
+    }
 
 }

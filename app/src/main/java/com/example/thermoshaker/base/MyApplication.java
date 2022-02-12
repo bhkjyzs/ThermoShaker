@@ -10,12 +10,24 @@ import com.example.thermoshaker.model.ProgramInfo;
 import com.example.thermoshaker.model.StepDefault;
 import com.example.thermoshaker.serial.CommandDateUtil;
 import com.example.thermoshaker.serial.ControlParam;
+import com.example.thermoshaker.serial.uart.UartClass;
+import com.example.thermoshaker.serial.uart.UartServer;
+import com.example.thermoshaker.serial.uart.UartType;
+import com.example.thermoshaker.serial.uart.adjust.AdjustInterface;
+import com.example.thermoshaker.serial.uart.adjust.Default_adjustClass;
+import com.example.thermoshaker.serial.uart.debug.DebugInterface;
+import com.example.thermoshaker.serial.uart.debug.Default_debugClass;
+import com.example.thermoshaker.serial.uart.running.TdfileRunClass;
+import com.example.thermoshaker.serial.uart.running.TdfileRunInterface;
+import com.example.thermoshaker.serial.uart.system.DefaultSystemClass;
+import com.example.thermoshaker.serial.uart.system.SystemInterface;
 import com.example.thermoshaker.util.DataUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -24,14 +36,15 @@ public class MyApplication extends Application {
     private static final String TAG = "MyApplication";
     public static int baudrate = 57600;
     public static SerialPort serialPort;
-
-
     private List<ProgramInfo> data;
-
     private static MyApplication instance;
-
     //当前设备步骤默认属性
     public StepDefault stepDefault = new StepDefault();
+
+    public MainAppClass appClass;// 用于保存和记录一些参数
+    public LinkedList<String> strQueue; // 串口通信队列
+
+
 
     //步骤进入前的步骤列表，对比是否改变了的作用
     public static ProgramInfo programsSteps;
@@ -42,22 +55,81 @@ public class MyApplication extends Application {
     public SimpleDateFormat AppDateFormat;// 用于常规日期格式化
     public SimpleDateFormat lockDateFormat;
     private Intent serviceIntent;
+    //参数
+    public SystemInterface systemClass; // 系统类
+    public AdjustInterface adjustClass; // 修正类
+    public DebugInterface debugClass; // 调试类
+    public TdfileRunInterface runningClass; // 运行类
+
+    public Intent comIntent, intentSound;
+
+    //设备是否正在运行程序
+    public boolean isRunWork = false;
 
 
     public static MyApplication getInstance() {
         return instance;
     }
+    @Override
+    public void onTerminate() {
 
+        /* 停止串口服务 */
+        if (comIntent != null) {
+            stopService(comIntent);
+            comIntent = null;
+        }
+
+        Log.d(TAG, "onTerminate");
+        super.onTerminate();
+    }
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
+        appClass = new MainAppClass(this);
+        strQueue = new LinkedList<String>();
+        intentSound = new Intent(UartServer.MSG);
+        intentSound.putExtra("serialport", new UartClass(null, UartType.OT_KEY_SOUND_BYTE));
+        openSerialPort();
         initData();
         initConfig();
-        initSystemParam();
+//        initSystemParam();
+
 //        serviceIntent = new Intent(this, BioHeartService.class);
 //        startService(serviceIntent);
 
+    }
+
+    public void openSerialPort(){
+        /* 开始串口服务 */
+        comIntent = new Intent(this, UartServer.class);
+        /* 是否重新打开 */
+        comIntent.putExtra("REOPEN", true);
+
+        /* 区分主板型号 暂时不需要*/
+//        if (Build.VERSION.SDK_INT == 22) {
+//            comIntent.putExtra("DEVICE", appClass.getUartSerial().getValue());
+//            comIntent.putExtra("DEVICE1",
+//                    (appClass.getUartSerial() == MainType.UartSource.uartUP) ? MainType.UartSource.uartDown.getValue()
+//                            : MainType.UartSource.uartUP.getValue());
+//        } else {
+            comIntent.putExtra("DEVICE", "/dev/ttyS3");
+//        }
+
+        /* 波特率 */
+
+            comIntent.putExtra("BAUDRATE", baudrate);
+//            comIntent.putExtra("BAUDRATE1", 38400);//做适配,暂时不需要
+            startService(comIntent);
+    }
+
+    /**
+     * 按键提示音
+     */
+    public void KeySound() {
+        if (appClass.getSettingViewSound()[0]) {
+            sendBroadcast(intentSound);
+        }
     }
 
     public static SerialPort getSerialPort() {
@@ -70,6 +142,11 @@ public class MyApplication extends Application {
             e.printStackTrace();
             return null;
         }
+
+
+
+
+
     }
     private void initConfig() {
         /* 格式化局部时间 */
@@ -81,6 +158,13 @@ public class MyApplication extends Application {
 
         lockDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         lockDateFormat.setTimeZone(TimeZone.getDefault());
+        //初始化设备型号
+        systemClass = new DefaultSystemClass();
+        adjustClass = new Default_adjustClass();
+        debugClass = new Default_debugClass();
+        runningClass= new TdfileRunClass();
+
+
     }
 
 

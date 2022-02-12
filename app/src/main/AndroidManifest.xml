@@ -76,6 +76,7 @@
         <meta-data
             android:name="design_height_in_dp"
             android:value="1920" />
+        <service android:name=".serial.uart.UartServer" />
 
         <service android:name=".util.service.BioHeartService" />
         <receiver android:name=".util.receivers.MyReceiver">

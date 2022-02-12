@@ -18,6 +18,7 @@ public class ProgramInfo implements Serializable {
     private int loopNum;//循环次数
     private float lidTm;
     public ProgramInfo() {
+
     }
 
     public ProgramInfo(String fileName) {

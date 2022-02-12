@@ -3,18 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
+    <TextView
+        android:background="@color/app_bg"
+        android:text="@string/debug_mode"
+        android:gravity="center"
+        android:textSize="@dimen/sp_25"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dip_55"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
 
 
     <TextView
         android:id="@+id/tv_model1"
         android:text="@string/model_1"
+
         android:textSize="@dimen/sp_35"
         android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/dip_15"
+        android:layout_marginTop="@dimen/dip_65"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="@dimen/dip_40"
         android:layout_width="wrap_content"
@@ -24,6 +37,7 @@
     </TextView>
 
     <RadioGroup
+        android:id="@+id/rg1_model1"
         app:layout_constraintTop_toTopOf="@+id/tv_model1"
         app:layout_constraintBottom_toBottomOf="@+id/tv_model1"
         app:layout_constraintLeft_toRightOf="@+id/tv_model1"
@@ -80,6 +94,7 @@
     </RadioGroup>
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_model2"
         android:text="@string/modle_2"
         app:layout_constraintTop_toBottomOf="@+id/tv_model1"
@@ -95,6 +110,8 @@
     </TextView>
 
     <RadioGroup
+        android:visibility="gone"
+        android:id="@+id/rg2_model2"
         app:layout_constraintTop_toTopOf="@+id/tv_model2"
         app:layout_constraintBottom_toBottomOf="@+id/tv_model2"
         app:layout_constraintLeft_toRightOf="@+id/tv_model2"
@@ -152,6 +169,7 @@
 
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_model3"
         android:text="@string/modle_3"
         app:layout_constraintTop_toBottomOf="@+id/tv_model2"
@@ -167,6 +185,8 @@
     </TextView>
 
     <RadioGroup
+        android:visibility="gone"
+        android:id="@+id/rg3_model3"
         app:layout_constraintTop_toTopOf="@+id/tv_model3"
         app:layout_constraintBottom_toBottomOf="@+id/tv_model3"
         app:layout_constraintLeft_toRightOf="@+id/tv_model3"
@@ -225,6 +245,7 @@
 
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_model4"
         android:text="@string/modle_4"
         app:layout_constraintTop_toBottomOf="@+id/tv_model3"
@@ -240,6 +261,8 @@
     </TextView>
 
     <RadioGroup
+        android:visibility="gone"
+        android:id="@+id/rg4_model4"
         app:layout_constraintTop_toTopOf="@+id/tv_model4"
         app:layout_constraintBottom_toBottomOf="@+id/tv_model4"
         app:layout_constraintLeft_toRightOf="@+id/tv_model4"
@@ -302,7 +325,7 @@
         android:textSize="@dimen/sp_30"
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/tv_model4"
-        android:layout_marginTop="@dimen/dip_15"
+        android:layout_marginTop="@dimen/dip_50"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="@dimen/dip_40"
         android:layout_width="@dimen/dip_80"
@@ -359,18 +382,20 @@
         android:id="@+id/tv_Motor"
         android:text="@string/Motor"
         android:textSize="@dimen/sp_30"
+
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/tv_model4"
-        android:layout_marginTop="@dimen/dip_15"
+        android:layout_marginTop="@dimen/dip_50"
         app:layout_constraintLeft_toRightOf="@+id/rg_fan"
         android:layout_marginLeft="@dimen/dip_40"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/dip_80"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints">
 
     </TextView>
 
     <RadioGroup
+        android:id="@+id/rg_motor"
         app:layout_constraintTop_toTopOf="@+id/tv_Motor"
         app:layout_constraintBottom_toBottomOf="@+id/tv_Motor"
         app:layout_constraintLeft_toRightOf="@+id/tv_Motor"
@@ -417,7 +442,7 @@
         android:textSize="@dimen/sp_30"
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/tv_fan"
-        android:layout_marginTop="@dimen/dip_15"
+        android:layout_marginTop="@dimen/dip_50"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="@dimen/dip_40"
         android:layout_width="@dimen/dip_80"
@@ -467,6 +492,121 @@
 
     </RadioGroup>
 
+    <TextView
+        android:id="@+id/tv_lid"
+        android:text="@string/Lid"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/rg_motor"
+        android:layout_marginTop="@dimen/dip_50"
+        app:layout_constraintLeft_toRightOf="@+id/rg_fan"
+        android:layout_marginLeft="@dimen/dip_40"
+        android:layout_width="@dimen/dip_80"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints"
+        android:textSize="@dimen/sp_30"
+       >
+
+    </TextView>
+    <RadioGroup
+        android:id="@+id/rg_lid"
+        app:layout_constraintTop_toTopOf="@+id/tv_lid"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_lid"
+        app:layout_constraintLeft_toRightOf="@+id/tv_lid"
+        android:layout_marginLeft="@dimen/dip_12"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+        <RadioButton
+            android:id="@+id/rb1_open_lid"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+            android:textSize="@dimen/sp_25"
+            android:layout_marginLeft="@dimen/dip_50"
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/open">
+
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/rb2_close_lid"
+            android:gravity="center"
+            android:drawableLeft="@drawable/selector_debug_check"
+            android:button="@null"
+            android:drawablePadding="@dimen/dip_10"
+            android:textSize="@dimen/sp_25"
+            android:layout_marginLeft="@dimen/dip_85"
+            android:paddingLeft="@dimen/dip_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/close">
+
+        </RadioButton>
+
+    </RadioGroup>
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rg_led"
+        android:id="@+id/factory_temp_text_layout1"
+        android:layout_marginTop="100px">
+        <TextView
+            android:layout_width="100px"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="27sp"
+            android:layout_marginRight="@dimen/dip_25"
+
+            android:text="TE1:"/>
+        <TextView
+            android:id="@+id/factory_temperature_text1"
+            android:layout_width="100px"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/dip_25"
+
+            android:textSize="27sp"
+            android:text="TE1:"/>
+        <TextView
+            android:layout_width="100px"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginRight="@dimen/dip_25"
+            android:textSize="27sp"
+            android:text="lid:"/>
+        <TextView
+            android:id="@+id/factory_temperature_text2"
+            android:layout_width="100px"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/dip_25"
+            android:textSize="27sp"
+            android:text="TE1:"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/btnCancel"
+        android:text="@string/cancel"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_35"
+        android:background="@drawable/btn_selector_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="@dimen/dip_400"
+        android:layout_marginBottom="@dimen/dip_20"
+        android:layout_height="@dimen/dip_70"
+        tools:ignore="MissingConstraints">
+    </Button>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

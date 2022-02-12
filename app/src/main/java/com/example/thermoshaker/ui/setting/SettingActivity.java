@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
@@ -37,9 +38,14 @@ import com.example.thermoshaker.base.Content;
 import com.example.thermoshaker.base.MainType;
 import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.SettingListBean;
+import com.example.thermoshaker.serial.uart.UartClass;
+import com.example.thermoshaker.serial.uart.UartServer;
+import com.example.thermoshaker.serial.uart.upgrade.DialogHardUp;
 import com.example.thermoshaker.util.AppManager;
 import com.example.thermoshaker.util.DataUtil;
+import com.example.thermoshaker.util.custom.SlideButton;
 import com.example.thermoshaker.util.dialog.DebugDialog;
+import com.example.thermoshaker.util.dialog.FactoryDialog;
 import com.example.thermoshaker.util.dialog.base.CustomDialog;
 import com.example.thermoshaker.util.LanguageUtil;
 import com.example.thermoshaker.util.Utils;
@@ -129,6 +135,7 @@ public class SettingActivity extends BaseActivity {
         }
         rvSettingListAdapter.setList(mList);
         rvSettingListAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 switch (position) {
@@ -181,7 +188,18 @@ public class SettingActivity extends BaseActivity {
      * 运行设置
      */
     private void runSetting() {
-
+        CustomDialog runSettingDialog = new CustomDialog.Builder(this)
+                .view(R.layout.run_setting_layout)
+                .style(R.style.CustomDialog)
+                .build();
+        runSettingDialog.show();
+        runSettingDialog.findViewById(R.id.dialog_language_confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                runSettingDialog.dismiss();
+            }
+        });
+        DialogDisMiss(runSettingDialog);
 
     }
 
@@ -218,10 +236,15 @@ public class SettingActivity extends BaseActivity {
 
                         break;
                     case "357159":
-                        new DebugDialog(SettingActivity.this);
+                        new FactoryDialog(SettingActivity.this,SettingActivity.this);
+
+                        break;
+                    case "88992477":
+                        new DebugDialog(SettingActivity.this,SettingActivity.this);
 
                         break;
                     default:
+
                         Toast.makeText(SettingActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
 
                         break;
@@ -368,7 +391,7 @@ public class SettingActivity extends BaseActivity {
     }
 
     /**
-     * 复制 USB 文件到本地
+     * 复制 USB 文件到本地并且升级软件
      *
      * @param file USB文件
      */
@@ -410,16 +433,56 @@ public class SettingActivity extends BaseActivity {
 
     }
 
+    /**
+     * 复制 USB 文件到本地并且升级固件
+     *
+     * @param file USB文件
+     */
 
+    private void copyUSbFileFar(final UsbFile file, ProgressBar pB_Level_up) {
+
+        //复制到本地的文件路径
+        final String filePath = DataUtil.data_path + File.separator + DataUtil.firmware_data_name;
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                usbHelper.saveUSbFileToLocal(file, filePath, currentFs, new UsbHelper.DownloadProgressListener() {
+                    @Override
+                    public void downloadProgress(final int progress) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                String text = "Progress : " + progress;
+                                Log.d(TAG, text + "");
+                                pB_Level_up.setProgress(progress);
+                                if(progress==100){
+                                    DialogHardUp dialogHardUp = new DialogHardUp.Builder(SettingActivity.this,MyApplication.getInstance(),filePath).create();
+                                    dialogHardUp.show();
+                                }
+                            }
+                        });
+                    }
+                });
+
+
+            }
+        }).start();
+
+
+    }
     /**
      * 固件升级
      */
     private void firmware() {
         inspectUDisk();
-
-        UsbFile root = currentFs.getRootDirectory();
-
         try {
+            if(currentFs==null){
+                return;
+            }
+            UsbFile root = currentFs.getRootDirectory();
             UsbFile[] files = root.listFiles();
             for (UsbFile file : files) {
                 Log.d(TAG, file.getName());
@@ -459,9 +522,15 @@ public class SettingActivity extends BaseActivity {
                         public void onClick(View v) {
                             try {
                                 //TODO这里发送升级固件命令
-
-
-
+                                UsbFile file = fileList.get((Integer) softwareDialogs.getTag());
+                                MyApplication app = MyApplication.getInstance();
+                                ProgressBar pB_Level_up = softwareDialogs.findViewById(R.id.pB_Level_up);
+                                softwareDialogs.findViewById(R.id.btn_sure).setVisibility(View.GONE);
+                                softwareDialogs.findViewById(R.id.btn_next).setVisibility(View.GONE);
+                                softwareDialogs.findViewById(R.id.btn_cancel).setVisibility(View.GONE);
+                                tv_msg.setText(R.string.loadingupdate);
+                                pB_Level_up.setVisibility(View.VISIBLE);
+                                copyUSbFileFar(file, pB_Level_up);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -500,7 +569,8 @@ public class SettingActivity extends BaseActivity {
 
 
         } catch (IOException e) {
-            e.printStackTrace();
+//            Toast.makeText(SettingActivity.this, getText(R.string.update_failed), Toast.LENGTH_SHORT).show();
+            LogPlus.d(TAG + "Software updates exception." + e.getMessage());
         }
 //        CustomDialog firmwareDialog = new CustomDialog.Builder(this)
 //                .view(R.layout.change_firmware_layout)
@@ -521,16 +591,59 @@ public class SettingActivity extends BaseActivity {
     /**
      * 声音设置
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void voice() {
+        MyApplication app = MyApplication.getInstance();
+        boolean[] bool;
+
+        bool = app.appClass.getSettingViewSound().clone();
+
         CustomDialog VoiceDialog = new CustomDialog.Builder(this)
                 .view(R.layout.change_voice_layout)
                 .style(R.style.CustomDialog)
                 .build();
         VoiceDialog.show();
+        SlideButton dialog_voice_1 = VoiceDialog.findViewById(R.id.dialog_voice_1);
+        SlideButton dialog_voice_2 = VoiceDialog.findViewById(R.id.dialog_voice_2);
+        SlideButton dialog_voice_3 = VoiceDialog.findViewById(R.id.dialog_voice_3);
+        SlideButton dialog_voice_4 = VoiceDialog.findViewById(R.id.dialog_voice_4);
+        dialog_voice_1.setOnCheckedListener(new SlideButton.SlideButtonOnCheckedListener() {
+            @Override
+            public void onCheckedChangeListener(boolean isChecked) {
+                bool[0] = isChecked;
+            }
+        });
+        dialog_voice_2.setOnCheckedListener(new SlideButton.SlideButtonOnCheckedListener() {
+            @Override
+            public void onCheckedChangeListener(boolean isChecked) {
+                bool[1] = isChecked;
+
+            }
+        });
+        dialog_voice_3.setOnCheckedListener(new SlideButton.SlideButtonOnCheckedListener() {
+            @Override
+            public void onCheckedChangeListener(boolean isChecked) {
+                bool[2] = isChecked;
+
+            }
+        });
+        dialog_voice_4.setOnCheckedListener(new SlideButton.SlideButtonOnCheckedListener() {
+            @Override
+            public void onCheckedChangeListener(boolean isChecked) {
+                bool[3] = isChecked;
+
+            }
+        });
+
         VoiceDialog.findViewById(R.id.dialog_language_confirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                app.appClass.setSettingViewSound(bool.clone());
+                app.systemClass.setSoundSetting(app.appClass.getSettingViewSoundByte());
 
+                Intent intent = new Intent(UartServer.MSG);
+                intent.putExtra("serialport", new UartClass(null, app.systemClass.output()));
+                app.sendBroadcast(intent);
             }
         });
         DialogDisMiss(VoiceDialog);

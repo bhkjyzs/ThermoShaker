@@ -119,7 +119,7 @@
 
     </TextView>
     <TextView
-        android:text="38°C"
+        android:text="0°C"
         android:textSize="@dimen/sp_30"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/iv_tm_img"
@@ -170,7 +170,7 @@
 
     </TextView>
     <TextView
-        android:text="3000 RPM"
+        android:text="0 RPM"
         android:textSize="@dimen/sp_30"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/iv_speed_img"

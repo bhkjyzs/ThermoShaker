@@ -41,21 +41,21 @@
             <com.example.thermoshaker.util.custom.SlideButton
                 android:id="@+id/dialog_voice_1"
                 android:layout_width="80px"
-                android:layout_marginRight="@dimen/dip_80"
                 android:layout_height="40px"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dip_80" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50px"
-            android:layout_marginTop="20px">
+            android:layout_marginTop="7px">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:layout_marginLeft="@dimen/dip_80"
+                android:gravity="center"
                 android:text="@string/dialog_voice_2"
                 android:textSize="24sp" />
 
@@ -67,7 +67,48 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true" />
         </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50px"
+            android:layout_marginTop="7px">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dip_80"
+                android:gravity="center"
+                android:text="@string/dialog_voice_3"
+                android:textSize="24sp" />
+
+            <com.example.thermoshaker.util.custom.SlideButton
+                android:id="@+id/dialog_voice_3"
+                android:layout_width="80px"
+                android:layout_height="40px"
+                android:layout_marginRight="@dimen/dip_80"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50px"
+            android:layout_marginTop="7px">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/dip_80"
+                android:text="@string/dialog_voice_4"
+                android:textSize="24sp" />
+
+            <com.example.thermoshaker.util.custom.SlideButton
+                android:id="@+id/dialog_voice_4"
+                android:layout_width="80px"
+                android:layout_height="40px"
+                android:layout_marginRight="@dimen/dip_80"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
 
 
     </LinearLayout>
