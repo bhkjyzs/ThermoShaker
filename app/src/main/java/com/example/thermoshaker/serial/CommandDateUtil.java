@@ -212,17 +212,5 @@ public class CommandDateUtil {
 
 
 
-    /* int转byte */
-    public static void intTobyteArray(int value, byte[] buffer, int offset) {
-        buffer[offset] = (byte) (value >> 8);
-        buffer[offset + 1] = (byte) value;
-    }
-    //int转化为byte数组 len为字节数
-    public static void intTobyteArrayTime(int value, byte[] buffer, int offset) {
-        buffer[offset] = (byte) (value >> 8);
-        buffer[offset + 1] = (byte) value;
-        buffer[offset + 2] = (byte) value;
-        buffer[offset + 3] = (byte) value;
 
-    }
 }

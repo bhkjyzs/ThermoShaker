@@ -29,7 +29,7 @@ public class ProgramStep implements Serializable {
         ZSpeed=1000;
         direction= MainType.DirectionType.Forward;
         upSpeed= 3.0;
-        downSpeed=3.0;
+        downSpeed=1.0;
         MixingMode=0;
         BlendStart=0;
         continued=0;
@@ -55,7 +55,7 @@ public class ProgramStep implements Serializable {
     }
     public String getUpSpeedStr(){
         String str="";
-        if(upSpeed==3.0&&downSpeed==3.0){
+        if(upSpeed==3.0&&downSpeed==1.0){
             str = MyApplication.getInstance().getString(R.string.FullPower);
 
         }else {
@@ -75,7 +75,7 @@ public class ProgramStep implements Serializable {
     }
     public String getDownSpeedStr(){
         String str="";
-        if(upSpeed==3.0&&downSpeed==3.0){
+        if(upSpeed==3.0&&downSpeed==1.0){
             str = MyApplication.getInstance().getString(R.string.FullPower);
 
         }else {

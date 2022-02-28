@@ -14,8 +14,6 @@ public interface TdfileRunInterface {
 
 	public byte[] output();
 
-
-
 	public int getRunState();// 运行状态
 
 	public String getRunStateStr();
@@ -29,8 +27,6 @@ public interface TdfileRunInterface {
 	public int getCURRemnantTime();//当前总剩余时间
 	public String getCUREndTimeStr();//当前总剩余时间
 	public int getRunCir();//剩余循环运行次数
-
-
 
 	public int getARunFileDefect(); // 文件缺失
 

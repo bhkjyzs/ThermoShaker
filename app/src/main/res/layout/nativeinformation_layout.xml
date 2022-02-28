@@ -56,6 +56,21 @@
             tools:ignore="MissingConstraints">
 
         </TextView>
+        <TextView
+            app:layout_constraintTop_toBottomOf="@+id/tv_version"
+            android:id="@+id/tv_Uiversion"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/dip_20"
+
+            android:layout_marginTop="@dimen/dip_20"
+            android:textSize="@dimen/sp_25"
+            android:text="@string/firmware_version"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

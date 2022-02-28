@@ -20,7 +20,42 @@ public class MainAppClass {
 
     public MainAppClass(MyApplication app) {
         this.app = app;
+        SharedPreferences sharedPreferences = app.getSharedPreferences("CC", Context.MODE_PRIVATE);
+        //运行参数设置
+        runSetting[0] = sharedPreferences.getInt("TempCtrlMode", 0);
+        runSetting[1] = sharedPreferences.getInt("PreHeating", 1);
+        runSetting[2] = sharedPreferences.getInt("HeatMode", 0);
+
+        //声音设置
+        settingViewSound[0] = sharedPreferences.getBoolean("settingViewSoundKey", false);
+        settingViewSound[1] = sharedPreferences.getBoolean("settingViewSoundWarning", true);
+        settingViewSound[2] = sharedPreferences.getBoolean("settingViewSoundEnd", true);
+        settingViewSound[3] = sharedPreferences.getBoolean("settingViewSoundArrive", false);
+
+
     }
+
+
+
+    //运行参数设置
+    private int[] runSetting = new int[]{0,1,0};
+    public int[] getRunSetting(){
+
+        return runSetting;
+    }
+    public void setRunSetting(int[] runSetting){
+        try {
+            this.runSetting = runSetting;
+            Editor edit = app.getSharedPreferences("CC", Context.MODE_PRIVATE).edit();
+            edit.putInt("TempCtrlMode", runSetting[0]);
+            edit.putInt("PreHeating", runSetting[1]);
+            edit.putInt("HeatMode", runSetting[2]);
+            edit.commit();
+            app.exec("sync");
+        } catch (Exception e) {
+        }
+    }
+
 
 
 

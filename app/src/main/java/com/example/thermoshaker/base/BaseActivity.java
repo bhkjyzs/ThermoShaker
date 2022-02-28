@@ -39,6 +39,7 @@ import com.example.thermoshaker.R;
 import com.example.thermoshaker.model.Event;
 import com.example.thermoshaker.model.ProgramInfo;
 import com.example.thermoshaker.model.ProgramStep;
+import com.example.thermoshaker.serial.ByteUtil;
 import com.example.thermoshaker.serial.CommandDateUtil;
 import com.example.thermoshaker.serial.uart.UartClass;
 import com.example.thermoshaker.serial.uart.UartServer;
@@ -205,12 +206,12 @@ public abstract class BaseActivity extends Activity {
 
 
     public void runFile(ProgramInfo programInfo){
-
+        Intent intentRun = new Intent(UartServer.MSG);
+        intentRun.putExtra("serialport", new UartClass(null, UartType.OT_RUN_BYTE));
+        sendBroadcast(intentRun);
+        SystemClock.sleep(500);
         if(getProgramByte(programInfo)){
-            Intent intentRun = new Intent(UartServer.MSG);
-            intentRun.putExtra("serialport", new UartClass(null, UartType.OT_RUN_BYTE));
-            sendBroadcast(intentRun);
-            SystemClock.sleep(500);
+
             String jsonOutput = JSON.toJSONString(programInfo);
             DataUtil.writeData(jsonOutput, DataUtil.data_path + DataUtil.param_name, "temp.Naes", false);
             Intent intent = new Intent(this, RunActivity.class);
@@ -222,11 +223,6 @@ public abstract class BaseActivity extends Activity {
         };
 
     }
-
-
-
-
-
 
 
 
@@ -319,20 +315,25 @@ public abstract class BaseActivity extends Activity {
      */
     public boolean getProgramByte(ProgramInfo programInfo) {
         try {
+            byte[] bytes1 = new byte[2];
+            int ceshi = 3000;
+         Utils.intTobyteArray(3000,bytes1,0);
+            Log.d(TAG, ByteUtil.bytesToHexString(bytes1)+"");
 
 
-        byte[] bytes = new byte[116];
-        //升温设置
+            byte[] bytes = new byte[116];
+            int[] runSetting = MyApplication.getInstance().appClass.getRunSetting();
+            //升温设置
         // 0：升温动作同步
         //1：先升温后动作
         //2-51：升温到低于目标温度（1-50℃）开始动作
-        bytes[0] = 0;
+        bytes[0] = (byte) runSetting[0];
         //程序提前几步开始加热   1-3：程序提前1-3步开始加热
-        bytes[1] = 1;
+        bytes[1] = (byte) runSetting[1];
         //加热通道开关  0：对应加热通道关闭   1：对应加热通道开启
-        bytes[2] = 0;
+        bytes[2] = (byte) runSetting[2];
         //步骤总数
-        bytes[3] = (byte) (programInfo.getStepList().size()+1);
+        bytes[3] = (byte) (programInfo.getStepList().size());
         //当前步骤 当前程序开始运行步骤
         bytes[4] = (byte) (1);
         //循环开关
@@ -344,12 +345,12 @@ public abstract class BaseActivity extends Activity {
         //循环次数
         bytes[8] = (byte) programInfo.getLoopNum();
         //热盖温度
-        intTobyteArray(Math.round(programInfo.getLidTm()*100F),bytes,9);
+        Utils.intTobyteArray(Math.round(programInfo.getLidTm()*100F),bytes,9);
         for (int i = 0; i < programInfo.getStepList().size(); i++) {
-            int index = 11 + i * 5;
+            int index = 11 + i * 21;
             ProgramStep programStep = programInfo.getStepList().get(i);
             //设置温度
-            intTobyteArray(Math.round(programStep.getTemperature()*100F),bytes,0+index);
+            Utils.intTobyteArray(Math.round(programStep.getTemperature()*100F),bytes,0+index);
             //升温速率
             if(programStep.getUpSpeed()==3.0){
                 bytes[2+index] = 4;
@@ -376,7 +377,7 @@ public abstract class BaseActivity extends Activity {
             }
 
             //电机转速
-            intTobyteArray(programStep.getZSpeed(),bytes,4+index);
+            Utils.intTobyteArray(programStep.getZSpeed(),bytes,4+index);
             //方向
             switch (programStep.getDirection())
             {
@@ -392,17 +393,17 @@ public abstract class BaseActivity extends Activity {
             }
             //步骤时间
             Date date = new Date(programStep.getTime());
-            intTobyteArrayTime(Math.round(date.getTime()/1000L),bytes,7+index);
+            Utils.intTobyteArray(Math.round(date.getTime()/1000L),bytes,7+index);
             //混匀方式
-            bytes[11+index] = (byte) programStep.getMixingMode();
+            bytes[9+index] = (byte) programStep.getMixingMode();
             //持续时间
             Date dateContinue = new Date(programStep.getContinued());
-            intTobyteArray(Math.round(dateContinue.getTime()/1000L),bytes,12+index);
+            Utils.intTobyteArray(Math.round(dateContinue.getTime()/1000L),bytes,10+index);
             //间隔时间
             Date dateIntermission = new Date(programStep.getIntermission());
-            intTobyteArray(Math.round(dateIntermission.getTime()/1000L),bytes,14+index);
+            Utils.intTobyteArray(Math.round(dateIntermission.getTime()/1000L),bytes,12+index);
             //混合起点
-            bytes[16+index] = (byte) programStep.getBlendStart();
+            bytes[14+index] = (byte) programStep.getBlendStart();
 
 
 
@@ -430,18 +431,9 @@ public abstract class BaseActivity extends Activity {
 
         return false;
     }
-    /* int转byte */
-    public static void intTobyteArray(int value, byte[] buffer, int offset) {
-        buffer[offset] = (byte) (value >> 8);
-        buffer[offset + 1] = (byte) value;
-    }
-    //int转化为byte数组 len为字节数
-    public static void intTobyteArrayTime(int value, byte[] buffer, int offset) {
-        buffer[offset] = (byte) (value >> 8);
-        buffer[offset + 1] = (byte) value;
-        buffer[offset + 2] = (byte) value;
-        buffer[offset + 3] = (byte) value;
 
-    }
+
+
+
 
 }

@@ -22,6 +22,8 @@ import com.example.thermoshaker.serial.uart.running.TdfileRunInterface;
 import com.example.thermoshaker.serial.uart.system.DefaultSystemClass;
 import com.example.thermoshaker.serial.uart.system.SystemInterface;
 import com.example.thermoshaker.util.DataUtil;
+import com.example.thermoshaker.util.Utils;
+import com.example.thermoshaker.util.service.BioHeartService;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,23 +36,18 @@ import java.util.TimeZone;
 
 public class MyApplication extends Application {
     private static final String TAG = "MyApplication";
-    public static int baudrate = 57600;
+    public static int baudrate = 19200;
     public static SerialPort serialPort;
     private List<ProgramInfo> data;
     private static MyApplication instance;
     //当前设备步骤默认属性
     public StepDefault stepDefault = new StepDefault();
-
     public MainAppClass appClass;// 用于保存和记录一些参数
     public LinkedList<String> strQueue; // 串口通信队列
-
-
-
     //步骤进入前的步骤列表，对比是否改变了的作用
     public static ProgramInfo programsSteps;
     //串口打开或者关闭
     private boolean mOpened = false;
-
     public SimpleDateFormat dateFormat; // 用于格式化局部时间
     public SimpleDateFormat AppDateFormat;// 用于常规日期格式化
     public SimpleDateFormat lockDateFormat;
@@ -60,9 +57,7 @@ public class MyApplication extends Application {
     public AdjustInterface adjustClass; // 修正类
     public DebugInterface debugClass; // 调试类
     public TdfileRunInterface runningClass; // 运行类
-
     public Intent comIntent, intentSound;
-
     //设备是否正在运行程序
     public boolean isRunWork = false;
 
@@ -86,6 +81,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        Utils.hookWebView();
         appClass = new MainAppClass(this);
         strQueue = new LinkedList<String>();
         intentSound = new Intent(UartServer.MSG);
@@ -119,7 +115,7 @@ public class MyApplication extends Application {
         /* 波特率 */
 
             comIntent.putExtra("BAUDRATE", baudrate);
-//            comIntent.putExtra("BAUDRATE1", 38400);//做适配,暂时不需要
+//            comIntent.putExtra("BAUDRATE1", 19200);//做适配,暂时不需要
             startService(comIntent);
     }
 

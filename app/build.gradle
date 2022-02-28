@@ -83,6 +83,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     //fastJson
     implementation 'com.alibaba:fastjson:1.1.72.android'
+    implementation 'com.google.code.gson:gson:2.8.5'
     //串口
     implementation 'com.licheedev:android-serialport:2.1.2'
 

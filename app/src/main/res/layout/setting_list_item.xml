@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="@dimen/dip_254"
     android:gravity="center_vertical"
     android:layout_marginTop="@dimen/dip_43"
+    android:id="@+id/mll_settingTab"
     android:background="@drawable/btn_selector_bg"
     android:layout_height="@dimen/dip_75">
 

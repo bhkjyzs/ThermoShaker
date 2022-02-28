@@ -1,5 +1,6 @@
 package com.example.thermoshaker.ui.run;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,9 +18,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.thermoshaker.AAChartCoreLib.AAChartCreator.AAChartModel;
+import com.example.thermoshaker.AAChartCoreLib.AAChartCreator.AAChartView;
+import com.example.thermoshaker.AAChartCoreLib.AAChartCreator.AASeriesElement;
+import com.example.thermoshaker.AAChartCoreLib.AAChartEnum.AAChartType;
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.base.BaseActivity;
 import com.example.thermoshaker.base.MyApplication;
@@ -43,13 +49,15 @@ import com.licheedev.myutils.LogPlus;
 public class RunActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "RunActivity";
     public final static String MSG = RunActivity.class.getName();
-
+    private fileRunThread mThread; // 会话线程
+    private ConstraintLayout mCltiao,mCldetil;
+    private AAChartView AAChartView;
+    private TextView tv_detil;
     public ProgramInfo programInfo;
-    private TextView tv_times, tv_ZSpeed, tv_Temp, tv_STime, tvNum;
+    private TextView tv_times, tv_ZSpeed, tv_Temp, tv_STime, tvNum,tv_state;
     private LinearLayout ll_return, ll_pause, ll_next, ll_stop, ll_deil;
     private RecyclerView rv_StepList;
     private RVStepListAdapter RVStepListAdapter;
-
     private boolean isPause = false;
     private  final int msg_refresh=1002;
     private android.os.Handler handler = new Handler(Looper.myLooper()) {
@@ -86,10 +94,16 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void GetViews() {
-        new fileRunThread().start();
+        mThread = new fileRunThread();
+        mThread.start();
         /* 注册广播 */
         registerReceiver(recevier, new IntentFilter(MSG));
+        tv_detil = findViewById(R.id.tv_detil);
         tvNum = findViewById(R.id.tvNum);
+        AAChartView = findViewById(R.id.AAChartView);
+        mCltiao = findViewById(R.id.mCltiao);
+        mCldetil =findViewById(R.id.mCldetil);
+        tv_state = findViewById(R.id.tv_state);
         tv_ZSpeed = findViewById(R.id.tv_ZSpeed);
         tv_Temp = findViewById(R.id.tv_Temp);
         tv_STime = findViewById(R.id.tv_STime);
@@ -121,6 +135,36 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
             tvNum.setVisibility(View.GONE);
 
         }
+        ChartView();
+        double v = Math.log10(375.14);
+        Log.d(TAG,v+"");
+    }
+
+    private void ChartView() {
+        AAChartModel aaChartModel = new AAChartModel().chartType(AAChartType.Line)
+                .title("THE HEAT OF PROGRAMMING LANGUAGE")
+                .subtitle("Virtual Data")
+                .backgroundColor("#4b2b7f")
+                .categories(new String[]{"Java","Swift","Python","Ruby", "PHP","Go","C","C#","C++"})
+                .dataLabelsEnabled(false)
+                .yAxisGridLineWidth(0f)
+                .series(new AASeriesElement[]{
+                        new AASeriesElement()
+                                .name("Tokyo")
+                                .data(new Object[]{7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6}),
+                        new AASeriesElement()
+                                .name("NewYork")
+                                .data(new Object[]{0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5}),
+                        new AASeriesElement()
+                                .name("London")
+                                .data(new Object[]{0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0}),
+                        new AASeriesElement()
+                                .name("Berlin")
+                                .data(new Object[]{3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8})
+                });
+
+        AAChartView.aa_drawChartWithChartModel(aaChartModel);
+
 
 
     }
@@ -130,11 +174,12 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         updateSystemTime(tv_times);
         RVStepListAdapter = new RVStepListAdapter(R.layout.gv_step_list_item, this);
         rv_StepList.setAdapter(RVStepListAdapter);
-
+        RVStepListAdapter.setList(programInfo.getStepList());
         RVStepListAdapter.setList(programInfo.getStepList());
 
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -146,44 +191,54 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
                     public void onCancel() {
 
                     }
-
                     @Override
                     public void onConfirm() {
                        sendBroadcast(new Intent(UartServer.MSG).putExtra("serialport", new UartClass(null, UartType.OT_STOP_BYTE)));
                        finish();
                     }
                 });
-
                 break;
             case R.id.ll_pause:
                 if(isPause){
                     sendBroadcast(new Intent(UartServer.MSG).putExtra("serialport", new UartClass(null, UartType.OT_PAUSE_BYTE)));
                     isPause = false;
-
-
+                    tv_state.setText(getString(R.string.Continue));
                 }else {
                     sendBroadcast(new Intent(UartServer.MSG).putExtra("serialport", new UartClass(null, UartType.OT_RESUME_BYTE)));
                     isPause = true;
-
-
+                    tv_state.setText(getString(R.string.pause));
                 }
-
                 break;
             case R.id.ll_next:
-                ToastUtil.show(this,"暂无命令");
+                ToastUtil.show(this,"暂不可用");
                 break;
             case R.id.ll_stop:
-                String cmd = "AA";
-                byte[] bytes = DataUtils.HexToByteArr(cmd);
-                byte[] bytes1 = SerialPortUtil.sendSerialPort(bytes);
-//                Log.d(TAG,DataUtils.ByteArrToHex(bytes1).toString() );
-//                if(CommandDateUtil.SendCommand(ControlParam.OT_STOP)){
-//                    finish();
-//                }
+                TipsDialog tipsDialogStop = new TipsDialog(RunActivity.this,getString(R.string.dialog_info_program_stop));
+                tipsDialogStop.show();
+                tipsDialogStop.setOnDialogLister(new TipsDialog.onDialogLister() {
+                    @Override
+                    public void onCancel() {
+
+                    }
+
+                    @Override
+                    public void onConfirm() {
+                        sendBroadcast(new Intent(UartServer.MSG).putExtra("serialport", new UartClass(null, UartType.OT_STOP_BYTE)));
+                        finish();
+                    }
+                });
 
                 break;
             case R.id.ll_deil:
-
+                if(mCltiao.getVisibility()==8){
+                    tv_detil.setText(getString(R.string.details));
+                    mCltiao.setVisibility(View.VISIBLE);
+                    mCldetil.setVisibility(View.GONE);
+                }else {
+                    tv_detil.setText(getString(R.string.Heatingprocess));
+                    mCltiao.setVisibility(View.GONE);
+                    mCldetil.setVisibility(View.VISIBLE);
+                }
                 break;
         }
 
@@ -230,8 +285,13 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
     };
     private void refreshDate() {
         MyApplication app = MyApplication.getInstance();
-        app.runningClass.getRunCir();
-        tv_STime.setText(app.runningClass.getCUREndTimeStr()+"");
+//        int pos = app.runningClass.getRunStep();
+//        tv_STime.setText(app.runningClass.getCUREndTimeStr()+"");
+//        tvNum.setText(app.runningClass.getRunCir()+"");
+//        RVStepListAdapter.setSelectPostion(pos-1);
+//        RVStepListAdapter.notifyDataSetChanged();
+
+
     }
 
 
@@ -240,6 +300,11 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         super.onDestroy();
         if (recevier != null) {
             unregisterReceiver(recevier);
+        }
+        /* 停止线程 */
+        if (mThread != null) {
+            mThread.interrupt();
+            mThread = null;
         }
         if(handler!=null){
             handler.removeMessages(msg_refresh);

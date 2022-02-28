@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">震荡混匀仪</string>
 
     <string name="welcome_main">欢迎使用本产品</string>
@@ -42,14 +42,19 @@
     <string name="english">英文</string>
     <string name="calibration">校准</string>
     <string name="pause">暂停</string>
+    <string name="Continue">暂停</string>
+
     <string name="nextSection">下一节</string>
     <string name="next">下一个</string>
     <string name="update_failed">升级失败!</string>
     <string name="ask_update_software_start">检测到文件&#8194;</string>
     <string name="ask_update_software_end">,是否进行更新?</string>
+    <string name="dialog_info_program_stop" translatable="true">是否停止？</string>
 
     <string name="stopit">停止</string>
     <string name="details">详情</string>
+    <string name="Heatingprocess">升温过程</string>
+
     <string name="save">保存</string>
     <string name="temperature">温度(℃)</string>
     <string name="speed">速度(C/min)</string>
@@ -122,6 +127,17 @@
     <string name="Localcorrelation">本机相关</string>
     <string name="dialog_factory_tempe_update">温度修正值（-9.99 ～9.99℃）</string>
     <string name="dialog_factory_motor_write">写入修正值</string>
+    <string name="Temperaturerisesetting">升温设置</string>
+    <string name="Preheating">提前加热</string>
+    <string name="Heatingswitch">加热开关</string>
+
+    <string name="Temperatureras">升温动作同步</string>
+    <string name="Heatupbeforeaction">先升温后动作</string>
+    <string name="Raisethetemperaturebelowttt">升温到低于目标温度（2-50℃）开始动作</string>
+    <string name="Theprocedurestartsheating">程序提前1-3步开始加热</string>
+    <string name="Thecorrespondingheatingchannelisclosed">对应加热通道关闭</string>
+    <string name="Thecorrespondingheatingchannelisopen">对应加热通道开启</string>
+
 
     <string name="rate">速率</string>
     <string name="mixedmode">混合模式</string>
@@ -161,6 +177,8 @@
     <string name="dialog_hardup_stop">升级结束</string>
     <string name="dialog_hardup_fail">升级失败</string>
     <string name="softer_version">软件版本:</string>
+    <string name="firmware_version">固件版本:</string>
+
     <string name="recovery">恢复出厂设置</string>
     <string name="loadingupdate">正在加载文件……</string>
     <string name="loading_update_success">加载完毕</string>
@@ -267,6 +285,7 @@
     <string name="err_SEC_FANCTRLERR">风扇不受控一直工作 </string>
     <string name="err_SEC_CONTROLTOOHEAT">主控板温度过高</string>
     <string name="err_SEC_MODEMPTY">模块未放置 </string>
+    <string name="exit">退出</string>
 
 
 </resources>

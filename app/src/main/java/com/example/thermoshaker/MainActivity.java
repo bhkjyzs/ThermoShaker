@@ -130,7 +130,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                     String str = app.runningClass.getSystemErrCodeStr();
                                     if (!str.equals("")) {
                                         errorDispTime = 10 * 1000 / msgUartDelayed;
-                                        BroadcastManager.getInstance(MyApplication.getInstance()).sendBroadcast(ERROR_ACTION,str+"");
+//                                        BroadcastManager.getInstance(MyApplication.getInstance()).sendBroadcast(ERROR_ACTION,str+"");
 
                                     }
                                 }
@@ -180,12 +180,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void openLoopQuery() {
+//        if(MyApplication.getInstance().appClass.isUartReady()){
+//
+//        }
         /* 注册广播 */
         registerReceiver(recevier, new IntentFilter(MSG));
         /* 用于循环查询 */
         intentUart = new Intent(UartServer.MSG);
         intentUart.putExtra("serialport", new UartClass(MSG, UartType.ASK_RUNDATA_BYTE));
-        handler.sendEmptyMessageDelayed(msgUart, msgUartDelayed);
+//        handler.sendEmptyMessageDelayed(msgUart, msgUartDelayed);
         //系统参数，开机查询一次
         Intent intentSystem = new Intent(UartServer.MSG);
         intentSystem.putExtra("serialport", new UartClass(MSG, UartType.ASK_SYSTEM_BYTE));
@@ -544,19 +547,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     if (app.adjustClass.analysis(bin)) {
                         return;
                     }
-
                 }
-
-
             } catch (Exception e) {
 
             }
-
-
         }
     };
     private void factoryDialog() {
-
         CustomKeyEditDialog customKeyEditDialog = new CustomKeyEditDialog(this);
         customKeyEditDialog.show();
         customKeyEditDialog.init(getString(R.string.setting_factory) + "", CustomKeyEditDialog.TYPE.Null, 0);
@@ -576,7 +573,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                         break;
                 }
-
             }
         });
 

@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.UserHandle;
 import android.serialport.SerialPort;
+import android.util.Log;
 
 
 import com.example.thermoshaker.base.MyApplication;
@@ -43,8 +44,8 @@ public class UartServer extends Service {
 
     private String path = ""; // 设备的路径
     private String pathSlave = ""; // 从设备的路径
-    private int baudrate = 57600; // 串口波特率
-    private int baudrateSlave = 38400; // 从串口波特率
+    private int baudrate = 19200; // 串口波特率
+    private int baudrateSlave = 19200; // 从串口波特率
     private Boolean isOpen = false; // 是否打开串口
 
     private ConcurrentLinkedQueue<UartClass> valQueueConcurrent = new ConcurrentLinkedQueue<UartClass>(); // 值队列
@@ -95,18 +96,24 @@ public class UartServer extends Service {
     /* 每一次开始服务时执行 */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        try {
+
+
         /* 接收参数 */
         if (intent.getBooleanExtra("REOPEN", false)) {
             path = intent.getStringExtra("DEVICE");
-            baudrate = intent.getIntExtra("BAUDRATE", 57600);
+            baudrate = intent.getIntExtra("BAUDRATE", 19200);
             pathSlave = intent.getStringExtra("DEVICE1");
-//            baudrateSlave = intent.getIntExtra("BAUDRATE1", 38400);
+//            baudrateSlave = intent.getIntExtra("BAUDRATE1", 19200);
 
             if (isOpen)
                 closeSerialPort();
         }
 
         LogPlus.d(TAG, "onStartCommand");
+        }catch (Exception e){
+
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -173,6 +180,7 @@ public class UartServer extends Service {
                         data[data.length - 3] = (byte) (crc16 >> 8);
                         data[data.length - 2] = (byte) crc16;
                         data[data.length - 1] = (byte) 0x55;
+
 
                         /* 第一次测试 */
                         if (path != null && !path.equals("")) {
@@ -358,6 +366,8 @@ public class UartServer extends Service {
                             str += "Address null\n";
                         }
 
+                        Log.d(TAG,str.toString()+"");
+
                         /* 记录通信数据 */
                         MyApplication.getInstance().strQueue.add(str);
                         count++;
@@ -415,6 +425,7 @@ public class UartServer extends Service {
         }
         return sb.toString();
     }
+
 
     @Override
     public void onDestroy() {

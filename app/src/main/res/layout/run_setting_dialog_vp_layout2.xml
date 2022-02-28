@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+
+
+
+
+
+
+
+
+    <LinearLayout
+        android:id="@+id/mll_btm"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="@dimen/dip_150"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/dip_30"
+
+        android:layout_marginLeft="@dimen/dip_70"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+
+        <TextView
+            android:textSize="@dimen/sp_35"
+            android:textColor="@color/gray"
+            android:text="@string/Theprocedurestartsheating"
+            android:layout_marginRight="@dimen/dip_20"
+            android:layout_marginLeft="@dimen/dip_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_lid"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@+id/mll_btm"
+        app:layout_constraintLeft_toRightOf="@+id/mll_btm"
+        android:layout_marginLeft="@dimen/dip_40"
+        android:background="@drawable/input_border"
+        app:layout_constraintBottom_toBottomOf="@+id/mll_btm"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="@dimen/dip_50"
+        android:layout_width="@dimen/dip_120"
+        android:layout_height="45dp"
+        tools:ignore="MissingConstraints"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/keyboard_step_spinner_hole"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:spinnerMode="dropdown"></TextView>
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

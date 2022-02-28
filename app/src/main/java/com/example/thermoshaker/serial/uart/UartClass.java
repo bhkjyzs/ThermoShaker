@@ -1,5 +1,9 @@
 package com.example.thermoshaker.serial.uart;
 
+import android.util.Log;
+
+import com.example.thermoshaker.serial.ByteUtil;
+
 import java.io.Serializable;
 
 /**
@@ -10,6 +14,7 @@ import java.io.Serializable;
 public class UartClass implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private static final String TAG = "UartClass";
 	private String address;
 	private byte[] data;
 	private int time;
@@ -24,6 +29,7 @@ public class UartClass implements Serializable {
 			data[data.length - 2] = (byte) crc16;
 			data[data.length - 1] = (byte) 0x55;
 		}
+		Log.d(TAG, ByteUtil.bytesToHexString(data)+"");
 	}
 
 	public UartClass(String address, byte[] data, boolean bool) {

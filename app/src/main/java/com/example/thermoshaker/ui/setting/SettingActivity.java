@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
 import android.app.PendingIntent;
@@ -21,11 +22,18 @@ import android.hardware.usb.UsbManager;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +49,7 @@ import com.example.thermoshaker.model.SettingListBean;
 import com.example.thermoshaker.serial.uart.UartClass;
 import com.example.thermoshaker.serial.uart.UartServer;
 import com.example.thermoshaker.serial.uart.upgrade.DialogHardUp;
+import com.example.thermoshaker.ui.adapter.MyAdapter;
 import com.example.thermoshaker.util.AppManager;
 import com.example.thermoshaker.util.DataUtil;
 import com.example.thermoshaker.util.custom.SlideButton;
@@ -53,6 +62,7 @@ import com.example.thermoshaker.util.dialog.base.CustomKeyEditDialog;
 import com.example.thermoshaker.util.dialog.DialogInout;
 import com.example.thermoshaker.util.usb.USBBroadCastReceiver;
 import com.example.thermoshaker.util.usb.UsbHelper;
+import com.flyco.tablayout.SlidingTabLayout;
 import com.github.mjdev.libaums.UsbMassStorageDevice;
 import com.github.mjdev.libaums.fs.FileSystem;
 import com.github.mjdev.libaums.fs.UsbFile;
@@ -72,6 +82,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -188,6 +199,9 @@ public class SettingActivity extends BaseActivity {
      * 运行设置
      */
     private void runSetting() {
+        ArrayList<View> viewList = new ArrayList<>();
+        int[] runSetting = MyApplication.getInstance().appClass.getRunSetting();
+        String[] title={this.getString(R.string.Temperaturerisesetting)+"",this.getString(R.string.Preheating)+"",this.getString(R.string.Heatingswitch)+""};
         CustomDialog runSettingDialog = new CustomDialog.Builder(this)
                 .view(R.layout.run_setting_layout)
                 .style(R.style.CustomDialog)
@@ -197,9 +211,153 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 runSettingDialog.dismiss();
+                MyApplication.getInstance().appClass.setRunSetting(runSetting);
             }
         });
         DialogDisMiss(runSettingDialog);
+        SlidingTabLayout stb_RunSetting = runSettingDialog.findViewById(R.id.stb_RunSetting);
+        ViewPager vp_RunSetting = runSettingDialog.findViewById(R.id.vp_RunSetting);
+        viewList.add(LayoutInflater.from(runSettingDialog.getContext()).inflate(R.layout.run_setting_dialog_vp_layout,null,false));
+        viewList.add(LayoutInflater.from(runSettingDialog.getContext()).inflate(R.layout.run_setting_dialog_vp_layout2,null,false));
+        viewList.add(LayoutInflater.from(runSettingDialog.getContext()).inflate(R.layout.run_setting_dialog_vp_layout3,null,false));
+        vp_RunSetting.setAdapter(new MyAdapter(viewList));
+        //view1
+        LinearLayout mll_top = viewList.get(0).findViewById(R.id.mll_top);
+        CheckBox cb_top = viewList.get(0).findViewById(R.id.cb_top);
+        LinearLayout mll_center = viewList.get(0).findViewById(R.id.mll_center);
+        CheckBox cb_center = viewList.get(0).findViewById(R.id.cb_center);
+        LinearLayout mll_btm = viewList.get(0).findViewById(R.id.mll_btm);
+        CheckBox cb_btm = viewList.get(0).findViewById(R.id.cb_btm);
+        LinearLayout ll_lid = viewList.get(0).findViewById(R.id.ll_lid);
+        TextView tv_lidTm = viewList.get(0).findViewById(R.id.tv_lidTm);
+        switch (runSetting[0]){
+            case 0:
+                cb_top.setChecked(true);
+                cb_center.setChecked(false);
+                cb_btm.setChecked(false);
+                ll_lid.setEnabled(false);
+                break;
+            case 1:
+                cb_top.setChecked(false);
+                cb_center.setChecked(true);
+                cb_btm.setChecked(false);
+                ll_lid.setEnabled(false);
+                break;
+            default:
+                cb_top.setChecked(false);
+                cb_center.setChecked(false);
+                cb_btm.setChecked(true);
+                ll_lid.setEnabled(true);
+                break;
+        }
+        mll_top.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cb_top.setChecked(true);
+                cb_center.setChecked(false);
+                cb_btm.setChecked(false);
+                ll_lid.setEnabled(false);
+                runSetting[0] = 0;
+            }
+        });
+        mll_center.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cb_top.setChecked(false);
+                cb_center.setChecked(true);
+                cb_btm.setChecked(false);
+                ll_lid.setEnabled(false);
+                runSetting[0] = 1;
+
+            }
+        });
+        mll_btm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cb_top.setChecked(false);
+                cb_center.setChecked(false);
+                cb_btm.setChecked(true);
+                ll_lid.setEnabled(true);
+            }
+        });
+        ll_lid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomKeyEditDialog customKeyEditDialog = new CustomKeyEditDialog(runSettingDialog.getContext());
+                customKeyEditDialog.show();
+                customKeyEditDialog.init(String.valueOf(0),CustomKeyEditDialog.TYPE.Temp,0);
+                customKeyEditDialog.setOnDialogLister(new CustomKeyEditDialog.onDialogLister() {
+                    @Override
+                    public void onConfirm() {
+                            if(Float.parseFloat(customKeyEditDialog.getOutStr())<50||Float.parseFloat(customKeyEditDialog.getOutStr())>2){
+                                tv_lidTm.setText(customKeyEditDialog.getOutStr()+"");
+                                runSetting[0] = Integer.parseInt(customKeyEditDialog.getOutStr());
+
+                            }
+                    }
+                });
+            }
+        });
+
+        //view2
+        final String[] speeds=runSettingDialog.getContext().getResources().getStringArray(R.array.mix_speed);
+        TextView keyboard_step_spinner_hole = viewList.get(1).findViewById(R.id.keyboard_step_spinner_hole);
+        keyboard_step_spinner_hole.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomKeyEditDialog customKeyEditDialog = new CustomKeyEditDialog(runSettingDialog.getContext());
+                customKeyEditDialog.show();
+                customKeyEditDialog.init(String.valueOf(0),CustomKeyEditDialog.TYPE.Null,0);
+                customKeyEditDialog.setOnDialogLister(new CustomKeyEditDialog.onDialogLister() {
+                    @Override
+                    public void onConfirm() {
+                        if(Float.parseFloat(customKeyEditDialog.getOutStr())<4||Float.parseFloat(customKeyEditDialog.getOutStr())>0){
+                            keyboard_step_spinner_hole.setText(customKeyEditDialog.getOutStr()+"");
+                            runSetting[1] = Integer.parseInt(customKeyEditDialog.getOutStr());
+
+                        }else {
+                            Toast.makeText(runSettingDialog.getContext(), "输入不规范", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+
+        //view3
+        LinearLayout mll_top3 = viewList.get(2).findViewById(R.id.mll_top);
+        CheckBox cb_top3 = viewList.get(2).findViewById(R.id.cb_top);
+        LinearLayout mll_center3 = viewList.get(2).findViewById(R.id.mll_center);
+        CheckBox cb_center3 = viewList.get(2).findViewById(R.id.cb_center);
+        if(runSetting[2]==0){
+            cb_top3.setChecked(true);
+            cb_center3.setChecked(false);
+
+        }else {
+            cb_top3.setChecked(false);
+            cb_center3.setChecked(true);
+        }
+        mll_top3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cb_top3.setChecked(true);
+                cb_center3.setChecked(false);
+                runSetting[2]=0;
+            }
+        });
+        mll_center3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cb_top3.setChecked(false);
+                cb_center3.setChecked(true);
+                runSetting[2]=1;
+
+            }
+        });
+
+
+        stb_RunSetting.setViewPager(vp_RunSetting,title);
+
+
 
     }
 
@@ -751,8 +909,27 @@ public class SettingActivity extends BaseActivity {
         @Override
         protected void convert(@NotNull BaseViewHolder baseViewHolder, SettingListBean s) {
             baseViewHolder.setText(R.id.tv_Name, s.getName());
+            LinearLayout mll_settingTab = baseViewHolder.getView(R.id.mll_settingTab);
             ImageView iv_img = baseViewHolder.getView(R.id.iv_img);
             iv_img.setBackgroundResource(s.getImgId());
+            if(baseViewHolder.getAdapterPosition()==8){
+                mll_settingTab.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        // TODO Auto-generated method stub
+                        int action = event.getAction();
+                        if (action == MotionEvent.ACTION_DOWN) {
+                            // 按下 处理相关逻辑 发送点动命令
+
+                        } else if (action == MotionEvent.ACTION_UP) {
+                            // 松开 todo 处理相关逻辑 发送点动停止命令
+
+                        }
+                        return false;
+
+                    }
+                });
+            }
 
         }
     }

@@ -27,6 +27,7 @@ import com.github.mjdev.libaums.fs.UsbFile;
 
 import java.io.File;
 import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -71,17 +72,74 @@ public class Utils {
         buffer[offset] = (byte) (value >> 8);
         buffer[offset + 1] = (byte) value;
     }
+    //int转化为byte数组 len为字节数
+    public static void intTobyteArrayTime4(int value, byte[] buffer, int offset) {
+        buffer[offset] = (byte) (value >> 24);
+        buffer[offset + 1] = (byte) (value >> 16);
+        buffer[offset + 2] = (byte) (value >> 8);
+        buffer[offset + 3] = (byte) value;
+
+    }
     /* byte转int */
     public static int byteArrayToInt4( final byte[] buffer, int offset){
-        int value = (buffer[offset] & 0xff) << 8;
-        value += buffer[offset + 1] & 0xff;
-        value += buffer[offset + 2] & 0xff;
-        value += buffer[offset + 3] & 0xff;
+        int value = (buffer[offset] & 0xff);
+        value += buffer[offset + 1] & 0xff00;
+        value += buffer[offset + 2] & 0xff0000;
+        value += buffer[offset + 3] & 0xff000000;
 
         /* 判断最高位是否为负 */
         if (value >> 15 == 1)
             value = value | 0xffff0000;
         return value;
+    }
+
+
+    public static void hookWebView() {
+        Class<?> factoryClass = null;
+        try {
+            factoryClass = Class.forName("android.webkit.WebViewFactory");
+            Method getProviderClassMethod = null;
+            Object sProviderInstance = null;
+
+            if (Build.VERSION.SDK_INT == 23) {
+                getProviderClassMethod = factoryClass.getDeclaredMethod("getProviderClass");
+                getProviderClassMethod.setAccessible(true);
+                Class<?> providerClass = (Class<?>) getProviderClassMethod.invoke(factoryClass);
+                Class<?> delegateClass = Class.forName("android.webkit.WebViewDelegate");
+                Constructor<?> constructor = providerClass.getConstructor(delegateClass);
+                if (constructor != null) {
+                    constructor.setAccessible(true);
+                    Constructor<?> constructor2 = delegateClass.getDeclaredConstructor();
+                    constructor2.setAccessible(true);
+                    sProviderInstance = constructor.newInstance(constructor2.newInstance());
+                }
+            } else if (Build.VERSION.SDK_INT == 22) {
+                getProviderClassMethod = factoryClass.getDeclaredMethod("getFactoryClass");
+                getProviderClassMethod.setAccessible(true);
+                Class<?> providerClass = (Class<?>) getProviderClassMethod.invoke(factoryClass);
+                Class<?> delegateClass = Class.forName("android.webkit.WebViewDelegate");
+                Constructor<?> constructor = providerClass.getConstructor(delegateClass);
+                if (constructor != null) {
+                    constructor.setAccessible(true);
+                    Constructor<?> constructor2 = delegateClass.getDeclaredConstructor();
+                    constructor2.setAccessible(true);
+                    sProviderInstance = constructor.newInstance(constructor2.newInstance());
+                }
+            } else if (Build.VERSION.SDK_INT == 21) {// Android 21无WebView安全限制
+                getProviderClassMethod = factoryClass.getDeclaredMethod("getFactoryClass");
+                getProviderClassMethod.setAccessible(true);
+                Class<?> providerClass = (Class<?>) getProviderClassMethod.invoke(factoryClass);
+                sProviderInstance = providerClass.newInstance();
+            }
+            if (sProviderInstance != null) {
+                Field field = factoryClass.getDeclaredField("sProviderInstance");
+                field.setAccessible(true);
+                field.set("sProviderInstance", sProviderInstance);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 
