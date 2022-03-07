@@ -335,7 +335,7 @@
 
     <Button
         android:id="@+id/btnReturn"
-        android:text="@string/returnname"
+        android:text="@string/run"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_35"
         android:background="@drawable/btn_selector_bg"
@@ -350,7 +350,8 @@
     </Button>
     <Button
         android:id="@+id/btnRun"
-        android:text="@string/run"
+        android:text="@string/returnname"
+
         android:textColor="@color/white"
         android:textSize="@dimen/sp_35"
         android:background="@drawable/btn_selector_bg"

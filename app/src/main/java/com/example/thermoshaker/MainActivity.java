@@ -21,9 +21,11 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,9 +79,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private int ChooseFilePos = -1;
 
 
-    private LinearLayout ll_file, ll_setting, ll_run, ll_fast;
+    private LinearLayout ll_file, ll_setting, ll_run, ll_inching;
     private TextView tv_date, tv_time, tv_file, tv_setting, tv_running, tv_inching;
-
+    private Button btn_dian;
     private static MainActivity instance;
 
     private static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
@@ -116,16 +118,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             /* 报警信息,间隔十秒 */
                             if (errorDispTime < 1) {
                                 if (app.appClass.isUartReady() == false) {
-//                                    dialog_factory_no_msg.setVisibility(View.VISIBLE);
-//                                    mll_haveMsg.setVisibility(View.GONE);
-//                                    tv_con_msg.setVisibility(View.VISIBLE);
+                                    dialog_factory_no_msg.setVisibility(View.VISIBLE);
+                                    mll_haveMsg.setVisibility(View.GONE);
+                                    tv_con_msg.setVisibility(View.VISIBLE);
                                     errorDispTime = 10 * 1000 / msgUartDelayed;
 //                                    BroadcastManager.getInstance(MyApplication.getInstance()).sendBroadcast(ERROR_ACTION,getString(R.string.dialog_info_communication_failed)+"");
 
                                 } else {
-//                                    dialog_factory_no_msg.setVisibility(View.GONE);
-//                                    mll_haveMsg.setVisibility(View.VISIBLE);
-//                                    tv_con_msg.setVisibility(View.GONE);
+                                    dialog_factory_no_msg.setVisibility(View.GONE);
+                                    mll_haveMsg.setVisibility(View.VISIBLE);
+                                    tv_con_msg.setVisibility(View.GONE);
 
                                     String str = app.runningClass.getSystemErrCodeStr();
                                     if (!str.equals("")) {
@@ -188,7 +190,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         /* 用于循环查询 */
         intentUart = new Intent(UartServer.MSG);
         intentUart.putExtra("serialport", new UartClass(MSG, UartType.ASK_RUNDATA_BYTE));
-//        handler.sendEmptyMessageDelayed(msgUart, msgUartDelayed);
+        handler.sendEmptyMessageDelayed(msgUart, msgUartDelayed);
         //系统参数，开机查询一次
         Intent intentSystem = new Intent(UartServer.MSG);
         intentSystem.putExtra("serialport", new UartClass(MSG, UartType.ASK_SYSTEM_BYTE));
@@ -276,13 +278,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if (tv_date != null) {
             tv_file.setText(getString(R.string.file));
             tv_setting.setText(getString(R.string.setting));
-            tv_running.setText(getString(R.string.run));
-            tv_inching.setText(getString(R.string.Fast));
+            tv_running.setText(getString(R.string.Fast));
+            tv_inching.setText(getString(R.string.inching));
         }
 
     }
 
     private void initGetView() {
+        btn_dian = findViewById(R.id.btn_dian);
         tv_con_msg = findViewById(R.id.tv_con_msg);
         mll_haveMsg = findViewById(R.id.mll_haveMsg);
         dialog_factory_no_msg = findViewById(R.id.dialog_factory_no_msg);
@@ -295,13 +298,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ll_file = findViewById(R.id.ll_file);
         ll_setting = findViewById(R.id.ll_setting);
         ll_run = findViewById(R.id.ll_run);
-        ll_fast = findViewById(R.id.ll_fast);
+        ll_inching = findViewById(R.id.ll_inching);
         ll_file.setOnClickListener(this);
         ll_setting.setOnClickListener(this);
         ll_run.setOnClickListener(this);
         dialog_factory_no_msg.setOnClickListener(this);
-        ll_fast.setOnClickListener(this);
+        ll_inching.setOnClickListener(this);
+        ll_inching.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // TODO Auto-generated method stub
+                int action = event.getAction();
+                if (action == MotionEvent.ACTION_DOWN) {
+                    // 按下 处理相关逻辑
+                    MyApplication.getInstance().sendBroadcast(new Intent(UartServer.MSG).putExtra("serialport", new UartClass(null, UartType.OT_JOG)));
 
+                } else if (action == MotionEvent.ACTION_UP) {
+                    // 松开 todo 处理相关逻辑
+                    MyApplication.getInstance().sendBroadcast(new Intent(UartServer.MSG).putExtra("serialport", new UartClass(null, UartType.OT_STOP_BYTE)));
+
+                }
+                return false;
+
+            }
+        });
 
     }
 
@@ -322,15 +342,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 overridePendingTransition(0, 0);
                 break;
             case R.id.ll_run:
-                ChoosePrograms();
-
-
-                break;
-            case R.id.ll_fast:
+//                ChoosePrograms();
                 startActivity(new Intent(MainActivity.this, FastActivity.class));
                 overridePendingTransition(0, 0);
 
                 break;
+
 
         }
 

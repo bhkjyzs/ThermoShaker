@@ -66,9 +66,6 @@ public class FastActivity extends BaseActivity implements View.OnClickListener {
 
                 break;
             case R.id.btnReturn:
-                finish();
-                break;
-            case R.id.btnRun:
                 run_flag=1;
                 Btn_SetTM.setEnabled(false);
                 Btn_SetTM.setTextColor(getResources().getColor(R.color.gray));
@@ -76,6 +73,12 @@ public class FastActivity extends BaseActivity implements View.OnClickListener {
                 Btn_SetSpeed.setTextColor(getResources().getColor(R.color.gray));
                 Btn_SetTime.setEnabled(false);
                 Btn_SetTime.setTextColor(getResources().getColor(R.color.gray));
+                break;
+            case R.id.btnRun:
+
+                finish();
+
+
                 break;
             case R.id.ll_lid:
                 showLidkeyDialog(String.valueOf(38));

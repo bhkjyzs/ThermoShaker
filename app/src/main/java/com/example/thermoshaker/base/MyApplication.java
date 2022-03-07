@@ -17,6 +17,7 @@ import com.example.thermoshaker.serial.uart.adjust.AdjustInterface;
 import com.example.thermoshaker.serial.uart.adjust.Default_adjustClass;
 import com.example.thermoshaker.serial.uart.debug.DebugInterface;
 import com.example.thermoshaker.serial.uart.debug.Default_debugClass;
+import com.example.thermoshaker.serial.uart.running.Default_tdfileRunClass;
 import com.example.thermoshaker.serial.uart.running.TdfileRunClass;
 import com.example.thermoshaker.serial.uart.running.TdfileRunInterface;
 import com.example.thermoshaker.serial.uart.system.DefaultSystemClass;
@@ -158,7 +159,7 @@ public class MyApplication extends Application {
         systemClass = new DefaultSystemClass();
         adjustClass = new Default_adjustClass();
         debugClass = new Default_debugClass();
-        runningClass= new TdfileRunClass();
+        runningClass= new Default_tdfileRunClass();
 
 
     }

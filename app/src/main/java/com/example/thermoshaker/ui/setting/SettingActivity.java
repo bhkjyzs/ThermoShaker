@@ -120,7 +120,6 @@ public class SettingActivity extends BaseActivity {
         listNames.add(getString(R.string.setting_factory));
         listNames.add(getString(R.string.ImportExport) + "");
         listNames.add(getString(R.string.Runsettings) + "");
-        listNames.add(getString(R.string.inching) + "");
         listNames.add(getString(R.string.returnname) + "");
 
         listImgs.add(R.drawable.echangec);
@@ -131,7 +130,6 @@ public class SettingActivity extends BaseActivity {
         listImgs.add(R.drawable.setting);
         listImgs.add(R.drawable.input);
         listImgs.add(R.drawable.runsetting_img);
-        listImgs.add(R.drawable.inching);
         listImgs.add(R.drawable.return_img);
 
         tv_times = findViewById(R.id.tv_times);
@@ -182,9 +180,6 @@ public class SettingActivity extends BaseActivity {
                         runSetting();
                         break;
                     case 8:
-
-                        break;
-                    case 9:
                         finish();
                         overridePendingTransition(0, 0);
                         break;

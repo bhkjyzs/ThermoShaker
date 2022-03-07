@@ -104,22 +104,7 @@ public class FileActivity extends BaseActivity implements View.OnClickListener {
 
                     return;
                 }
-//                if(!CommandDateUtil.SendDataCommand(ControlParam.DT_FILE, CommandDateUtil.getProgramByte(rvListFileAdapter.getData().get(ChooseFilePos)))){
-//                    return;
-//                }
-                if (!CommandDateUtil.SendCommand(ControlParam.OT_RUN)) {
-                    //Toast.makeText(RunningActivity.this,"not start running",Toast.LENGTH_SHORT);
-                    //Message msg=new Message();
-                    //msg.what=MyApp.RUNNING_ERROR;
-                    //handler.sendMessage(msg);
-                    return;
-                }
-                byte[] temp = CommandDateUtil.SendQueryCommand(ControlParam.ASK_RUNDATA);
-                if(temp!=null){
-                    FileRunProgram runParam = CommandDateUtil.bioRunParam(temp);
-
-
-                }
+                runFile(rvListFileAdapter.getData().get(ChooseFilePos));
 
 
 

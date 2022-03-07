@@ -206,10 +206,8 @@ public abstract class BaseActivity extends Activity {
 
 
     public void runFile(ProgramInfo programInfo){
-        Intent intentRun = new Intent(UartServer.MSG);
-        intentRun.putExtra("serialport", new UartClass(null, UartType.OT_RUN_BYTE));
-        sendBroadcast(intentRun);
-        SystemClock.sleep(500);
+
+
         if(getProgramByte(programInfo)){
 
             String jsonOutput = JSON.toJSONString(programInfo);
@@ -221,7 +219,10 @@ public abstract class BaseActivity extends Activity {
             MyApplication.getInstance().isRunWork = true;
 
         };
-
+        SystemClock.sleep(500);
+        Intent intentRun = new Intent(UartServer.MSG);
+        intentRun.putExtra("serialport", new UartClass(null, UartType.OT_RUN_BYTE));
+        sendBroadcast(intentRun);
     }
 
 

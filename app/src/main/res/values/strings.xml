@@ -98,6 +98,8 @@
     <string name="step">步骤</string>
     <string name="noDelete">不能删除</string>
     <string name="RemainingTime">剩余时间:</string>
+    <string name="currentStep">当前步骤:</string>
+    <string name="StepTime">步骤时间:</string>
 
     <string name="step1">步骤1</string>
     <string name="step2">步骤2</string>

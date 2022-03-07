@@ -48,7 +48,7 @@
                 android:text="@string/returnname"
 
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_28"
+                android:textSize="@dimen/sp_26"
                 />
         </LinearLayout>
         <LinearLayout
@@ -75,7 +75,7 @@
                 android:text="@string/pause"
 
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_28"
+                android:textSize="@dimen/sp_26"
                 />
         </LinearLayout>
         <LinearLayout
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/nextSection"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_28"
+                android:textSize="@dimen/sp_26"
                 />
         </LinearLayout>
         <LinearLayout
@@ -126,7 +126,7 @@
                 android:text="@string/stopit"
 
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_28"
+                android:textSize="@dimen/sp_26"
                 />
         </LinearLayout>
         <LinearLayout
@@ -153,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/Heatingprocess"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_28"
+                android:textSize="@dimen/sp_26"
                 />
         </LinearLayout>
 
@@ -224,7 +224,7 @@
             app:layout_constraintTop_toTopOf="@+id/mll_listStep"
             app:layout_constraintRight_toRightOf="@+id/mll_listStep"
             app:layout_constraintBottom_toBottomOf="@+id/mll_listStep"
-            android:layout_width="240dp"
+            android:layout_width="260dp"
             android:layout_height="0dp"
             tools:ignore="MissingConstraints">
 
@@ -237,7 +237,7 @@
             android:layout_marginRight="@dimen/dip_100"
             android:layout_marginTop="@dimen/dip_40"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_28"
+            android:textSize="@dimen/sp_26"
             android:text="@string/revolutions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -260,14 +260,27 @@
         </TextView>
 
         <TextView
-            android:id="@+id/tv_Temp"
+            android:id="@+id/tv_T"
             app:layout_constraintLeft_toLeftOf="@+id/ViewR"
             android:layout_marginRight="@dimen/dip_100"
             app:layout_constraintTop_toBottomOf="@+id/tv_ZSpeed"
             android:layout_marginTop="@dimen/dip_20"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_28"
+            android:textSize="@dimen/sp_26"
             android:text="@string/temperatures"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+        <TextView
+            android:id="@+id/tv_Temps"
+            app:layout_constraintLeft_toRightOf="@+id/tv_T"
+            android:layout_marginRight="@dimen/dip_100"
+            app:layout_constraintTop_toBottomOf="@+id/tv_ZSpeed"
+            android:layout_marginTop="@dimen/dip_20"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_26"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:ignore="MissingConstraints">
@@ -275,11 +288,12 @@
         </TextView>
 
         <TextView
-            app:layout_constraintLeft_toRightOf="@+id/tv_Temp"
+
+            app:layout_constraintLeft_toRightOf="@+id/tv_Temps"
             android:layout_marginTop="@dimen/dip_40"
             android:textSize="@dimen/sp_24"
             android:layout_marginLeft="@dimen/dip_4"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_Temp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_Temps"
             android:textColor="@color/white"
             android:text="°C"
             android:layout_width="wrap_content"
@@ -292,10 +306,10 @@
             android:id="@+id/tv_STime"
             app:layout_constraintLeft_toLeftOf="@+id/ViewR"
             android:layout_marginRight="@dimen/dip_100"
-            app:layout_constraintTop_toBottomOf="@+id/tv_Temp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_T"
             android:layout_marginTop="@dimen/dip_20"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_28"
+            android:textSize="@dimen/sp_26"
             android:text="@string/RemainingTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -304,9 +318,10 @@
         </TextView>
 
         <TextView
+            android:id="@+id/tv_EndTime"
             app:layout_constraintLeft_toRightOf="@+id/tv_STime"
             android:layout_marginTop="@dimen/dip_40"
-            android:textSize="@dimen/sp_24"
+            android:textSize="@dimen/sp_22"
             android:layout_marginLeft="@dimen/dip_4"
             app:layout_constraintBottom_toBottomOf="@+id/tv_STime"
             android:textColor="@color/white"
@@ -316,6 +331,64 @@
             tools:ignore="MissingConstraints">
 
         </TextView>
+        <TextView
+            android:id="@+id/tv_RunStep"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_STime"
+            android:layout_marginRight="@dimen/dip_100"
+            app:layout_constraintTop_toBottomOf="@+id/tv_STime"
+            android:layout_marginTop="@dimen/dip_20"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_26"
+            android:text="@string/currentStep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+        <TextView
+            android:id="@+id/tv_CurrentStep"
+            app:layout_constraintLeft_toRightOf="@+id/tv_RunStep"
+            android:layout_marginTop="@dimen/dip_40"
+            android:textSize="@dimen/sp_24"
+            android:layout_marginLeft="@dimen/dip_4"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_RunStep"
+            android:textColor="@color/white"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_RunStepTime"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_RunStep"
+            android:layout_marginRight="@dimen/dip_100"
+            app:layout_constraintTop_toBottomOf="@+id/tv_RunStep"
+            android:layout_marginTop="@dimen/dip_20"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_26"
+            android:text="@string/StepTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+        <TextView
+            android:id="@+id/tv_StepTime"
+            app:layout_constraintLeft_toRightOf="@+id/tv_RunStepTime"
+            android:layout_marginTop="@dimen/dip_40"
+            android:textSize="@dimen/sp_24"
+            android:layout_marginLeft="@dimen/dip_4"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_RunStepTime"
+            android:textColor="@color/white"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

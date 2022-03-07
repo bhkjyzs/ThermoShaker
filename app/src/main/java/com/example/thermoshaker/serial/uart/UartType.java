@@ -46,6 +46,8 @@ public class UartType {
 	public static final byte OT_DB_TE4_CL_BYTE[] = { (byte) 0xaa, (byte) 0xab, (byte) 0x5d, 0, 0, 0 };
 	// 模块4关闭命令
 	public static final byte OT_DB_TE4_OFF_BYTE[] = { (byte) 0xaa, (byte) 0xab, (byte) 0x5e, 0, 0, 0 };
+	//点动
+	public static final byte OT_JOG[] = { (byte) 0xaa, (byte) 0xab, (byte) 0xA5, 0, 0, 0 };
 
 	// 风扇开启命令
 	public static final byte OT_DB_FAN_ON_BYTE[] = { (byte) 0xaa, (byte) 0xab, (byte) 0x64, 0, 0, 0 };

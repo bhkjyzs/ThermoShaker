@@ -12,6 +12,7 @@ import com.example.thermoshaker.serial.uart.Crc16JiaoYanMa;
 import com.example.thermoshaker.serial.uart.UartClass;
 import com.example.thermoshaker.serial.uart.UartServer;
 import com.example.thermoshaker.serial.uart.UartType;
+import com.example.thermoshaker.util.TimeUtils;
 import com.licheedev.myutils.LogPlus;
 
 import java.math.BigDecimal;
@@ -112,8 +113,20 @@ public class TdfileRunClass implements TdfileRunInterface {
 	}
 
 	@Override
-	public int getCURWaitTime() {
+	public int getStepSurplusTime() {
 		return 0;
+	}
+
+	@Override
+	public String getStepSurplusStr() {
+		int time = getStepSurplusTime();
+		MyApplication app = MyApplication.getInstance();
+		if (time == 0)
+			return "∞";
+		else
+
+			return TimeUtils.secondToTime(time);
+
 	}
 
 

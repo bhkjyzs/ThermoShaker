@@ -14,7 +14,7 @@ import java.util.Date;
 public class Default_tdfileRunClass extends TdfileRunClass {
 	public Default_tdfileRunClass() {
 		super();
-		size = 29;
+		size = 25;
 		init();
 	}
 
@@ -38,21 +38,21 @@ public class Default_tdfileRunClass extends TdfileRunClass {
 
 	}
 
-	/* 当前等待时间 4/8-11 */
+	/* 当前等待时间 2/8-9 */
 	@Override
-	public int getCURWaitTime() {
-		return Utils.byteArrayToInt4(data, 8);
+	public int getStepSurplusTime() {
+		return Utils.byteArrayToInt(data, 8);
 	}
 
-	/* 当前总剩余时间 4/12-15 */
+	/* 当前总剩余时间 2/10-11 */
 	@Override
 	public int getCURRemnantTime() {
-		return Utils.byteArrayToInt4(data, 12);
+		return Utils.byteArrayToInt(data, 10);
 	}
-	/* 剩余运行循环次数 1/16 */
+	/* 剩余运行循环次数 1/12 */
 	@Override
 	public int getRunCir() {
-		return data[16] & 0xff;
+		return data[12] & 0xff;
 	}
 
 	/* 17字节暂不取 */
@@ -60,30 +60,30 @@ public class Default_tdfileRunClass extends TdfileRunClass {
 
 
 
-	/* 模块后台显示温度 2/18-19 */
+	/* 模块后台显示温度 2/14-15 */
 	@Override
 	public float getBlockTemp1A() {
+		int val = Utils.byteArrayToInt(data, 14);
+		return decimalToFloat(val / 100f);
+	}
+
+	/* 模块显示温度 2/16-17 */
+	@Override
+	public float getDispTemp1A() {
+		int val = Utils.byteArrayToInt(data, 16);
+		return decimalToFloat(val / 100f);
+	}
+	/* 热盖后台显示温度 2/18-19 */
+	@Override
+	public float getLidModuleTemp() {
 		int val = Utils.byteArrayToInt(data, 18);
 		return decimalToFloat(val / 100f);
 	}
 
-	/* 模块显示温度 2/20-21 */
-	@Override
-	public float getDispTemp1A() {
-		int val = Utils.byteArrayToInt(data, 20);
-		return decimalToFloat(val / 100f);
-	}
-	/* 热盖后台显示温度 2/22-23 */
-	@Override
-	public float getLidModuleTemp() {
-		int val = Utils.byteArrayToInt(data, 22);
-		return decimalToFloat(val / 100f);
-	}
-
-	/* 热盖显示温度 2/24-25 */
+	/* 热盖显示温度 2/20-21 */
 	@Override
 	public float getLidDispTemp() {
-		int val = Utils.byteArrayToInt(data, 24);
+		int val = Utils.byteArrayToInt(data, 20);
 		return decimalToFloat(val / 100f);
 	}
 
@@ -92,45 +92,44 @@ public class Default_tdfileRunClass extends TdfileRunClass {
 		return super.getARunFileDefectEnum();
 
 	}
-
+	/* 当前运行状态 1/22 */
 	@Override
 	public int getRunCourse() {
-		return data[26] & 0xFF;
+		return data[22] & 0xFF;
 	}
 
-	/* 下位机文件是否丢失 1/51 */
+	/* 下位机文件是否丢失 1/23 */
 	@Override
 	public int getARunFileDefect() {
-		return data[27] & 0xFF;
+		return data[23] & 0xFF;
 	}
 
 
 
 
-	/* 环境温度参数 2/238-239 */
 
 	/* 系统错误代码 4/240-243 */
 	@Override
 	public int getSystemErrCode1() {
-		return data[30] & 0xff;
+		return data[26] & 0xff;
 	}
 
 	@Override
 	public int getSystemErrCode2() {
-		return data[31] & 0xff;
+		return data[27] & 0xff;
 	}
 
 	@Override
 	public int getSystemErrCode3() {
-		return data[32] & 0xff;
+		return data[28] & 0xff;
 	}
 
 	@Override
 	public int getSystemErrCode4() {
-		return data[33] & 0xff;
+		return data[29] & 0xff;
 	}
 
-	/* 校验码和结束符 3/34-36 */
+	/* 校验码和结束符 3/30-32 */
 
 	@Override
 	protected String getErrCodeStr(int val) {

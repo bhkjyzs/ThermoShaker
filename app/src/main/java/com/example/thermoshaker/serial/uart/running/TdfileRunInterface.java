@@ -22,7 +22,8 @@ public interface TdfileRunInterface {
 
 	public int getALLRunStepNum();//总步骤
 
-	public int getCURWaitTime();//当前等待时间
+	public int getStepSurplusTime();//当前步骤剩余时间
+	public String getStepSurplusStr();//当前步骤剩余时间
 
 	public int getCURRemnantTime();//当前总剩余时间
 	public String getCUREndTimeStr();//当前总剩余时间

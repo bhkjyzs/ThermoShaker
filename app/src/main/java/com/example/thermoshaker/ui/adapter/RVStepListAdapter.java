@@ -59,8 +59,10 @@ public class RVStepListAdapter extends BaseQuickAdapter<ProgramStep, BaseViewHol
             mLoop.setVisibility(View.GONE);
         }
         if(selectPostion==baseViewHolder.getAdapterPosition()){
-            mll_bg.setBackgroundColor(getContext().getColor(R.color.white));
+            multiWaveHeader.selected(true);
         }else {
+            multiWaveHeader.noSelected();
+
         }
         if (baseViewHolder.getAdapterPosition() > 0) {
             /* 取上一个步骤 */

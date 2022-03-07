@@ -46,6 +46,9 @@ import com.example.thermoshaker.util.key.Util;
 import com.licheedev.hwutils.ByteUtil;
 import com.licheedev.myutils.LogPlus;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class RunActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "RunActivity";
     public final static String MSG = RunActivity.class.getName();
@@ -54,7 +57,7 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
     private AAChartView AAChartView;
     private TextView tv_detil;
     public ProgramInfo programInfo;
-    private TextView tv_times, tv_ZSpeed, tv_Temp, tv_STime, tvNum,tv_state;
+    private TextView tv_times, tv_ZSpeed, tv_Temps, tv_EndTime,tv_CurrentStep, tvNum,tv_state,tv_StepTime;
     private LinearLayout ll_return, ll_pause, ll_next, ll_stop, ll_deil;
     private RecyclerView rv_StepList;
     private RVStepListAdapter RVStepListAdapter;
@@ -87,7 +90,10 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         Intent intent = getIntent();
 
         programInfo = (ProgramInfo) intent.getSerializableExtra("programInfo");
+        RVStepListAdapter = new RVStepListAdapter(R.layout.gv_step_list_item, this);
         GetViews();
+        rv_StepList.setAdapter(RVStepListAdapter);
+        RVStepListAdapter.setList(programInfo.getStepList());
         refreshDate();
         handler.sendEmptyMessageDelayed(msg_refresh,1000);
 
@@ -104,9 +110,11 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         mCltiao = findViewById(R.id.mCltiao);
         mCldetil =findViewById(R.id.mCldetil);
         tv_state = findViewById(R.id.tv_state);
+        tv_StepTime = findViewById(R.id.tv_StepTime);
+        tv_CurrentStep = findViewById(R.id.tv_CurrentStep);
         tv_ZSpeed = findViewById(R.id.tv_ZSpeed);
-        tv_Temp = findViewById(R.id.tv_Temp);
-        tv_STime = findViewById(R.id.tv_STime);
+        tv_Temps = findViewById(R.id.tv_Temps);
+        tv_EndTime = findViewById(R.id.tv_EndTime);
         tv_times = findViewById(R.id.tv_times);
         ll_return = findViewById(R.id.ll_return);
         ll_pause = findViewById(R.id.ll_pause);
@@ -142,7 +150,7 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
 
     private void ChartView() {
         AAChartModel aaChartModel = new AAChartModel().chartType(AAChartType.Line)
-                .title("THE HEAT OF PROGRAMMING LANGUAGE")
+                .title("THIS IS ")
                 .subtitle("Virtual Data")
                 .backgroundColor("#4b2b7f")
                 .categories(new String[]{"Java","Swift","Python","Ruby", "PHP","Go","C","C#","C++"})
@@ -172,11 +180,6 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void initDate() {
         updateSystemTime(tv_times);
-        RVStepListAdapter = new RVStepListAdapter(R.layout.gv_step_list_item, this);
-        rv_StepList.setAdapter(RVStepListAdapter);
-        RVStepListAdapter.setList(programInfo.getStepList());
-        RVStepListAdapter.setList(programInfo.getStepList());
-
     }
 
     @SuppressLint("WrongConstant")
@@ -284,12 +287,25 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         }
     };
     private void refreshDate() {
+
         MyApplication app = MyApplication.getInstance();
-//        int pos = app.runningClass.getRunStep();
-//        tv_STime.setText(app.runningClass.getCUREndTimeStr()+"");
-//        tvNum.setText(app.runningClass.getRunCir()+"");
-//        RVStepListAdapter.setSelectPostion(pos-1);
-//        RVStepListAdapter.notifyDataSetChanged();
+        //当前步骤
+        int pos = app.runningClass.getRunStep();
+        if(pos==0){
+            return;
+        }
+        tv_EndTime.setText(app.runningClass.getCUREndTimeStr()+"");
+        tv_Temps.setText(app.runningClass.getDispTemp1A()+"");
+        tvNum.setText(app.runningClass.getRunCir()+"");
+        tv_CurrentStep.setText(app.runningClass.getRunStep()+"");
+        tv_StepTime.setText(app.runningClass.getStepSurplusStr()+"");
+        Log.d(TAG,app.runningClass.getCUREndTimeStr()+""+app.runningClass.getRunCir()+"");
+
+        if(RVStepListAdapter!=null){
+
+        }
+        RVStepListAdapter.setSelectPostion(pos-1);
+        RVStepListAdapter.notifyDataSetChanged();
 
 
     }
