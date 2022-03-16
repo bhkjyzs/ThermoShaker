@@ -119,6 +119,7 @@
 
     </TextView>
     <TextView
+        android:id="@+id/tv_Tamp"
         android:text="0°C"
         android:textSize="@dimen/sp_30"
         android:textColor="@color/black"
@@ -170,6 +171,7 @@
 
     </TextView>
     <TextView
+        android:id="@+id/tv_ZSpeed"
         android:text="0 RPM"
         android:textSize="@dimen/sp_30"
         android:textColor="@color/black"
@@ -219,6 +221,7 @@
 
     </TextView>
     <TextView
+        android:id="@+id/tv_time"
         android:text="00:00:00"
         android:textSize="@dimen/sp_30"
         android:textColor="@color/black"

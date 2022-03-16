@@ -65,7 +65,7 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
 
     private EditText edLoorBegin,edLoorOver,edLoorNum;
     private TextView tvTime,tvFileNmae;
-    private LinearLayout mll_Revolution,mll_temp;
+    private View viewTemp,viewRevolution;
     private TextView tvTemperatures,tvRevolution;
     private FloatingKeyboard keyboardview;
     private View mViewSenior;
@@ -79,11 +79,17 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initView() {
+        try {
+
         Intent intent = getIntent();
         programInfo = (ProgramInfo) intent.getSerializableExtra("ProgramInfo");
         isEdit = intent.getBooleanExtra("isEdit",false);
         BroadCast();
         GetViews();
+
+        }catch (Exception e){
+
+        }
     }
     private void BroadCast() {
         BroadcastManager.getInstance(this).addAction(MSG, new BroadcastReceiver(){
@@ -117,8 +123,8 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
         ll_save = findViewById(R.id.ll_save);
         ll_run = findViewById(R.id.ll_run);
         ll_del = findViewById(R.id.ll_del);
-        mll_temp = findViewById(R.id.mll_temp);
-        mll_Revolution = findViewById(R.id.mll_Revolution);
+        viewTemp = findViewById(R.id.viewTemp);
+        viewRevolution = findViewById(R.id.viewRevolution);
         ckLoorSwitch = findViewById(R.id.ckLoorSwitch);
         ll_return = findViewById(R.id.ll_return);
         edLoorBegin = findViewById(R.id.edLoorBegin);
@@ -136,8 +142,8 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
         ll_save.setOnClickListener(this);
         ll_run.setOnClickListener(this);
         ll_del.setOnClickListener(this);
-        mll_temp.setOnClickListener(this);
-        mll_Revolution.setOnClickListener(this);
+        viewTemp.setOnClickListener(this);
+        viewRevolution.setOnClickListener(this);
         ll_return.setOnClickListener(this);
         ll_lid.setOnClickListener(this);
         tvTemperatures.setOnClickListener(this);
@@ -297,10 +303,10 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                 showLidkeyDialog(String.valueOf(programInfo.getLidTm()));
 
                 break;
-            case R.id.mll_temp:
+            case R.id.viewTemp:
                 showkeyDialog(CustomKeyEditDialog.TYPE.Temp,String.valueOf(programInfo.getStepList().get(ChoosePos).getTemperature()));
                 break;
-            case R.id.mll_Revolution:
+            case R.id.viewRevolution:
                 showkeyDialog(CustomKeyEditDialog.TYPE.RPM,String.valueOf(programInfo.getStepList().get(ChoosePos).getZSpeed()));
                 break;
             case R.id.tvTime:
@@ -328,9 +334,9 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                         if(!isEdit){
                             if(programInfo.getStepList().size()!=0){
 
-                            Log.d(TAG,JSON.toJSON(programInfo)+"");
+                            Log.d(TAG,JSON.toJSONString(programInfo));
 
-                            DataUtil.writeData(JSON.toJSON(programInfo)+"", DataUtil.data_path+ DataUtil.data_name, programInfo.getFileName() + ".Tso", false);
+                            DataUtil.writeData(JSON.toJSONString(programInfo), DataUtil.data_path+ DataUtil.data_name, programInfo.getFileName() + ".Tso", false);
                             finish();
                             overridePendingTransition(0, 0);
 
@@ -347,8 +353,8 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                             boolean exists = file.exists();
                             boolean isSuccess = file.delete();
                             if (isSuccess) {
-                                Log.d(TAG,JSON.toJSON(programInfo)+"");
-                                DataUtil.writeData(JSON.toJSON(programInfo)+"", DataUtil.data_path+ DataUtil.data_name, programInfo.getFileName() + "", false);
+                                Log.d(TAG,JSON.toJSONString(programInfo));
+                                DataUtil.writeData(JSON.toJSONString(programInfo), DataUtil.data_path+ DataUtil.data_name, programInfo.getFileName() + "", false);
 
                             }
                         }
@@ -408,9 +414,9 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                         @Override
                         public void onConfirm() {
                             if(!isEdit){
-                                Log.d(TAG,JSON.toJSON(programInfo)+"");
+                                Log.d(TAG,JSON.toJSONString(programInfo));
 
-                                DataUtil.writeData(JSON.toJSON(programInfo)+"", DataUtil.data_path+ DataUtil.data_name, programInfo.getFileName() + ".Tso", false);
+                                DataUtil.writeData(JSON.toJSONString(programInfo), DataUtil.data_path+ DataUtil.data_name, programInfo.getFileName() + ".Tso", false);
                                 finish();
                                 overridePendingTransition(0, 0);
 
@@ -423,8 +429,8 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                                 boolean exists = file.exists();
                                 boolean isSuccess = file.delete();
                                 if (isSuccess) {
-                                    Log.d(TAG,JSON.toJSON(programInfo)+"");
-                                    DataUtil.writeData(JSON.toJSON(programInfo)+"", DataUtil.data_path+ DataUtil.data_name, programInfo.getFileName() + "", false);
+                                    Log.d(TAG,JSON.toJSONString(programInfo));
+                                    DataUtil.writeData(JSON.toJSONString(programInfo), DataUtil.data_path+ DataUtil.data_name, programInfo.getFileName() + "", false);
                                 }
                             }
                             finish();

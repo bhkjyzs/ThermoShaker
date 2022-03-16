@@ -228,6 +228,8 @@ public abstract class BaseActivity extends Activity {
 
 
 
+
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -338,7 +340,7 @@ public abstract class BaseActivity extends Activity {
         //当前步骤 当前程序开始运行步骤
         bytes[4] = (byte) (1);
         //循环开关
-        bytes[5] = (byte) (programInfo.isLoopEnable()==true? 0:1);
+        bytes[5] = (byte) (programInfo.isLoopEnable()==false? 0:1);
         //开始步骤
         bytes[6] = (byte) programInfo.getLoopStart();
         //结束步骤

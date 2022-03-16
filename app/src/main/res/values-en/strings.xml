@@ -61,6 +61,7 @@
     <string name="RemainingTime">RemainingTime:</string>
     <string name="currentStep">Current step:</string>
     <string name="StepTime">Step time:</string>
+    <string name="RadiatorTemp">Radiator Temperature:</string>
 
     <string name="speeds">Speed:(℃/min)</string>
     <string name="times">Time:</string>

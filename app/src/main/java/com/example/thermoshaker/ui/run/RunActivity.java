@@ -55,7 +55,7 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
     private fileRunThread mThread; // 会话线程
     private ConstraintLayout mCltiao,mCldetil;
     private AAChartView AAChartView;
-    private TextView tv_detil;
+    private TextView tv_detil,tv_StepRadiatorTemp;
     public ProgramInfo programInfo;
     private TextView tv_times, tv_ZSpeed, tv_Temps, tv_EndTime,tv_CurrentStep, tvNum,tv_state,tv_StepTime;
     private LinearLayout ll_return, ll_pause, ll_next, ll_stop, ll_deil;
@@ -104,6 +104,7 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         mThread.start();
         /* 注册广播 */
         registerReceiver(recevier, new IntentFilter(MSG));
+        tv_StepRadiatorTemp = findViewById(R.id.tv_StepRadiatorTemp);
         tv_detil = findViewById(R.id.tv_detil);
         tvNum = findViewById(R.id.tvNum);
         AAChartView = findViewById(R.id.AAChartView);
@@ -296,6 +297,7 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         }
         tv_EndTime.setText(app.runningClass.getCUREndTimeStr()+"");
         tv_Temps.setText(app.runningClass.getDispTemp1A()+"");
+        tv_StepRadiatorTemp.setText(app.runningClass.getLidDispTemp()+"");
         tvNum.setText(app.runningClass.getRunCir()+"");
         tv_CurrentStep.setText(app.runningClass.getRunStep()+"");
         tv_StepTime.setText(app.runningClass.getStepSurplusStr()+"");

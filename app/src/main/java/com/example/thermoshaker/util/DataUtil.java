@@ -11,6 +11,7 @@ public class DataUtil {
     public static final String data_path = Environment.getExternalStorageDirectory().toString() + "/thermoshaker/";
     public static final String data_name = "UserFiles/";
     public static final String param_name = "RunFiles/";
+    public static final String fast_param_name = "FastRunFiles/";
 
     //软件升级文件名
     public static final String apk_data_name = "updateApks.apk";

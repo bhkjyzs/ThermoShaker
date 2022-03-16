@@ -200,4 +200,20 @@ public class ProgramStep implements Serializable {
     public int hashCode() {
         return Objects.hash(temperature, time, ZSpeed, direction, upSpeed, downSpeed, MixingMode, BlendStart, continued, intermission);
     }
+
+    @Override
+    public String toString() {
+        return "ProgramStep{" +
+                "temperature=" + temperature +
+                ", time=" + time +
+                ", ZSpeed=" + ZSpeed +
+                ", direction=" + direction +
+                ", upSpeed=" + upSpeed +
+                ", downSpeed=" + downSpeed +
+                ", MixingMode=" + MixingMode +
+                ", BlendStart=" + BlendStart +
+                ", continued=" + continued +
+                ", intermission=" + intermission +
+                '}';
+    }
 }

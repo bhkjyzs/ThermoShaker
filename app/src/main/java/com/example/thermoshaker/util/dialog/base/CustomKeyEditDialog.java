@@ -41,6 +41,7 @@ public class CustomKeyEditDialog extends Dialog implements View.OnClickListener 
     private String startString, endString;
     private String retString;
     private StepDefault stepDefault;
+    private Button btn_jian;
     private CustomKeyEditDialog.TYPE type; // 四种输入类型,1温度2时间3次数4目标
     private int pos; // 当输入位置时需要限制其不要超过自身
 
@@ -156,8 +157,10 @@ public class CustomKeyEditDialog extends Dialog implements View.OnClickListener 
         textView_mm = (TextView) view.findViewById(R.id.textView_mm);
         textView_mm.setOnClickListener(this);
         textView_ss = (TextView) view.findViewById(R.id.textView_ss);
-        textView_ss.setOnClickListener(this);
 
+        textView_ss.setOnClickListener(this);
+        btn_jian = view.findViewById(R.id.btn_jian);
+        btn_jian.setOnClickListener(this);
         backspaceBut = (ImageButton) view.findViewById(R.id.imageButton_back);
         backspaceBut.setOnClickListener(this);
     }
@@ -211,6 +214,9 @@ public class CustomKeyEditDialog extends Dialog implements View.OnClickListener 
                 case R.id.button11:
                     setChar(".");
                     break;
+                case R.id.btn_jian:
+                    setChar("-");
+                    break;
             }
         } catch (Exception e) {
             Log.d(TAG,e.getMessage()+"");
@@ -230,6 +236,7 @@ public class CustomKeyEditDialog extends Dialog implements View.OnClickListener 
             case RPM:
                 LinearLayout_time.setVisibility(View.GONE);
                 textView_input.setVisibility(View.VISIBLE);
+                btn_jian.setVisibility(View.GONE);
                 startString = "";
                 retString = string;
                 endString = " RPM";
@@ -240,6 +247,7 @@ public class CustomKeyEditDialog extends Dialog implements View.OnClickListener 
             case Temp: // 温度
                 LinearLayout_time.setVisibility(View.GONE);
                 textView_input.setVisibility(View.VISIBLE);
+                btn_jian.setVisibility(View.VISIBLE);
                 startString = "";
                 retString = string;
                 endString = " ℃";
@@ -250,6 +258,8 @@ public class CustomKeyEditDialog extends Dialog implements View.OnClickListener 
             case Time:// 时间
                 LinearLayout_time.setVisibility(View.VISIBLE);
                 textView_input.setVisibility(View.GONE);
+                btn_jian.setVisibility(View.GONE);
+
                 String[] str2 = string.split(":");
                 if (str2.length == 3) {
                     textView_hh.setText(str2[0]);
@@ -265,6 +275,7 @@ public class CustomKeyEditDialog extends Dialog implements View.OnClickListener 
 
                 break;
             case Num:// 次数
+                btn_jian.setVisibility(View.GONE);
                 LinearLayout_time.setVisibility(View.GONE);
                 textView_input.setVisibility(View.VISIBLE);
                 startString = "x ";
@@ -275,6 +286,7 @@ public class CustomKeyEditDialog extends Dialog implements View.OnClickListener 
             case Pos:// 目标
                 LinearLayout_time.setVisibility(View.GONE);
                 textView_input.setVisibility(View.VISIBLE);
+                btn_jian.setVisibility(View.GONE);
                 startString = "Step ";
                 retString = string;
                 endString = "";
@@ -391,7 +403,7 @@ public class CustomKeyEditDialog extends Dialog implements View.OnClickListener 
                 if (str.equals("."))
                     return;
                 /* 输入-1或空则输入0 */
-                if (str.equals("-1") || str.equals("") ) {
+                if ( str.equals("") ) {
                     valStr = "0";
                 } else {
                     valStr = str;
@@ -425,7 +437,7 @@ public class CustomKeyEditDialog extends Dialog implements View.OnClickListener 
             switch (type) {
                 case RPM://转速1000-3000
                     setInputText(valStr);
-				if(valStr.endsWith("."))
+                    if(valStr.endsWith("."))
 					return;
 				int valRPM = new BigDecimal(valStr).intValue();
 				if (valRPM == 0) {
@@ -436,6 +448,11 @@ public class CustomKeyEditDialog extends Dialog implements View.OnClickListener 
 				}
                     break;
                 case Temp: // 温度0~100 100倍
+                    if(valStr.endsWith("-")){
+                        setInputText(valStr);
+                        return;
+                    }
+
                     float valTemp = new BigDecimal(valStr).floatValue();
                     if (valTemp >= stepDefault.getMinTemp() && valTemp <= stepDefault.getMaxTemp()) {
                         setInputText(valStr);

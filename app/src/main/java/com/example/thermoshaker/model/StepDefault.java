@@ -5,7 +5,7 @@ import java.util.Date;
 public class StepDefault {
 
     // 温度
-    private float minTemp = 0;
+    private float minTemp = -5;
     private float maxTemp = 105;
     private float defaultTemp = 95; // 默认温度
     // 时间

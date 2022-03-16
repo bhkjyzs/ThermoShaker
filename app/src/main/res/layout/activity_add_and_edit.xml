@@ -310,6 +310,16 @@
 
         </LinearLayout>
 
+        <View
+            android:id="@+id/viewTemp"
+            app:layout_constraintBottom_toBottomOf="@+id/mll_temp"
+            app:layout_constraintTop_toTopOf="@+id/mll_temp"
+            app:layout_constraintLeft_toLeftOf="@+id/mll_temp"
+            app:layout_constraintRight_toRightOf="@+id/mll_temp"
+            android:layout_width="@dimen/dip_120"
+            android:layout_height="@dimen/dip_100">
+
+        </View>
 
         <TextView
             android:id="@+id/tv2"
@@ -354,7 +364,16 @@
                 android:layout_height="wrap_content">
             </TextView>
         </LinearLayout>
+        <View
+            android:id="@+id/viewRevolution"
+            app:layout_constraintBottom_toBottomOf="@+id/mll_Revolution"
+            app:layout_constraintTop_toTopOf="@+id/mll_Revolution"
+            app:layout_constraintLeft_toLeftOf="@+id/mll_Revolution"
+            app:layout_constraintRight_toRightOf="@+id/mll_Revolution"
+            android:layout_width="@dimen/dip_120"
+            android:layout_height="@dimen/dip_100">
 
+        </View>
         <TextView
             android:id="@+id/tv3"
             android:text="@string/times"
