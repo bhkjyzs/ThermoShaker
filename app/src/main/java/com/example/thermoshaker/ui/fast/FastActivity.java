@@ -40,7 +40,7 @@ public class FastActivity extends BaseActivity implements View.OnClickListener {
     private TextView tv_times,tv_lidTm;
     private TextView tv_Tamp,tv_ZSpeed,tv_time;
     private Button btnReturn,btnRun,Btn_SetTM,Btn_SetSpeed,Btn_SetTime;
-    private int run_flag=0;//0是没有运行 1 是正在运行，2是暂停
+    private int run_flag=0;//0是没有运行 1 是正在运行
     private boolean isRuning = false;//当前快速模式是否运行过
     private ProgramInfo programInfo= new ProgramInfo("FastFiles");
     @Override
@@ -101,13 +101,19 @@ public class FastActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.btnReturn:
 
+                if(run_flag!=1){
+                    fastRunFile(programInfo);
+                    btnReturn.setText(getString(R.string.run_state_stop));
+                }else {
+                    sendBroadcast(new Intent(UartServer.MSG).putExtra("serialport", new UartClass(null, UartType.OT_STOP_BYTE)));
+                    finish();
+                }
 
-                fastRunFile(programInfo);
                 break;
             case R.id.btnRun:
-
-                finish();
-
+                if(run_flag==0){
+                    finish();
+                }
 
                 break;
             case R.id.ll_lid:

@@ -18,6 +18,8 @@ public class UartType {
 	public static final byte OT_KEY_SOUND_BYTE[] = { (byte) 0xaa, (byte) 0xab, (byte) 0xc1, 0, 0, 0 };
 	// IAP升级命令
 	public static final byte OT_KEY_IAP_BYTE[] = { (byte) 0xaa, (byte) 0xab, (byte) 0xd1, 0, 0, 0 };
+	public static final byte OT_KEY_IAP_FLASH[] = { (byte) 0x5a, (byte) 0x00, (byte) 0x00, (byte) 0x00, 0, 0 };
+
 	// 运行调试模式命令
 	public static final byte OT_DEBUG_RUN_BYTE[] = { (byte) 0xaa, (byte) 0xab, (byte) 0x51, 0, 0, 0 };
 	// 停止调试模式命令

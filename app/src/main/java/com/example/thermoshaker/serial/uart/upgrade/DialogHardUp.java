@@ -3,11 +3,15 @@ package com.example.thermoshaker.serial.uart.upgrade;
 
 import static com.example.thermoshaker.serial.DataUtils.HexToByteArr;
 import static com.example.thermoshaker.serial.DataUtils.byteMergerAll;
+import static com.example.thermoshaker.serial.DataUtils.bytes2Int;
 import static com.example.thermoshaker.serial.DataUtils.crc16;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
@@ -24,18 +28,21 @@ import android.widget.TextView;
 
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.base.MyApplication;
+import com.example.thermoshaker.serial.ByteUtil;
 import com.example.thermoshaker.serial.CommandDateUtil;
 import com.example.thermoshaker.serial.ControlParam;
+import com.example.thermoshaker.serial.uart.UartClass;
+import com.example.thermoshaker.serial.uart.UartServer;
+import com.example.thermoshaker.serial.uart.UartType;
 
 import java.io.File;
 import java.io.FileInputStream;
-
-
 public class DialogHardUp extends Dialog {
     private static final String TAG = "DialogHardUp";
-
+    public final static String MSG = DialogHardUp.class.getName();
     private DialogHardUp(Context context) {
         super(context, R.style.CustomDialog);
+
     }
 
     public static class Builder {
@@ -84,29 +91,39 @@ public class DialogHardUp extends Dialog {
                 }
             }
         };
-
+        private BroadcastReceiver recevier = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                byte[] bin = intent.getByteArrayExtra("serialport");
+                if (bin != null) {
+                    ReceArray = bin;
+                }
+            }
+        };
         public Builder(final Context context,MyApplication myApplication ,String file_path) {
-            mdialog.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+            /* 注册广播 */
+            MyApplication.getInstance().registerReceiver(recevier, new IntentFilter(MSG));
             mdialog = new DialogHardUp(context);
+            mdialog.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
             this.MyApp = myApplication;
             this.context = context;
             file = new File(file_path);
             view = LayoutInflater.from(context).inflate(R.layout.update_layout_dialog, null);
+            mdialog.setContentView(view);
             Window dialogWindow = mdialog.getWindow();
             WindowManager.LayoutParams lp = dialogWindow.getAttributes();
             dialogWindow.setGravity(Gravity.CENTER);
-
             dialogWindow.setAttributes(lp);
-            dialogWindow.requestFeature(Window.FEATURE_NO_TITLE);
-            mdialog.setContentView(view);
+//            dialogWindow.requestFeature(Window.FEATURE_NO_TITLE);
+//            mdialog.setCancelable(true);
+//            mdialog.setCanceledOnTouchOutside(true);
             TextView title = mdialog.findViewById(R.id.title);
             title.setText(context.getString(R.string.firmwareupdate));
-
             tv_msg = mdialog.findViewById(R.id.tv_msg);
             pB_Level_up = mdialog.findViewById(R.id.pB_Level_up);
-            mdialog.findViewById(R.id.btn_sure).setVisibility(View.GONE);
+//            mdialog.findViewById(R.id.btn_sure).setVisibility(View.GONE);
             mdialog.findViewById(R.id.btn_next).setVisibility(View.GONE);
-            mdialog.findViewById(R.id.btn_cancel).setVisibility(View.GONE);
+//            mdialog.findViewById(R.id.btn_cancel).setVisibility(View.GONE);
             mdialog.findViewById(R.id.btn_sure).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -120,7 +137,7 @@ public class DialogHardUp extends Dialog {
                                     hardUp(file);
                                 } catch (Exception e) {
                                     Log.d(TAG,e.toString());
-                                    mdialog.cancel();
+//                                    mdialog.cancel();
 
                                 }
                             }
@@ -182,9 +199,16 @@ public class DialogHardUp extends Dialog {
         }
 
         public void hardUp(File file) throws Exception {
+            Intent intentUart = new Intent(UartServer.MSG);
+
             Log.i(TAG, "******  start hardup_grade ******** ");
             int progress = 0;
             long filecontent = file.length();
+            if (!file.exists() || file.length() < 100)
+                throw new Exception("file is null");
+
+
+
 
             Message message = new Message();
             message.what = PROGRESSBAR_FLAG;
@@ -195,42 +219,19 @@ public class DialogHardUp extends Dialog {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             Log.i(TAG, "******  send upgrade order ******** ");
-
-            byte[] b1 = {(byte) 0xAA};
-            byte b2 = ControlParam.head_order;
-            byte b3 = ControlParam.OT_UPDATE_APP;
-            byte[] temp = {b2, b3};
-            byte[] b5 = HexToByteArr(crc16(temp));
-            byte[] b7 = {(byte) 0x55};
-            byte[] All = byteMergerAll(b1, temp, b5, b7);
-            if (CommandDateUtil.sendDataUpdate(All,1000) == null) {
-                //Toast.makeText(context,"upgrade is failed",Toast.LENGTH_SHORT).show();
+            // 重启命令
+            intentUart.putExtra("serialport", new UartClass(MSG, UartType.OT_KEY_IAP_BYTE));
+            MyApplication.getInstance().sendBroadcast(intentUart);
+            if (readArray(1000)[0] == 0) // 6
+            {
                 Log.i(TAG, "******  send upgrade order failed******** ");
-                Message msg = new Message();
-                msg.what = UPGRADE_INFO_FAILED;
-                handler.sendMessage(msg);
-                isUp = false;
-                return;
+                throw new Exception("error cmd");
             }
-
             {
                 Message msg = new Message();
                 msg.what = UPGRADE_INFO_RUNNING;
                 handler.sendMessage(msg);
-            }
-
-            Log.i(TAG, "******  start 0x31 ******** ");
-            //发送准备就绪
-            if (CommandDateUtil.sendDataUpdate(new byte[]{0x31},1000)[0] == 0) {
-                //Toast.makeText(context,"upgrade is failed",Toast.LENGTH_SHORT).show();
-                Log.i(TAG, "******  start 0x31 failed******** ");
-                Message msg = new Message();
-                msg.what = UPGRADE_INFO_FAILED;
-                handler.sendMessage(msg);
-                isUp = false;
-                return;
             }
 
             //发送数据包
@@ -243,7 +244,7 @@ public class DialogHardUp extends Dialog {
             byte SOH = 0x01; /* start of 128-byte data packet */
             byte STX = 0x02; /* start of 1024-byte data packet */
             byte EOT = 0x04; /* end of transmission */
-            byte ACK = 0x06; /* acknowledge */
+            byte ACK = 0x01; /* acknowledge */
 
             // const byte NAK = 0x15; /* negative acknowledge */
             // byte CRC16 = 0x43;/* 'C' == 0x43, request 16-bit CRC */
@@ -277,19 +278,32 @@ public class DialogHardUp extends Dialog {
             message2.what = PROGRESSBAR_FLAG;
             message2.arg1 = progress;
             handler.sendMessage(message2);
+            byte[] bytes = sendYmodemStartPacket(SOH, "Firmware.bin", filecontent);
 
             // 第一帧命令,因为要擦除flash，所以需要很长时间
             Log.i(TAG, "******  first hardup_grade order ******** ");
-            if (CommandDateUtil.sendDataUpdate(sendYmodemStartPacket(SOH, "Firmware.bin", filecontent),10000)[0] != (byte) ACK) {
-                //Toast.makeText(context,"debug is failed",Toast.LENGTH_SHORT).show();
-                Log.i(TAG, "******  first hardup_grade order failed******** ");
-                Message msg = new Message();
-                msg.what = UPGRADE_INFO_FAILED;
-                handler.sendMessage(msg);
-                isUp = false;
+            // 第一帧命令,因为要擦除flash，所以需要很长时间
+            intentUart.putExtra("serialport",
+                    new UartClass(MSG, sendYmodemStartPacket(SOH, "Firmware.bin", filecontent), false, 10000));
+            MyApplication.getInstance().sendBroadcast(intentUart);
+            if (readArray(10000)[0] == (byte) ACK) // 6
+            {
+                byte bytttt = readArray(10000)[0];
+                Log.d(TAG,bytttt+ "\n"+  Integer.toHexString(readArray(10000)[0] & 0xFF));
 
-                return;
+                Log.i(TAG, "******  first hardup_grade order failed******** ");
+                throw new Exception("error flash send");
             }
+//            if (CommandDateUtil.sendDataUpdate(sendYmodemStartPacket(SOH, "Firmware.bin", filecontent),10000)[0] != (byte) ACK) {
+//                //Toast.makeText(context,"debug is failed",Toast.LENGTH_SHORT).show();
+//                Log.i(TAG, "******  first hardup_grade order failed******** ");
+//                Message msg = new Message();
+//                msg.what = UPGRADE_INFO_FAILED;
+//                handler.sendMessage(msg);
+//                isUp = false;
+//
+//                return;
+//            }
 
             /* send packets with a cycle until we send the last byte */
             int fileReadCount = 0;
@@ -321,16 +335,21 @@ public class DialogHardUp extends Dialog {
                     CRC = crc16Ccitt.ComputeChecksumBytes(data);
                     /* send the packet */
                     Log.i(TAG, "******  send packet " + stepNum + "******** ");
-                    if (CommandDateUtil.sendDataUpdate(sendYmodemPacket(PacketHead, packetNumber,
-                            invertedPacketNumber, data, dataSize, CRC, crcSize),1000)[0] != (byte) ACK) {
-                        //Toast.makeText(context, "debug is failed", Toast.LENGTH_SHORT).show();
-                        Log.i(TAG, "******  send packet " + stepNum + " failed ******** ");
-                        Message msg = new Message();
-                        msg.what = UPGRADE_INFO_FAILED;
-                        handler.sendMessage(msg);
-                        isUp = false;
-                        return;
-                    }
+
+                    intentUart.putExtra("serialport", new UartClass(MSG, sendYmodemPacket(PacketHead, packetNumber,
+                            invertedPacketNumber, data, dataSize, CRC, crcSize), false));
+                    MyApplication.getInstance().sendBroadcast(intentUart);
+
+//                    if (CommandDateUtil.sendDataUpdate(sendYmodemPacket(PacketHead, packetNumber,
+//                            invertedPacketNumber, data, dataSize, CRC, crcSize),1000)[0] != (byte) ACK) {
+//                        //Toast.makeText(context, "debug is failed", Toast.LENGTH_SHORT).show();
+//                        Log.i(TAG, "******  send packet " + stepNum + " failed ******** ");
+//                        Message msg = new Message();
+//                        msg.what = UPGRADE_INFO_FAILED;
+//                        handler.sendMessage(msg);
+//                        isUp = false;
+//                        return;
+//                    }
 
                     progress += stepNum;
                     if (progress > 100)
@@ -339,6 +358,12 @@ public class DialogHardUp extends Dialog {
                     message3.what = PROGRESSBAR_FLAG;
                     message3.arg1 = progress;
                     handler.sendMessage(message3);
+                    /* wait for ACK */
+                    if (readArray(1000)[0] != (byte) ACK) {
+                        Log.i(TAG, "******  send packet " + stepNum + " failed ******** ");
+                        throw new Exception("error data send");
+
+                    }
 
                 } while (fileReadCount == dataSize);
             } catch (Exception e) {
@@ -384,67 +409,95 @@ public class DialogHardUp extends Dialog {
             message4.what = UPGRADE_INFO_SUCCEED;
             handler.sendMessage(message4);
             isSucceed = true;
+            if (recevier != null) {
+                MyApplication.getInstance().unregisterReceiver(recevier);
+                recevier = null;
+            }
         }
 
         // 写数据
         private byte[] sendYmodemPacket(byte PacketHead, byte packetNumber, byte invertedPacketNumber, byte[] data,
                                         int dataSize, byte[] CRC, int crcSize) {
-            byte[] ret = new byte[1 + 1 + 1 + dataSize + crcSize];
-            ret[0] = PacketHead;
-            ret[1] = packetNumber;
-            ret[2] = invertedPacketNumber;
-            for (int i = 0; i < dataSize; i++) {
-                ret[3 + i] = data[i];
-            }
-            int pos = 3 + dataSize;
-            for (int j = 0; j < crcSize; j++) {
-                ret[pos + j] = CRC[j];
-            }
+
+            byte[] ret = new byte[7];
+//            ret[0] = 0x5a;
+//            ret[1] = 0x01;
+//            ret[2] = 0x00;
+//            ret[3] = 0x00;
+//            ret[4] = 0x00;
+//            ret[5] = (byte) (fileStream/512);
+//
+//            ret[6] = (byte) (fileStream/512);
+//            byte[] ret = new byte[1 + 1 + 1 + dataSize + crcSize];
+//            ret[0] = PacketHead;
+//            ret[1] = packetNumber;
+//            ret[2] = invertedPacketNumber;
+//            for (int i = 0; i < dataSize; i++) {
+//                ret[3 + i] = data[i];
+//            }
+//            int pos = 3 + dataSize;
+//            for (int j = 0; j < crcSize; j++) {
+//                ret[pos + j] = CRC[j];
+//            }
             return ret;
+
+
 
         }
 
         // 发送头一帧数据，包括文件名和文件大小
         private byte[] sendYmodemStartPacket(byte SOH, String name, long fileStream) {
             try {
-                String fileName = name;
-                String fileSize = String.valueOf(fileStream);
-                int StartdataSize = 128;
-                int StartcrcSize = 2;
-                byte StartpacketNumber = 0;
-                byte StartinvertedPacketNumber = (byte) 255;
-                byte[] data = new byte[StartdataSize];
+                Log.d(TAG,fileStream+"  "+fileStream/512);
+                byte[] ret = new byte[7];
+                ret[0] = 0x5a;
+                ret[1] = 0x00;
+                ret[2] = 0x00;
+                ret[3] = 0x00;
+                ret[4] = 0x00;
+                ret[5] = (byte) (fileStream/512);
 
-                /* footer: 2 bytes */
-                byte[] StartCRC = new byte[StartcrcSize];
+                ret[6] = (byte) (fileStream/512);
 
-                /* add filename to data */
-                int i;
-                for (i = 0; i < fileName.length() && (fileName.toCharArray()[i] != 0); i++) {
-                    data[i] = (byte) fileName.toCharArray()[i];
-                }
-                data[i] = 0;
-
-                /* add filesize to data */
-                int j;
-                for (j = 0; j < fileSize.length() && (fileSize.toCharArray()[j] != 0); j++) {
-                    data[(i + 1) + j] = (byte) fileSize.toCharArray()[j];
-                }
-                data[(i + 1) + j] = 0;
-
-                /* fill the remaining data bytes with 0 */
-                for (int k = ((i + 1) + j) + 1; k < StartdataSize; k++) {
-                    data[k] = 0;
-                }
-
-                /* calculate CRC */
-                Crc16Ccitt crc16Ccitt = new Crc16Ccitt(Crc16Ccitt.InitialCrcValue.Zeros);
-                StartCRC = crc16Ccitt.ComputeChecksumBytes(data);
+//
+//                String fileName = name;
+//                String fileSize = String.valueOf(fileStream);
+//                int StartdataSize = 128;
+//                int StartcrcSize = 2;
+//                byte StartpacketNumber = 0;
+//                byte StartinvertedPacketNumber = (byte) 255;
+//                byte[] data = new byte[StartdataSize];
+//
+//                /* footer: 2 bytes */
+//                byte[] StartCRC = new byte[StartcrcSize];
+//
+//                /* add filename to data */
+//                int i;
+//                for (i = 0; i < fileName.length() && (fileName.toCharArray()[i] != 0); i++) {
+//                    data[i] = (byte) fileName.toCharArray()[i];
+//                }
+//                data[i] = 0;
+//
+//                /* add filesize to data */
+//                int j;
+//                for (j = 0; j < fileSize.length() && (fileSize.toCharArray()[j] != 0); j++) {
+//                    data[(i + 1) + j] = (byte) fileSize.toCharArray()[j];
+//                }
+//                data[(i + 1) + j] = 0;
+//
+//                /* fill the remaining data bytes with 0 */
+//                for (int k = ((i + 1) + j) + 1; k < StartdataSize; k++) {
+//                    data[k] = 0;
+//                }
+//
+//                /* calculate CRC */
+//                Crc16Ccitt crc16Ccitt = new Crc16Ccitt(Crc16Ccitt.InitialCrcValue.Zeros);
+//                StartCRC = crc16Ccitt.ComputeChecksumBytes(data);
 
                 /* send the packet */
-                return sendYmodemPacket(SOH, StartpacketNumber, StartinvertedPacketNumber, data, StartdataSize, StartCRC,
-                        StartcrcSize);
-
+//                return sendYmodemPacket(SOH, StartpacketNumber, StartinvertedPacketNumber, data, StartdataSize, StartCRC,
+//                        StartcrcSize);
+                return ret;
             } catch (Exception e) {
                 e.printStackTrace();
             }

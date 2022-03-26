@@ -16,7 +16,7 @@ public class DataUtil {
     //软件升级文件名
     public static final String apk_data_name = "updateApks.apk";
     //固件升级文件名
-    public static final String firmware_data_name = "updateBins";
+    public static final String firmware_data_name = "Firmware.bin";
 
 
     public static boolean writeData(String data, String file_path, String file_name, boolean append) {

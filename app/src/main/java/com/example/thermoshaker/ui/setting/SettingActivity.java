@@ -22,9 +22,12 @@ import android.hardware.usb.UsbManager;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -55,6 +58,7 @@ import com.example.thermoshaker.util.DataUtil;
 import com.example.thermoshaker.util.custom.SlideButton;
 import com.example.thermoshaker.util.dialog.DebugDialog;
 import com.example.thermoshaker.util.dialog.FactoryDialog;
+import com.example.thermoshaker.util.dialog.HardUpDialog;
 import com.example.thermoshaker.util.dialog.base.CustomDialog;
 import com.example.thermoshaker.util.LanguageUtil;
 import com.example.thermoshaker.util.Utils;
@@ -397,9 +401,7 @@ public class SettingActivity extends BaseActivity {
 
                         break;
                     default:
-
                         Toast.makeText(SettingActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
-
                         break;
                 }
 
@@ -418,9 +420,11 @@ public class SettingActivity extends BaseActivity {
                 .build();
         nativeInformationDialog.show();
         TextView tv_version = nativeInformationDialog.findViewById(R.id.tv_version);
+        TextView tv_Uiversion = nativeInformationDialog.findViewById(R.id.tv_Uiversion);
         try {
             tv_version.setText(getString(R.string.softer_version) + "  " + this.getPackageManager().getPackageInfo(
                     this.getPackageName(), 0).versionName + "");
+            tv_Uiversion.setText(getString(R.string.firmware_version) + "  " + MyApplication.getInstance().systemClass.getSoftwareVersion()+""+MyApplication.getInstance().systemClass.getVerSuffix());
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -438,7 +442,16 @@ public class SettingActivity extends BaseActivity {
      * 软件升级
      */
     private void software() {
-        inspectUDisk();
+        usbWrite();
+        if (!Content.usb_state.equals(Intent.ACTION_MEDIA_MOUNTED)) {
+            Toast.makeText(this, getText(R.string.setting_dialog_usb_no), Toast.LENGTH_SHORT).show();
+            return;
+        } else if (Content.usb_state.equals(Intent.ACTION_MEDIA_CHECKING)) {
+            Toast.makeText(this, getText(R.string.In_preparation_USB), Toast.LENGTH_SHORT).show();
+
+        } else if (Content.usb_state.equals(Intent.ACTION_MEDIA_MOUNTED)) {
+
+        }
         try {
 
             UsbFile root = currentFs.getRootDirectory();
@@ -531,16 +544,7 @@ public class SettingActivity extends BaseActivity {
     }
 
     private void inspectUDisk() {
-        usbWrite();
-        if (!Content.usb_state.equals(Intent.ACTION_MEDIA_MOUNTED)) {
-            Toast.makeText(this, getText(R.string.setting_dialog_usb_no), Toast.LENGTH_SHORT).show();
-            return;
-        } else if (Content.usb_state.equals(Intent.ACTION_MEDIA_CHECKING)) {
-            Toast.makeText(this, getText(R.string.In_preparation_USB), Toast.LENGTH_SHORT).show();
 
-        } else if (Content.usb_state.equals(Intent.ACTION_MEDIA_MOUNTED)) {
-
-        }
     }
 
     /**
@@ -612,8 +616,10 @@ public class SettingActivity extends BaseActivity {
                                 Log.d(TAG, text + "");
                                 pB_Level_up.setProgress(progress);
                                 if(progress==100){
-                                    DialogHardUp dialogHardUp = new DialogHardUp.Builder(SettingActivity.this,MyApplication.getInstance(),filePath).create();
-                                    dialogHardUp.show();
+                                    new HardUpDialog(SettingActivity.this,SettingActivity.this,filePath);
+
+
+
                                 }
                             }
                         });
@@ -630,7 +636,16 @@ public class SettingActivity extends BaseActivity {
      * 固件升级
      */
     private void firmware() {
-        inspectUDisk();
+        usbWrite();
+        if (!Content.usb_state.equals(Intent.ACTION_MEDIA_MOUNTED)) {
+            Toast.makeText(this, getText(R.string.setting_dialog_usb_no), Toast.LENGTH_SHORT).show();
+            return;
+        } else if (Content.usb_state.equals(Intent.ACTION_MEDIA_CHECKING)) {
+            Toast.makeText(this, getText(R.string.In_preparation_USB), Toast.LENGTH_SHORT).show();
+
+        } else if (Content.usb_state.equals(Intent.ACTION_MEDIA_MOUNTED)) {
+
+        }
         try {
             if(currentFs==null){
                 return;
@@ -687,8 +702,7 @@ public class SettingActivity extends BaseActivity {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-
-//                                softwareDialogs.dismiss();
+                                softwareDialogs.dismiss();
                         }
                     });
                     softwareDialogs.findViewById(R.id.btn_next).setOnClickListener(new View.OnClickListener() {

@@ -42,6 +42,8 @@ public class UartClass implements Serializable {
 			data[data.length - 2] = (byte) crc16;
 			data[data.length - 1] = (byte) 0x55;
 		}
+		Log.d(TAG, ByteUtil.bytesToHexString(data)+"");
+
 	}
 
 	public UartClass(String address, byte[] data, boolean bool, int time) {

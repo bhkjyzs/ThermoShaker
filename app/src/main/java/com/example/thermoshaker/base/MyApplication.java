@@ -47,6 +47,8 @@ public class MyApplication extends Application {
     public LinkedList<String> strQueue; // 串口通信队列
     //步骤进入前的步骤列表，对比是否改变了的作用
     public static ProgramInfo programsSteps;
+    public  boolean isLever = false;
+
     //串口打开或者关闭
     private boolean mOpened = false;
     public SimpleDateFormat dateFormat; // 用于格式化局部时间

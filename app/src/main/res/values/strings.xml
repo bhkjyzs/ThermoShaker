@@ -175,6 +175,7 @@
     <string name="debug_fan">风扇:</string>
     <string name="Motor">电机:</string>
     <string name="led">led:</string>
+
     <string name="Lid">Lid:</string>
     <string name="dialog_hardup_running">正在升级...</string>
     <string name="dialog_hardup_stop">升级结束</string>

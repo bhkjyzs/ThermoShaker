@@ -50,6 +50,7 @@ import com.example.thermoshaker.ui.setting.SettingActivity;
 import com.example.thermoshaker.util.BroadcastManager;
 import com.example.thermoshaker.util.DataUtil;
 import com.example.thermoshaker.util.LanguageUtil;
+import com.example.thermoshaker.util.MutilBtnUtil;
 import com.example.thermoshaker.util.ToastUtil;
 import com.example.thermoshaker.util.Utils;
 import com.example.thermoshaker.util.dialog.DebugDialog;
@@ -88,6 +89,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private final int msgUart = 2;// 动画的消息号
     private final int msgUartDelayed = 2000;
+    private final int msgSystemDelayed = 3000;
+    private final int msgSystemUart = 3;// 动画的消息号
+
     private int errorDispTime = 10 * 1000 / msgUartDelayed; // 错误报警时间
     private Intent intentUart; // 给定时器查询运行数据
 
@@ -106,46 +110,62 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             MyApplication app = MyApplication.getInstance();
 
             switch (msg.what) {
+                case msgSystemUart:
+                    //系统参数，开机查询一次
+                    Intent intentSystem = new Intent(UartServer.MSG);
+                    intentSystem.putExtra("serialport", new UartClass(MSG, UartType.ASK_SYSTEM_BYTE));
+                    sendBroadcast(intentSystem);
+
+                    //温度参数，开机查询一次
+                    Intent intent2 = new Intent(UartServer.MSG);
+                    intent2.putExtra("serialport", new UartClass(MSG, UartType.ASK_TEMPADJ_BYTE));
+                    sendBroadcast(intent2);
+                    break;
                 case 1:
                     updateSystemTime();
                     handler.sendEmptyMessageDelayed(update_system_time, update_system);
                     break;
                 case msgUart:
                     try {
+
                         /* 如果没有运行,则两秒发送取运行数据 */
-                        if (app.isRunWork == false) {
-                            sendBroadcast(intentUart);
-                            /* 报警信息,间隔十秒 */
-                            if (errorDispTime < 1) {
-                                if (app.appClass.isUartReady() == false) {
-                                    dialog_factory_no_msg.setVisibility(View.VISIBLE);
-                                    mll_haveMsg.setVisibility(View.GONE);
-                                    tv_con_msg.setVisibility(View.VISIBLE);
-                                    errorDispTime = 10 * 1000 / msgUartDelayed;
-//                                    BroadcastManager.getInstance(MyApplication.getInstance()).sendBroadcast(ERROR_ACTION,getString(R.string.dialog_info_communication_failed)+"");
-
-                                } else {
-                                    dialog_factory_no_msg.setVisibility(View.GONE);
-                                    mll_haveMsg.setVisibility(View.VISIBLE);
-                                    tv_con_msg.setVisibility(View.GONE);
-
-                                    String str = app.runningClass.getSystemErrCodeStr();
-                                    if (!str.equals("")) {
+                        if (app.isRunWork == false ) {
+                            if(!app.isLever){
+                                sendBroadcast(intentUart);
+                                /* 报警信息,间隔十秒 */
+                                if (errorDispTime < 1) {
+                                    if (app.appClass.isUartReady() == false) {
+                                        dialog_factory_no_msg.setVisibility(View.VISIBLE);
+                                        mll_haveMsg.setVisibility(View.GONE);
+                                        tv_con_msg.setVisibility(View.VISIBLE);
                                         errorDispTime = 10 * 1000 / msgUartDelayed;
-//                                        BroadcastManager.getInstance(MyApplication.getInstance()).sendBroadcast(ERROR_ACTION,str+"");
+                                        BroadcastManager.getInstance(MyApplication.getInstance()).sendBroadcast(ERROR_ACTION,getString(R.string.dialog_info_communication_failed)+"");
 
+                                    } else {
+                                        dialog_factory_no_msg.setVisibility(View.GONE);
+                                        mll_haveMsg.setVisibility(View.VISIBLE);
+                                        tv_con_msg.setVisibility(View.GONE);
+
+                                        String str = app.runningClass.getSystemErrCodeStr();
+                                        if (!str.equals("")) {
+                                            errorDispTime = 10 * 1000 / msgUartDelayed;
+                                            BroadcastManager.getInstance(MyApplication.getInstance()).sendBroadcast(ERROR_ACTION,str+"");
+
+                                        }
                                     }
+                                } else {
+                                    errorDispTime--;
                                 }
-                            } else {
-                                errorDispTime--;
                             }
+
+
                         }
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                        handler.sendEmptyMessageDelayed(msgUart, msgUartDelayed);
 
-                    handler.sendEmptyMessageDelayed(msgUart, msgUartDelayed);
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + msg.what);
@@ -191,14 +211,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         intentUart = new Intent(UartServer.MSG);
         intentUart.putExtra("serialport", new UartClass(MSG, UartType.ASK_RUNDATA_BYTE));
         handler.sendEmptyMessageDelayed(msgUart, msgUartDelayed);
-        //系统参数，开机查询一次
-        Intent intentSystem = new Intent(UartServer.MSG);
-        intentSystem.putExtra("serialport", new UartClass(MSG, UartType.ASK_SYSTEM_BYTE));
-        sendBroadcast(intentSystem);
-        //温度参数，开机查询一次
-        Intent intent2 = new Intent(UartServer.MSG);
-        intent2.putExtra("serialport", new UartClass(MSG, UartType.ASK_TEMPADJ_BYTE));
-        sendBroadcast(intent2);
+
+        handler.sendEmptyMessageDelayed(msgSystemUart, msgSystemDelayed);
+
+
     }
 
     public void initUsb() {
@@ -328,6 +344,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         MyApplication.getInstance().KeySound();
+        if (!MutilBtnUtil.isFastClick()) {
+            return;
+        }
         switch (v.getId()) {
             case R.id.dialog_factory_no_msg:
                 factoryDialog();
@@ -340,6 +359,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.ll_setting:
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));
                 overridePendingTransition(0, 0);
+
                 break;
             case R.id.ll_run:
 //                ChoosePrograms();
