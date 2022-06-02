@@ -146,6 +146,7 @@ public class MultiWaveHeaderRun extends View {
 		mCloseColor = mCloseColorSelected;
 		isChange = true;
 		isRun = is;
+
 		changeHandler.sendEmptyMessageDelayed(1,1000);
 
 		twinkleLine();

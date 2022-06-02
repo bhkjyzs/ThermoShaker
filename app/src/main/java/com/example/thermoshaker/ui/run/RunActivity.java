@@ -39,6 +39,7 @@ import com.example.thermoshaker.serial.uart.UartServer;
 import com.example.thermoshaker.serial.uart.UartType;
 import com.example.thermoshaker.serial.uart.running.TdfileRunType;
 import com.example.thermoshaker.ui.adapter.RVStepListAdapter;
+import com.example.thermoshaker.ui.file.AddAndEditActivity;
 import com.example.thermoshaker.ui.file.FileActivity;
 import com.example.thermoshaker.util.ToastUtil;
 import com.example.thermoshaker.util.dialog.TipsDialog;
@@ -57,11 +58,14 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
     private AAChartView AAChartView;
     private TextView tv_detil,tv_StepRadiatorTemp;
     public ProgramInfo programInfo;
-    private TextView tv_times, tv_ZSpeed, tv_Temps, tv_EndTime,tv_CurrentStep, tvNum,tv_state,tv_StepTime;
+    private TextView tv_times, tv_ZSpeed, tv_Temps, tv_EndTime,tv_CurrentStep, tvNum,tv_state,tv_StepTime,tv_StepUp_speed,tv_StepDown_speed;
     private LinearLayout ll_return, ll_pause, ll_next, ll_stop, ll_deil;
     private RecyclerView rv_StepList;
     private RVStepListAdapter RVStepListAdapter;
     private boolean isPause = false;
+    private TipsDialog overDialog;
+    private boolean isUpdate=false;
+
     private  final int msg_refresh=1002;
     private android.os.Handler handler = new Handler(Looper.myLooper()) {
         @Override
@@ -94,9 +98,9 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         GetViews();
         rv_StepList.setAdapter(RVStepListAdapter);
         RVStepListAdapter.setList(programInfo.getStepList());
-        refreshDate();
-        handler.sendEmptyMessageDelayed(msg_refresh,1000);
 
+        handler.sendEmptyMessageDelayed(msg_refresh,2000);
+        overDialog = new TipsDialog(RunActivity.this,getString(R.string.runend));
     }
 
     private void GetViews() {
@@ -122,6 +126,8 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         ll_next = findViewById(R.id.ll_next);
         ll_stop = findViewById(R.id.ll_stop);
         ll_deil = findViewById(R.id.ll_deil);
+        tv_StepUp_speed = findViewById(R.id.tv_StepUp_speed);
+        tv_StepDown_speed = findViewById(R.id.tv_StepDown_speed);
         rv_StepList = findViewById(R.id.rv_StepList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -144,32 +150,24 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
             tvNum.setVisibility(View.GONE);
 
         }
-        ChartView();
+//        ChartView();
         double v = Math.log10(375.14);
         Log.d(TAG,v+"");
     }
 
     private void ChartView() {
         AAChartModel aaChartModel = new AAChartModel().chartType(AAChartType.Line)
-                .title("THIS IS ")
+                .title(getString(R.string.temperature))
                 .subtitle("Virtual Data")
-                .backgroundColor("#4b2b7f")
+                .backgroundColor("#ffffff")
                 .categories(new String[]{"Java","Swift","Python","Ruby", "PHP","Go","C","C#","C++"})
                 .dataLabelsEnabled(false)
                 .yAxisGridLineWidth(0f)
                 .series(new AASeriesElement[]{
                         new AASeriesElement()
-                                .name("Tokyo")
-                                .data(new Object[]{7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6}),
-                        new AASeriesElement()
-                                .name("NewYork")
-                                .data(new Object[]{0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5}),
-                        new AASeriesElement()
-                                .name("London")
-                                .data(new Object[]{0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0}),
-                        new AASeriesElement()
-                                .name("Berlin")
-                                .data(new Object[]{3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8})
+                                .name("曲线")
+                                .data(new Object[]{7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 0.0, 0.0, 0.0, 0.0, 0.0}),
+
                 });
 
         AAChartView.aa_drawChartWithChartModel(aaChartModel);
@@ -288,30 +286,81 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         }
     };
     private void refreshDate() {
+//        try {
+        boolean isChange=false;
 
         MyApplication app = MyApplication.getInstance();
+
+        if(app.runningClass.getRunState()==0){
+            //结束
+            over();
+
+        }else if(app.runningClass.getRunState()==2){
+            //停止
+
+        }else if (app.runningClass.getRunState()==1){
+
+
         //当前步骤
         int pos = app.runningClass.getRunStep();
         if(pos==0){
             return;
         }
+        tv_StepUp_speed.setText(programInfo.getStepList().get(pos-1).getUpSpeedStr());
+        tv_StepDown_speed.setText(programInfo.getStepList().get(pos-1).getDownSpeedStr());
         tv_EndTime.setText(app.runningClass.getCUREndTimeStr()+"");
         tv_Temps.setText(app.runningClass.getDispTemp1A()+"");
         tv_StepRadiatorTemp.setText(app.runningClass.getLidDispTemp()+"");
         tvNum.setText(app.runningClass.getRunCir()+"");
         tv_CurrentStep.setText(app.runningClass.getRunStep()+"");
         tv_StepTime.setText(app.runningClass.getStepSurplusStr()+"");
-        Log.d(TAG,app.runningClass.getCUREndTimeStr()+""+app.runningClass.getRunCir()+"");
+        Log.d(TAG,app.runningClass.getCUREndTimeStr()+""+app.runningClass.getRunCir()+"      "+pos);
 
-        if(RVStepListAdapter!=null){
-
+        if((pos-1)!=RVStepListAdapter.getSelectPostion()){
+            RVStepListAdapter.setSelectPostion(pos-1);
+            Log.d(TAG,(pos-1)+"  "+"  "+RVStepListAdapter.getSelectPostion());
+            isChange =true;
+            isUpdate = true;
         }
-        RVStepListAdapter.setSelectPostion(pos-1);
-        RVStepListAdapter.notifyDataSetChanged();
+        if(isUpdate){
+            if(app.runningClass.getDispTemp1A()==programInfo.getStepList().get(pos-1).getTemperature()){
+                Log.d(TAG,app.runningClass.getDispTemp1A()+"  "+"  "+programInfo.getStepList().get(pos-1).getTemperature());
+                isChange =true;
+                isUpdate =false;
+            }
+        }
 
+        Log.d(TAG,isChange+"");
+        if(isChange){
+
+            RVStepListAdapter.setUpdateTemp(app.runningClass.getDispTemp1A());
+            RVStepListAdapter.notifyDataSetChanged();
+            }
+        }
+
+
+//        }catch (Exception e){
+//
+//        }
 
     }
 
+    private void over(){
+        if(overDialog.isShowing()){
+            return;
+        }
+        overDialog.show();
+        overDialog.setOnDialogLister(new TipsDialog.onDialogLister() {
+            @Override
+            public void onCancel() {
+                finish();
+            }
+            @Override
+            public void onConfirm() {
+                finish();
+            }
+        });
+    }
 
     @Override
     protected void onDestroy() {

@@ -117,7 +117,7 @@ public class FastActivity extends BaseActivity implements View.OnClickListener {
 
                 break;
             case R.id.ll_lid:
-                showLidkeyDialog(String.valueOf(38));
+//                showLidkeyDialog(String.valueOf(38));
                 break;
 
 
@@ -214,7 +214,7 @@ public class FastActivity extends BaseActivity implements View.OnClickListener {
             super.run();
             try {
 
-                int stopInt = TdfileRunType.RunStateEnum.STOP.getValue();
+                int stopInt = TdfileRunType.RunStateEnum.OVER.getValue();
                 /* 查询一次 */
                 MyApplication app = MyApplication.getInstance();
                 Intent intentData = new Intent(UartServer.MSG);

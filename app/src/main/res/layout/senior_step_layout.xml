@@ -39,7 +39,7 @@
             android:layout_height="@dimen/dip_60"
             tl:tl_iconVisible="false"
             tl:tl_tab_space_equal = "true"
-            tl:tl_indicator_corner_radius="1.5dp"
+            tl:tl_indicator_corner_radius="4dp"
             tl:tl_indicator_height="5dp"
             tl:tl_indicator_width="@dimen/dip_150"
             tl:tl_textsize="28sp"

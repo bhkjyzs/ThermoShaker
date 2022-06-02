@@ -25,6 +25,8 @@
 
     <color name="color_line_straight">#1FB1AA</color>
     <color name="color_line_yuan">#87FFFA</color>
+<!--    <color name="color_line_yuan">#181E1E</color>-->
+
     <color name="color_line_green">#43AF14</color>
     <color name="color_line_red">#E83F59</color>
 

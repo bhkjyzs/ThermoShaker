@@ -55,6 +55,7 @@ import com.example.thermoshaker.serial.uart.upgrade.DialogHardUp;
 import com.example.thermoshaker.ui.adapter.MyAdapter;
 import com.example.thermoshaker.util.AppManager;
 import com.example.thermoshaker.util.DataUtil;
+import com.example.thermoshaker.util.MutilBtnUtil;
 import com.example.thermoshaker.util.custom.SlideButton;
 import com.example.thermoshaker.util.dialog.DebugDialog;
 import com.example.thermoshaker.util.dialog.FactoryDialog;
@@ -151,13 +152,15 @@ public class SettingActivity extends BaseActivity {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                if (!MutilBtnUtil.isFastClick()) {
+                    return;
+                }
                 switch (position) {
                     case 0:
                         showLanguage();
                         break;
                     case 1:
-                        setCompanyLogo("bio_gener/bootanimation.zip", "/td/bio_gener/bootanimation.zip", "biologo",
-                                0);
+
 //                        setCompanyLogo("Labyeah/bootanimation.zip", "/td/Labyeah/bootanimation.zip", "Labyeahlogo",
 //                                 0);
                         voice();
@@ -866,32 +869,7 @@ public class SettingActivity extends BaseActivity {
 
     }
 
-    /* 设置公司logo,动画源路径，动画目标路径，公司名称，公司枚举，公司图标 */
-    private void setCompanyLogo(String stris, String strpath, String name, int companyRes) {
-        MyApplication app = MyApplication.getInstance();
-        try {
-            InputStream is = app.getAssets().open(stris);
-            String path = app.getFilesDir().getPath() + strpath;
-            File file = new File(path);
 
-            /* 判断文件是否存在或是否为空 */
-            if (!file.exists() || file.length() < 100)
-                FileUtils.copyInputStreamToFile(is, file);
-
-            boolean bool = app.exec("mount -o remount,rw /system;cp " + path
-                    + " /system/media/bootanimation.zip;mount -o remount,ro /system");
-            Log.d(TAG, bool + "    bool");
-
-            boolean exec = app.exec("mount -o remount,rw /system;chmod 777 /system/media/bootanimation.zip");
-            Log.d(TAG, exec + "    exec");
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.d(TAG, e.getMessage() + "");
-        }
-
-    }
 
 
     public void DialogDisMiss(CustomDialog customDialog) {

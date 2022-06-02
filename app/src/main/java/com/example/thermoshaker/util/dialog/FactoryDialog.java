@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,9 +20,16 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.example.thermoshaker.R;
+import com.example.thermoshaker.base.MainType;
 import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.serial.uart.UartClass;
 import com.example.thermoshaker.serial.uart.UartServer;
@@ -35,7 +43,13 @@ import com.example.thermoshaker.util.key.FloatingKeyboard;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.licheedev.myutils.LogPlus;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FactoryDialog {
     public final static String MSG = FactoryDialog.class.getName();
@@ -207,8 +221,28 @@ public class FactoryDialog {
                 seniorDialog.dismiss();
             }
         });
+        List<MainType.CompanyEnum> listOem = new ArrayList<>();
+        listOem.add(MainType.CompanyEnum.NULL);
+        RecyclerView rv_list_oem = viewList.get(1).findViewById(R.id.rv_list_oem);
+        rv_list_oem.setLayoutManager(new GridLayoutManager(context,5));
+        RVListoemAdapter rvListoemAdapter = new RVListoemAdapter(R.layout.list_oem_item_layout);
+        rv_list_oem.setAdapter(rvListoemAdapter);
+        rvListoemAdapter.setList(listOem);
+        rvListoemAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                setCompanyLogo("bootanimation.zip", "/td/bootanimation.zip", "nologo",
+                        0);
+            }
+        });
 
     }
+
+
+
+
+
+
     /* 写设备编号 */
     public void writeNumber() {
         try {
@@ -290,4 +324,50 @@ public class FactoryDialog {
         editTexts[4].setText(app.adjustClass.getTemp04AdjStr(0));
         }
 
+    /* 设置公司logo,动画源路径，动画目标路径，公司名称，公司枚举，公司图标 */
+    private void setCompanyLogo(String stris, String strpath, String name, int companyRes) {
+        MyApplication app = MyApplication.getInstance();
+        try {
+            InputStream is = app.getAssets().open(stris);
+            String path = app.getFilesDir().getPath() + strpath;
+            File file = new File(path);
+
+            /* 判断文件是否存在或是否为空 */
+            if (!file.exists() || file.length() < 100)
+                FileUtils.copyInputStreamToFile(is, file);
+
+            boolean bool = app.exec("mount -o remount,rw /system;cp " + path
+                    + " /system/media/bootanimation.zip;mount -o remount,ro /system");
+            Log.d(TAG, bool + "    bool");
+
+            boolean exec = app.exec("mount -o remount,rw /system;chmod 777 /system/media/bootanimation.zip");
+            Log.d(TAG, exec + "    exec");
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d(TAG, e.getMessage() + "");
+        }
+
+    }
+
+
+
+
+
+
+
+        class  RVListoemAdapter extends BaseQuickAdapter<MainType.CompanyEnum, BaseViewHolder>{
+
+            public RVListoemAdapter(int layoutResId) {
+                super(layoutResId);
+            }
+
+            @Override
+            protected void convert(@NonNull BaseViewHolder baseViewHolder, MainType.CompanyEnum companyEnum) {
+
+                baseViewHolder.setText(R.id.btn_oem,companyEnum.name());
+
+            }
+        }
 }

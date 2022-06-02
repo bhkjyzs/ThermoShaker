@@ -7,10 +7,11 @@ package com.example.thermoshaker.serial.uart.running;
  */
 public class TdfileRunType {
 	// 运行状态
+	//0：没有运行
 	//1：正在运行
-	//2：没有在运行
+	//2：暂停运行
 	public enum RunStateEnum {
-		 START(1), STOP(2);
+		 START(1), STOP(2),OVER(0),NULL(-1);
 		private final int value;
 
 		RunStateEnum(int value) {

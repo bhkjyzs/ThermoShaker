@@ -18,6 +18,10 @@
     <string name="dialog_voice_4">温度到达提示音</string>
 
     <string name="addfile">添加</string>
+    <string name="saveas">另存</string>
+
+    <string name="addstep">加步骤</string>
+    <string name="delstep">减步骤</string>
     <string name="edit">编辑</string>
     <string name="del">删除</string>
     <string name="returnname">返回</string>
@@ -42,7 +46,7 @@
     <string name="english">英文</string>
     <string name="calibration">校准</string>
     <string name="pause">暂停</string>
-    <string name="Continue">暂停</string>
+    <string name="Continue">继续</string>
 
     <string name="nextSection">下一节</string>
     <string name="next">下一个</string>
@@ -53,6 +57,8 @@
 
     <string name="stopit">停止</string>
     <string name="details">详情</string>
+    <string name="runend">运行结束</string>
+
     <string name="Heatingprocess">升温过程</string>
 
     <string name="save">保存</string>
@@ -76,6 +82,8 @@
     <string name="msgdialog">消息框</string>
     <string name="savefilesdialog">确定保存文件</string>
     <string name="isdelete">确定要删除吗</string>
+    <string name="isRun">确定要运行吗</string>
+
     <string name="upperlimit">步骤超过上限</string>
     <string name="nostepdelfile">没有创建步骤，文件自动删除</string>
     <string name="issave">是否保存</string>

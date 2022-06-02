@@ -58,8 +58,6 @@ public class DebugDialog {
     private RadioGroup rg1_model1,rg2_model2,rg3_model3,rg4_model4,rg_fan,rg_motor,rg_led,rg_lid;
     private final int hanMsg = 1;
     MyApplication app = MyApplication.getInstance();
-
-
     private TextView factory_temperature_text1,factory_temperature_text2;
     public DebugDialog(Context context, Activity activity) {
         this.context = context;
@@ -68,7 +66,6 @@ public class DebugDialog {
         init();
         QueryAdjust();
     }
-
     /* 时间定时器 */
     public Handler han = new Handler(new Handler.Callback() {
         @Override
@@ -85,11 +82,8 @@ public class DebugDialog {
     });
 
     private void QueryAdjust() {
-
         MyApplication.getInstance().sendBroadcast(new Intent(UartServer.MSG).putExtra("serialport", new UartClass(MSG, UartType.ASK_TEMPDATA_BYTE)));
         han.sendEmptyMessageDelayed(hanMsg, app.appClass.getTdRecordTime());
-
-
     }
     /* 接收广播 */
     private BroadcastReceiver recevier = new BroadcastReceiver() {
@@ -111,7 +105,6 @@ public class DebugDialog {
             }
         }
     };
-
     protected void finalizeHan() throws Throwable {
         if (han != null) {
             han.removeMessages(hanMsg);
@@ -134,14 +127,13 @@ public class DebugDialog {
         seniorDialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM,
                 WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         Button btnCancel = seniorDialog.findViewById(R.id.btnCancel);
-
-         rg1_model1 = seniorDialog.findViewById(R.id.rg1_model1);
-         rg2_model2 = seniorDialog.findViewById(R.id.rg2_model2);
-         rg3_model3 = seniorDialog.findViewById(R.id.rg3_model3);
-         rg4_model4 = seniorDialog.findViewById(R.id.rg4_model4);
-         rg_fan = seniorDialog.findViewById(R.id.rg_fan);
-         rg_motor = seniorDialog.findViewById(R.id.rg_motor);
-         rg_led = seniorDialog.findViewById(R.id.rg_led);
+        rg1_model1 = seniorDialog.findViewById(R.id.rg1_model1);
+        rg2_model2 = seniorDialog.findViewById(R.id.rg2_model2);
+        rg3_model3 = seniorDialog.findViewById(R.id.rg3_model3);
+        rg4_model4 = seniorDialog.findViewById(R.id.rg4_model4);
+        rg_fan = seniorDialog.findViewById(R.id.rg_fan);
+        rg_motor = seniorDialog.findViewById(R.id.rg_motor);
+        rg_led = seniorDialog.findViewById(R.id.rg_led);
         rg_lid = seniorDialog.findViewById(R.id.rg_lid);
         factory_temperature_text1 = seniorDialog.findViewById(R.id.factory_temperature_text1);
         factory_temperature_text2 = seniorDialog.findViewById(R.id.factory_temperature_text2);

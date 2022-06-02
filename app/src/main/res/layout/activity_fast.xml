@@ -43,7 +43,7 @@
 
         <TextView
             android:id="@+id/tv_lidTm"
-            android:text="38°C"
+            android:text="OFF"
             android:layout_marginLeft="@dimen/dip_5"
             android:textSize="@dimen/sp_23"
             android:textColor="@color/white"

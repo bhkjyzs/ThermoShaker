@@ -5,7 +5,9 @@ import java.util.Locale;
 public class MainType {
 
 
-
+    public enum CompanyEnum {
+        NULL, bio_gener,
+    }
 
     /* 运行的三个槽 */
     public enum RunningEnum {

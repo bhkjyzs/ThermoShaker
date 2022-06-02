@@ -36,7 +36,6 @@ public class SeniorDialog {
     Context context;
     boolean isSave = false;
     dismissProgramStepListener ProgramStepListener;
-    Boolean isFull =true;
     int upPostion=0,downPostion=0,directionPostion=0;
     public SeniorDialog(ProgramStep programStep, Context context) {
         this.programStep = programStep;
@@ -60,16 +59,18 @@ public class SeniorDialog {
     private void init() {
         ArrayList<View> viewList = new ArrayList<>();
         String[] title={context.getString(R.string.rate)+"",context.getString(R.string.mixedmode)+"",context.getString(R.string.blendstartpoint)+""};
-        double[] upArray = {3.0,2.0,1.0,0.1};
-        double[] downArray = {1.0,0.5,0.1};
+        double[] upArray = {5.0,3.0,2.0,1.0,0.1};
+        double[] downArray = {5.0,1.0,0.5,0.1};
 
         List<String> listUp = new ArrayList<>();
+        listUp.add(context.getString(R.string.FullPower));
         listUp.add("3.0°C/min");
         listUp.add("2.0°C/min");
         listUp.add("1.0°C/min");
         listUp.add("0.1°C/min");
 
         List<String> listDown = new ArrayList<>();
+        listDown.add(context.getString(R.string.FullPower));
         listDown.add("1.0°C/min");
         listDown.add("0.5°C/min");
         listDown.add("0.1°C/min");
@@ -107,78 +108,33 @@ public class SeniorDialog {
          RVListSeniorAdapter rvListSeniordownAdapter = new  RVListSeniorAdapter(R.layout.senior_set_layout_list_item,false);
         rvListSeniordownAdapter.setList(listDown);
         rv_downlist.setAdapter(rvListSeniordownAdapter);
-        LinearLayout mll_full = viewList.get(0).findViewById(R.id.mll_full);
-        LinearLayout mll_custom = viewList.get(0).findViewById(R.id.mll_custom);
-        CheckBox cb_full = viewList.get(0).findViewById(R.id.cb_full);
-        CheckBox cb_custom = viewList.get(0).findViewById(R.id.cb_custom);
-        if(programStep.getUpSpeedStr().equals(context.getString(R.string.FullPower))&&programStep.getDownSpeedStr().equals(context.getString(R.string.FullPower))){
-            cb_full.setChecked(true);
-            cb_custom.setChecked(false);
-            isFull = true;
-            upPostion=0;
-            downPostion=0;
-
-
-        }else {
-            cb_full.setChecked(false);
-            cb_custom.setChecked(true);
-            for (int i = 0; i < upArray.length; i++) {
-                if(upArray[i]==programStep.getUpSpeed()){
+            for (int i = 0; i < listUp.size(); i++) {
+                if(listUp.get(i).equals(programStep.getUpSpeedStr())){
                     upPostion=i;
                     rvListSeniorAdapter.notifyDataSetChanged();
-
                 }
             }
-            for (int i = 0; i < downArray.length; i++) {
-                if(downArray[i]==programStep.getDownSpeed()){
-                    downPostion=i;
-                    rvListSeniordownAdapter.notifyDataSetChanged();
-
-                }
-            }
-            isFull = false;
-        }
-        mll_full.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cb_full.setChecked(true);
-                cb_custom.setChecked(false);
-                isFull = true;
-                upPostion=0;
-                downPostion=0;
-                programStep.setUpSpeed(upArray[upPostion]);
-                programStep.setDownSpeed(downArray[downPostion]);
-                rvListSeniorAdapter.notifyDataSetChanged();
+        for (int i = 0; i < listDown.size(); i++) {
+            if(listDown.get(i).equals(programStep.getDownSpeedStr())){
+                downPostion=i;
                 rvListSeniordownAdapter.notifyDataSetChanged();
             }
-        });
+        }
 
-        mll_custom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cb_full.setChecked(false);
-                cb_custom.setChecked(true);
-                isFull = false;
-            }
-        });
         rvListSeniorAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                if(!isFull){
                     upPostion=position;
                     rvListSeniorAdapter.notifyDataSetChanged();
                     programStep.setUpSpeed(upArray[position]);
-                }
             }
         });
         rvListSeniordownAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                if(!isFull){
                     downPostion=position;
                     rvListSeniordownAdapter.notifyDataSetChanged();
                     programStep.setDownSpeed(downArray[position]);
-                }
             }
         });
 
@@ -186,10 +142,10 @@ public class SeniorDialog {
         RecyclerView rv_directionlist = viewList.get(1).findViewById(R.id.rv_directionlist);
         LinearLayout mll_continuity = viewList.get(1).findViewById(R.id.mll_continuity);
         LinearLayout mll_intermission = viewList.get(1).findViewById(R.id.mll_intermission);
-        CheckBox cb_continuity = viewList.get(1).findViewById(R.id.cb_continuity);
-        CheckBox cb_intermission = viewList.get(1).findViewById(R.id.cb_intermission);
         TextView tvConTime =viewList.get(1).findViewById(R.id.tvConTime);
         TextView tvintTime =viewList.get(1).findViewById(R.id.tvintTime);
+        TextView tvint =viewList.get(1).findViewById(R.id.tvint);
+        TextView tvcon =viewList.get(1).findViewById(R.id.tvcon);
         tvConTime.setText(MyApplication.getInstance().dateFormat.format(programStep.getContinued())+"");
         tvintTime.setText(MyApplication.getInstance().dateFormat.format(programStep.getIntermission())+"");
         rv_directionlist.setLayoutManager(new GridLayoutManager(context,2));
@@ -199,23 +155,35 @@ public class SeniorDialog {
         switch (programStep.getDirection()){
             case Forward:
                 directionPostion =0;
+                mll_intermission.setVisibility(View.GONE);
+                mll_continuity.setVisibility(View.VISIBLE);
+                tvint.setVisibility(View.GONE);
+                tvintTime.setVisibility(View.GONE);
+                tvcon.setVisibility(View.VISIBLE);
+                tvConTime.setVisibility(View.VISIBLE);
                 break;
             case Reversal:
                 directionPostion =1;
+                mll_intermission.setVisibility(View.GONE);
+                mll_continuity.setVisibility(View.VISIBLE);
+                tvint.setVisibility(View.GONE);
+                tvintTime.setVisibility(View.GONE);
+                tvcon.setVisibility(View.VISIBLE);
+                tvConTime.setVisibility(View.VISIBLE);
                 break;
             case ForwardAndReverse:
                 directionPostion =2;
+                mll_intermission.setVisibility(View.VISIBLE);
+                mll_continuity.setVisibility(View.GONE);
+                tvint.setVisibility(View.VISIBLE);
+                tvintTime.setVisibility(View.VISIBLE);
+                tvcon.setVisibility(View.VISIBLE);
+                tvConTime.setVisibility(View.VISIBLE);
                 break;
 
         }
         rvListSeniorAdapterDirection.notifyDataSetChanged();
-        if(programStep.getMixingMode()==0){
-            cb_continuity.setChecked(true);
-            cb_intermission.setChecked(false);
-        }else {
-            cb_continuity.setChecked(false);
-            cb_intermission.setChecked(true);
-        }
+
 
 
         rvListSeniorAdapterDirection.setOnItemClickListener(new OnItemClickListener() {
@@ -226,14 +194,30 @@ public class SeniorDialog {
                 switch (position){
                     case 0:
                         programStep.setDirection(MainType.DirectionType.Forward);
+                        mll_intermission.setVisibility(View.GONE);
+                        mll_continuity.setVisibility(View.VISIBLE);
+                        tvint.setVisibility(View.GONE);
+                        tvintTime.setVisibility(View.GONE);
+                        tvcon.setVisibility(View.VISIBLE);
+                        tvConTime.setVisibility(View.VISIBLE);
                         break;
                     case 1:
                         programStep.setDirection(MainType.DirectionType.Reversal);
+                        mll_intermission.setVisibility(View.GONE);
+                        mll_continuity.setVisibility(View.VISIBLE);
+                        tvint.setVisibility(View.GONE);
+                        tvintTime.setVisibility(View.GONE);
+                        tvcon.setVisibility(View.VISIBLE);
+                        tvConTime.setVisibility(View.VISIBLE);
                         break;
                     case 2:
                         programStep.setDirection(MainType.DirectionType.ForwardAndReverse);
-                        cb_continuity.setChecked(false);
-                        cb_intermission.setChecked(true);
+                        mll_intermission.setVisibility(View.VISIBLE);
+                        mll_continuity.setVisibility(View.GONE);
+                        tvint.setVisibility(View.VISIBLE);
+                        tvintTime.setVisibility(View.VISIBLE);
+                        tvcon.setVisibility(View.VISIBLE);
+                        tvConTime.setVisibility(View.VISIBLE);
                         break;
                 }
             }
@@ -242,8 +226,6 @@ public class SeniorDialog {
             @Override
             public void onClick(View v) {
                 if(programStep.getDirection()!= MainType.DirectionType.ForwardAndReverse){
-                    cb_continuity.setChecked(true);
-                    cb_intermission.setChecked(false);
                     programStep.setMixingMode(0);
                     programStep.setIntermission(0);
                     tvintTime.setText(MyApplication.getInstance().dateFormat.format(programStep.getIntermission())+"");
@@ -253,8 +235,6 @@ public class SeniorDialog {
         mll_intermission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cb_continuity.setChecked(false);
-                cb_intermission.setChecked(true);
                 programStep.setMixingMode(1);
 
             }

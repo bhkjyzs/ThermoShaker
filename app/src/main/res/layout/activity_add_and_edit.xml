@@ -52,7 +52,7 @@
 
         <TextView
             android:id="@+id/tv_lidTm"
-            android:text="38°C"
+            android:text="OFF"
             android:layout_marginLeft="@dimen/dip_5"
             android:textSize="@dimen/sp_23"
             android:textColor="@color/white"
@@ -89,7 +89,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginLeft="@dimen/dip_12"
-            app:layout_constraintRight_toLeftOf="@+id/ll_save"
+            app:layout_constraintRight_toLeftOf="@+id/ll_del"
             android:background="@drawable/btn_selector_bg"
             android:layout_width="@dimen/dip_164"
             android:gravity="center"
@@ -104,14 +104,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/addfile"
+                android:text="@string/addstep"
 
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_28"
                 />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/ll_save"
+            android:id="@+id/ll_del"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/ll_add"
@@ -120,8 +120,9 @@
             android:layout_width="@dimen/dip_164"
             android:gravity="center"
             android:layout_height="@dimen/dip_60">
+
             <ImageView
-                android:src="@drawable/save"
+                android:src="@drawable/del_img"
                 android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -130,7 +131,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/save"
+                android:text="@string/delstep"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_28"
                 />
@@ -139,8 +140,8 @@
             android:id="@+id/ll_run"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/ll_save"
-            app:layout_constraintRight_toLeftOf="@id/ll_del"
+            app:layout_constraintLeft_toRightOf="@+id/ll_del"
+            app:layout_constraintRight_toLeftOf="@id/ll_save"
             android:background="@drawable/btn_selector_bg"
             android:layout_width="@dimen/dip_164"
             android:gravity="center"
@@ -161,7 +162,8 @@
                 />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/ll_del"
+            android:id="@+id/ll_save"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/ll_run"
@@ -171,7 +173,7 @@
             android:gravity="center"
             android:layout_height="@dimen/dip_60">
             <ImageView
-                android:src="@drawable/del_img"
+                android:src="@drawable/save"
                 android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -180,7 +182,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/del"
+                android:text="@string/save"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_28"
                 />
@@ -189,7 +191,7 @@
             android:id="@+id/ll_return"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/ll_del"
+            app:layout_constraintLeft_toRightOf="@+id/ll_save"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginRight="@dimen/dip_12"
             android:background="@drawable/btn_selector_bg"
@@ -227,10 +229,10 @@
         android:layout_marginLeft="@dimen/dip_30"
 
         tl:tl_iconVisible="false"
-        tl:tl_indicator_corner_radius="1.5dp"
+        tl:tl_indicator_corner_radius="4dp"
         tl:tl_indicator_height="5dp"
         tl:tl_tab_width="@dimen/dip_150"
-        tl:tl_indicator_width="@dimen/dip_150"
+        tl:tl_indicator_width="@dimen/dip_50"
         tl:tl_textsize="28sp"
         tl:tl_indicator_color="#008FD7"
         tl:tl_textSelectColor="#151212"
@@ -405,7 +407,18 @@
             tools:ignore="MissingConstraints" />
 
 
+            <ImageView
+                android:id="@+id/iv_next"
+                android:src="@drawable/next_step"
+                android:visibility="gone"
+                android:layout_marginRight="@dimen/dip_12"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/mViewSenior"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
+            </ImageView>
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -593,6 +606,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvLooren"
             app:layout_constraintLeft_toLeftOf="@+id/tvLooren"
             android:layout_marginLeft="@dimen/dip_2"
+            android:textColor="@color/black"
             android:layout_marginTop="@dimen/dip_12"
             app:layout_constraintRight_toRightOf="@+id/tvLooren"
             android:layout_marginRight="@dimen/dip_12"

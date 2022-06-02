@@ -131,6 +131,7 @@
         </LinearLayout>
         <LinearLayout
             android:id="@+id/ll_deil"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/ll_stop"
@@ -232,6 +233,7 @@
 
         <TextView
             android:id="@+id/tv_ZSpeed"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="@+id/ViewR"
             app:layout_constraintTop_toTopOf="@+id/mll_listStep"
             android:layout_marginRight="@dimen/dip_100"
@@ -249,6 +251,7 @@
             app:layout_constraintLeft_toRightOf="@+id/tv_ZSpeed"
             android:layout_marginTop="@dimen/dip_40"
             android:layout_marginLeft="@dimen/dip_4"
+            android:visibility="gone"
             android:textSize="@dimen/sp_20"
             app:layout_constraintBottom_toBottomOf="@+id/tv_ZSpeed"
             android:textColor="@color/white"
@@ -411,6 +414,64 @@
             android:textSize="@dimen/sp_24"
             android:layout_marginLeft="@dimen/dip_4"
             app:layout_constraintBottom_toBottomOf="@+id/tv_RunRadiatorTemp"
+            android:textColor="@color/white"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+        <TextView
+            android:id="@+id/tv_RunUp_speed"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_RunStepTime"
+            android:layout_marginRight="@dimen/dip_100"
+            app:layout_constraintTop_toBottomOf="@+id/tv_RunRadiatorTemp"
+            android:layout_marginTop="@dimen/dip_20"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_26"
+            android:text="@string/up_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+        <TextView
+            android:id="@+id/tv_StepUp_speed"
+            app:layout_constraintLeft_toRightOf="@+id/tv_RunUp_speed"
+            android:layout_marginTop="@dimen/dip_40"
+            android:textSize="@dimen/sp_24"
+            android:layout_marginLeft="@dimen/dip_4"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_RunUp_speed"
+            android:textColor="@color/white"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_RunDown_speed"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_RunUp_speed"
+            android:layout_marginRight="@dimen/dip_100"
+            app:layout_constraintTop_toBottomOf="@+id/tv_RunUp_speed"
+            android:layout_marginTop="@dimen/dip_20"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_26"
+            android:text="@string/down_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_StepDown_speed"
+            app:layout_constraintLeft_toRightOf="@+id/tv_RunDown_speed"
+            android:layout_marginTop="@dimen/dip_40"
+            android:textSize="@dimen/sp_24"
+            android:layout_marginLeft="@dimen/dip_4"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_RunDown_speed"
             android:textColor="@color/white"
             android:text=""
             android:layout_width="wrap_content"

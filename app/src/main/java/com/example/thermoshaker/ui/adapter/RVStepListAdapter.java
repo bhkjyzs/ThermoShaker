@@ -20,6 +20,16 @@ import com.example.thermoshaker.util.custom.MultiWaveHeaderRun;
 public class RVStepListAdapter extends BaseQuickAdapter<ProgramStep, BaseViewHolder> {
     private RunActivity runActivity;
     private int selectPostion = -1;
+    private float updateTemp = 0;
+
+    public float getUpdateTemp() {
+        return updateTemp;
+    }
+
+    public void setUpdateTemp(float updateTemp) {
+        this.updateTemp = updateTemp;
+    }
+
     public int getSelectPostion() {
         return selectPostion;
     }
@@ -59,7 +69,14 @@ public class RVStepListAdapter extends BaseQuickAdapter<ProgramStep, BaseViewHol
             mLoop.setVisibility(View.GONE);
         }
         if(selectPostion==baseViewHolder.getAdapterPosition()){
-            multiWaveHeader.selected(true);
+
+            if(updateTemp==programStep.getTemperature()){
+                multiWaveHeader.selected(true);
+
+            }else {
+                multiWaveHeader.selected(false);
+
+            }
         }else {
             multiWaveHeader.noSelected();
 

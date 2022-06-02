@@ -30,9 +30,11 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.concurrent.TimeoutException;
 
 
 public class MyApplication extends Application {
@@ -84,6 +86,8 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        //程序崩溃异常捕获并自动重启
+        Thread.setDefaultUncaughtExceptionHandler(restartHandler);
         Utils.hookWebView();
         appClass = new MainAppClass(this);
         strQueue = new LinkedList<String>();
@@ -142,10 +146,6 @@ public class MyApplication extends Application {
             return null;
         }
 
-
-
-
-
     }
     private void initConfig() {
         /* 格式化局部时间 */
@@ -167,8 +167,29 @@ public class MyApplication extends Application {
     }
 
 
+    private Thread.UncaughtExceptionHandler restartHandler = new Thread.UncaughtExceptionHandler() {
+        @Override
+        public void uncaughtException(Thread t, Throwable e) {
+//            restartApp();
+            Log.d("===", "报错重新启动，e:" + JSON.toJSONString(e));
+            if (t.getName().equals("FinalizerWatchdogDaemon") && e instanceof TimeoutException) {
+                /**
+                 * ThreadedRenderer.finalize() timed out
+                 * ignore it
+                 */
+            } else {//其他错误
+//                defaultUncaughtExceptionHandler.uncaughtException(t, e);
+                saveErrorFile("exception", JSON.toJSONString(e));
+//                restartApp();
+            }
+        }
+    };
 
-
+    private void saveErrorFile(String head, String data) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+        DataUtil.writeData(data, DataUtil.data_path + DataUtil.exception_name,
+                head + format.format(new Date(System.currentTimeMillis())) + ".txt", true);
+    }
 
 
     public void initData() {

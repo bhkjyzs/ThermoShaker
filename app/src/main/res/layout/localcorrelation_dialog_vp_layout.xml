@@ -72,6 +72,17 @@
         tools:ignore="MissingConstraints">
     </Button>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_list_oem"
+        app:layout_constraintTop_toBottomOf="@+id/tv_deviceNo"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/dip_20"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dp_40"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -55,7 +55,7 @@ public class ProgramStep implements Serializable {
     }
     public String getUpSpeedStr(){
         String str="";
-        if(upSpeed==3.0&&downSpeed==1.0){
+        if(upSpeed==5.0){
             str = MyApplication.getInstance().getString(R.string.FullPower);
 
         }else {
@@ -75,7 +75,7 @@ public class ProgramStep implements Serializable {
     }
     public String getDownSpeedStr(){
         String str="";
-        if(upSpeed==3.0&&downSpeed==1.0){
+        if(downSpeed==5.0){
             str = MyApplication.getInstance().getString(R.string.FullPower);
 
         }else {

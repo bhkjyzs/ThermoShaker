@@ -21,6 +21,10 @@
     <string name="dialog_hardup_fail">Failed</string>
     <string name="inching">inching</string>
     <string name="addfile">add</string>
+    <string name="saveas">Save As</string>
+    <string name="addstep">+ Step</string>
+    <string name="delstep">- Step</string>
+
     <string name="edit">edit</string>
     <string name="del">delete</string>
     <string name="returnname">return</string>
@@ -75,6 +79,9 @@
     <string name="msgdialog">Message</string>
     <string name="savefilesdialog">OK to save the file</string>
     <string name="isdelete">Delete?</string>
+    <string name="isRun">Do you want to run?</string>
+    <string name="runend">End of operation</string>
+
     <string name="upperlimit">upper limit</string>
     <string name="nostepdelfile">There is no creation step, and the file is automatically deleted</string>
     <string name="issave"> Do you want to save</string>

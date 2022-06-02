@@ -71,11 +71,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/ll_edit"
+            app:layout_constraintRight_toLeftOf="@+id/ll_saveAs"
             android:background="@drawable/btn_selector_bg"
-            android:layout_width="@dimen/dip_164"
+            android:layout_width="@dimen/dip_150"
             android:gravity="center"
-            android:layout_height="@dimen/dip_60">
+            android:layout_height="@dimen/dip_55">
             <ImageView
                 android:src="@drawable/add_file"
                 android:visibility="gone"
@@ -93,15 +93,41 @@
                 />
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/ll_saveAs"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/ll_edit"
+            app:layout_constraintRight_toLeftOf="@+id/ll_add"
+            android:background="@drawable/btn_selector_bg"
+            android:layout_width="@dimen/dip_150"
+            android:gravity="center"
+            android:layout_height="@dimen/dip_55">
+            <ImageView
+                android:src="@drawable/add_file"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </ImageView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/saveas"
+
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_28"
+                />
+        </LinearLayout>
+        <LinearLayout
             android:id="@+id/ll_edit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/ll_add"
+            app:layout_constraintLeft_toRightOf="@+id/ll_saveAs"
             app:layout_constraintRight_toLeftOf="@+id/ll_run"
             android:background="@drawable/btn_selector_bg"
-            android:layout_width="@dimen/dip_164"
+            android:layout_width="@dimen/dip_150"
             android:gravity="center"
-            android:layout_height="@dimen/dip_60">
+            android:layout_height="@dimen/dip_55">
             <ImageView
                 android:src="@drawable/editfile"
                 android:visibility="gone"
@@ -126,9 +152,9 @@
             app:layout_constraintLeft_toRightOf="@+id/ll_edit"
             app:layout_constraintRight_toLeftOf="@id/ll_del"
             android:background="@drawable/btn_selector_bg"
-            android:layout_width="@dimen/dip_164"
+            android:layout_width="@dimen/dip_150"
             android:gravity="center"
-            android:layout_height="@dimen/dip_60">
+            android:layout_height="@dimen/dip_55">
             <ImageView
                 android:src="@drawable/run_file"
                 android:layout_width="wrap_content"
@@ -153,9 +179,9 @@
             app:layout_constraintLeft_toRightOf="@+id/ll_run"
             app:layout_constraintRight_toLeftOf="@+id/ll_return"
             android:background="@drawable/btn_selector_bg"
-            android:layout_width="@dimen/dip_164"
+            android:layout_width="@dimen/dip_150"
             android:gravity="center"
-            android:layout_height="@dimen/dip_60">
+            android:layout_height="@dimen/dip_55">
             <ImageView
                 android:src="@drawable/del_img"
                 android:visibility="gone"
@@ -180,9 +206,9 @@
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginRight="@dimen/dip_12"
             android:background="@drawable/btn_selector_bg"
-            android:layout_width="@dimen/dip_164"
+            android:layout_width="@dimen/dip_150"
             android:gravity="center"
-            android:layout_height="@dimen/dip_60">
+            android:layout_height="@dimen/dip_55">
             <ImageView
                 android:visibility="gone"
 

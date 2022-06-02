@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ import com.example.thermoshaker.model.ProgramStep;
 import com.example.thermoshaker.model.TabEntity;
 import com.example.thermoshaker.ui.run.RunActivity;
 import com.example.thermoshaker.util.BroadcastManager;
+import com.example.thermoshaker.util.MutilBtnUtil;
 import com.example.thermoshaker.util.ToastUtil;
 import com.example.thermoshaker.util.dialog.base.CustomKeyEditDialog;
 import com.example.thermoshaker.util.DataUtil;
@@ -53,7 +55,7 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
     private RecyclerView rv_Senior_list;
     private RVListSeniorAdapter rvListSeniorAdapter;
 
-    private int ChoosePos = 0;
+    private int ChoosePos = 0;//当前步骤
     private LinearLayout ll_add,ll_save,ll_run,ll_del,ll_return,ll_lid;
     private boolean isEdit = false;
     //当前正在操作的文件
@@ -70,7 +72,7 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
     private FloatingKeyboard keyboardview;
     private View mViewSenior;
     private CheckBox ckLoorSwitch;
-
+    private ImageView iv_next;
     private ArrayList<View> viewList = new ArrayList<>();
     @Override
     protected int getLayout() {
@@ -120,6 +122,7 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
         Tb_step = findViewById(R.id.Tb_step);
         tv_times = findViewById(R.id.tv_times);
         ll_add = findViewById(R.id.ll_add);
+        iv_next = findViewById(R.id.iv_next);
         ll_save = findViewById(R.id.ll_save);
         ll_run = findViewById(R.id.ll_run);
         ll_del = findViewById(R.id.ll_del);
@@ -137,6 +140,7 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
         mViewSenior = findViewById(R.id.mViewSenior);
         tvFileNmae = findViewById(R.id.tvFileNmae);
         mViewSenior.setOnClickListener(this);
+        iv_next.setOnClickListener(this);
         tvTime.setOnClickListener(this);
         ll_add.setOnClickListener(this);
         ll_save.setOnClickListener(this);
@@ -202,7 +206,7 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
             public void onTabSelect(int position) {
                 ChoosePos = position;
                 showView(programInfo.getStepList().get(position));
-
+                refreshArrow();
             }
 
             @Override
@@ -210,6 +214,21 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
 
             }
         });
+        refreshArrow();
+
+    }
+    public void refreshArrow(){
+//        if(ChoosePos==programInfo.getStepList().size()){
+//            iv_next.setVisibility(View.GONE);
+//
+//        }else {
+//            iv_next.setVisibility(View.VISIBLE);
+//
+//        }
+
+    }
+    public void nextStep(){
+        Tb_step.setCurrentTab(ChoosePos+1);
 
 
     }
@@ -298,9 +317,16 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        if (!MutilBtnUtil.isFastClick()) {
+            return;
+        }
         switch (v.getId()){
+
+            case R.id.iv_next:
+                nextStep();
+                break;
             case R.id.ll_lid:
-                showLidkeyDialog(String.valueOf(programInfo.getLidTm()));
+//                showLidkeyDialog(String.valueOf(programInfo.getLidTm()));
 
                 break;
             case R.id.viewTemp:
@@ -366,11 +392,21 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
 
                 break;
             case R.id.ll_run:
+                TipsDialog runDialog = new TipsDialog(AddAndEditActivity.this,getString(R.string.isRun));
+                runDialog.show();
+                runDialog.setOnDialogLister(new TipsDialog.onDialogLister() {
+                    @Override
+                    public void onCancel() {
+                    }
+                    @Override
+                    public void onConfirm() {
+                        runFile(programInfo);
+//                        Intent intent = new Intent(AddAndEditActivity.this, RunActivity.class);
+//                        intent.putExtra("programInfo", programInfo);
+//                        startActivity(intent);
 
-                Intent intent = new Intent(AddAndEditActivity.this, RunActivity.class);
-                intent.putExtra("programInfo",programInfo);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
+                    }
+                });
 
                 break;
             case R.id.ll_del:
@@ -516,9 +552,7 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
      * 更新当前步骤
      */
     private void updateCurrentStep() {
-//        programInfo.getStepList().get(ChoosePos).setTemperature(Float.parseFloat(tvTemperatures.getText().toString().trim()));
-//        programInfo.getStepList().get(ChoosePos).setZSpeed(Integer.parseInt(tvRevolution.getText().toString().trim()));
-//        programInfo.getStepList().get(ChoosePos).setTime(Long.parseLong(tvTime.getText().toString().trim()));
+
 
         programInfo.setLoopEnable(ckLoorSwitch.isChecked());
         programInfo.setLoopStart(Integer.parseInt(edLoorBegin.getText().toString().trim()));

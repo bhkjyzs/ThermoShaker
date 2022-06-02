@@ -29,6 +29,7 @@ import com.example.thermoshaker.serial.CommandDateUtil;
 import com.example.thermoshaker.serial.ControlParam;
 import com.example.thermoshaker.serial.DataUtils;
 import com.example.thermoshaker.util.BroadcastManager;
+import com.example.thermoshaker.util.MutilBtnUtil;
 import com.example.thermoshaker.util.ToastUtil;
 import com.example.thermoshaker.util.dialog.base.CustomkeyDialog;
 import com.example.thermoshaker.util.dialog.TipsDialog;
@@ -46,7 +47,7 @@ public class FileActivity extends BaseActivity implements View.OnClickListener {
     private TextView tv_times,tv_number;
     private RecyclerView rv_list;
     private RVListFileAdapter rvListFileAdapter;
-    private LinearLayout ll_add,ll_edit,ll_run,ll_del,ll_return;
+    private LinearLayout ll_add,ll_saveAs,ll_edit,ll_run,ll_del,ll_return;
     private int ChooseFilePos = -1;
     @Override
     protected int getLayout() {
@@ -64,11 +65,13 @@ public class FileActivity extends BaseActivity implements View.OnClickListener {
         tv_times = findViewById(R.id.tv_times);
         rv_list.setLayoutManager(new GridLayoutManager(this,6));
         ll_add = findViewById(R.id.ll_add);
+        ll_saveAs = findViewById(R.id.ll_saveAs);
         ll_edit = findViewById(R.id.ll_edit);
         ll_run = findViewById(R.id.ll_run);
         ll_del = findViewById(R.id.ll_del);
         ll_return = findViewById(R.id.ll_return);
         ll_add.setOnClickListener(this);
+        ll_saveAs.setOnClickListener(this);
         ll_edit.setOnClickListener(this);
         ll_run.setOnClickListener(this);
         ll_del.setOnClickListener(this);
@@ -87,9 +90,19 @@ public class FileActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        if (!MutilBtnUtil.isFastClick()) {
+            return;
+        }
         switch (v.getId()){
             case R.id.ll_add:
                 showAddFileNameDialog();
+                break;
+            case R.id.ll_saveAs:
+                if(ChooseFilePos==-1){
+                    ToastUtil.show(this,getString(R.string.pleasechoosefile));
+                    return;
+                }
+
                 break;
             case R.id.ll_edit:
                 if(ChooseFilePos==-1){
@@ -104,7 +117,17 @@ public class FileActivity extends BaseActivity implements View.OnClickListener {
 
                     return;
                 }
-                runFile(rvListFileAdapter.getData().get(ChooseFilePos));
+                TipsDialog runDialog = new TipsDialog(FileActivity.this,getString(R.string.isRun));
+                runDialog.show();
+                runDialog.setOnDialogLister(new TipsDialog.onDialogLister() {
+                    @Override
+                    public void onCancel() {
+                    }
+                    @Override
+                    public void onConfirm() {
+                        runFile(rvListFileAdapter.getData().get(ChooseFilePos));
+                    }
+                });
 
 
 

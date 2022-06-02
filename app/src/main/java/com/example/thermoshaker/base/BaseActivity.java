@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Build;
@@ -20,6 +21,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +33,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
 import com.alibaba.fastjson.JSON;
@@ -99,7 +102,24 @@ public abstract class BaseActivity extends Activity {
     }
 
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isHide = true;
+        /* 隐藏安卓导航栏 */
+        MyApplication app = MyApplication.getInstance();
+//        if (Build.VERSION.SDK_INT == 22)
+//            hideStatusBar();
+//        else
+//            app.exec(MainType.CMD.ShowBar.getValue());
+//            Log.d(TAG,Build.VERSION.SDK_INT+"");
+    }
+    /* 隐藏系统导航栏 */
+    public void hideStatusBar() {
+        Settings.System.putInt(getContentResolver(), "systembar_hide", 1);
+        Intent i = new Intent("com.tchip.changeBarHideStatus");
+        sendBroadcast(i);
+    }
     private Handler handler =  new Handler(Looper.myLooper()){
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -116,6 +136,7 @@ public abstract class BaseActivity extends Activity {
 
         }
     };
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Subscribe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -149,6 +170,9 @@ public abstract class BaseActivity extends Activity {
             InputMethodManager inputmanger = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+
+
+
 
         bradCast();
 
@@ -260,11 +284,7 @@ public abstract class BaseActivity extends Activity {
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        isHide = true;
-    }
+
 
     @Override
     protected void onDestroy() {
@@ -326,7 +346,7 @@ public abstract class BaseActivity extends Activity {
 
             byte[] bytes = new byte[116];
             int[] runSetting = MyApplication.getInstance().appClass.getRunSetting();
-            //升温设置
+        //升温设置
         // 0：升温动作同步
         //1：先升温后动作
         //2-51：升温到低于目标温度（1-50℃）开始动作
@@ -367,6 +387,9 @@ public abstract class BaseActivity extends Activity {
             }else if(programStep.getUpSpeed()==0.1){
                 bytes[2+index] = 1;
 
+            }else if (programStep.getUpSpeed()==5.0){
+                bytes[2+index] = 5;
+
             }
             //降温速率
             if(programStep.getDownSpeed()==1.0){
@@ -377,6 +400,9 @@ public abstract class BaseActivity extends Activity {
 
             }else if(programStep.getDownSpeed()==0.1){
                 bytes[3+index] = 1;
+            }else if(programStep.getDownSpeed()==5.0){
+                bytes[3+index] = 4;
+
             }
 
             //电机转速
@@ -420,7 +446,6 @@ public abstract class BaseActivity extends Activity {
         array[2] = (byte) 0xda;
         array[3] = (byte) (size >> 8);
         array[4] = (byte) size;
-
         System.arraycopy(bytes, 0, array, 5, size);
 
         Intent intent2 = new Intent(UartServer.MSG);

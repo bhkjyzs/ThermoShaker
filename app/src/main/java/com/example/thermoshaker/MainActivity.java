@@ -532,8 +532,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             } else {
                 mll_.setBackground(getResources().getDrawable(R.drawable.file_bg_shape));
             }
-
-
         }
     }
 
@@ -549,23 +547,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     if (app.runningClass.analysis(bin)) {
                         app.appClass.setUartReady(true);
                         //做运行逻辑处理
-                        if(app.runningClass.getRunState()== TdfileRunType.RunStateEnum.START.getValue()){
-                            //正在运行
-                            switch (app.runningClass.getARunFileDefectEnum()){
-                                case FULL:
-                                    //有文件，获取本地文件，跳转到运行界面
-                                    String temp = DataUtil.readData(DataUtil.data_path + DataUtil.param_name + "temp.Naes");
-                                    ProgramInfo programInfo = JSON.parseObject(temp, ProgramInfo.class);
-                                    Intent intentRun = new Intent(MainActivity.this, RunActivity.class);
-                                    intentRun.putExtra("programInfo", programInfo);
-                                    startActivity(intentRun);
-                                    overridePendingTransition(0, 0);
-                                    app.isRunWork = true;
-                                    break;
-                                case EMPTY:
+                        if(app.runningClass.getARunStateEnum()==TdfileRunType.RunStateEnum.START||app.runningClass.getARunStateEnum()== TdfileRunType.RunStateEnum.STOP){
 
-                                    break;
-                            }
+                                    //无文件，获取本地文件，发送下位机
+                                    String tempEmpty = DataUtil.readData(DataUtil.data_path + DataUtil.param_name + "temp.Naes");
+                                    ProgramInfo programInfoEmpty = JSON.parseObject(tempEmpty, ProgramInfo.class);
+                                    runFile(programInfoEmpty);
                         }else {
                             //无运行
                         }
