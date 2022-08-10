@@ -83,6 +83,31 @@
         tools:ignore="MissingConstraints">
 
     </androidx.recyclerview.widget.RecyclerView>
+    <Button
+        android:id="@+id/btn_one"
+        app:layout_constraintLeft_toLeftOf="@+id/rv_list_oem"
+        app:layout_constraintTop_toBottomOf="@+id/rv_list_oem"
+        android:layout_marginTop="@dimen/dp_40"
+        android:layout_width="@dimen/dip_120"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_18"
+        android:layout_height="@dimen/dip_50"
+        tools:ignore="MissingConstraints">
+
+    </Button>
+
+    <Button
+        android:id="@+id/btn_two"
+        app:layout_constraintLeft_toRightOf="@+id/btn_one"
+        android:layout_marginLeft="@dimen/dp_10"
+        app:layout_constraintTop_toBottomOf="@+id/rv_list_oem"
+        android:layout_marginTop="@dimen/dp_40"
+        android:layout_width="@dimen/dip_120"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_18"
+        android:layout_height="@dimen/dip_50"
+        tools:ignore="MissingConstraints">
+    </Button>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

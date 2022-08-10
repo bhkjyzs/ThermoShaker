@@ -22,6 +22,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.fastjson.JSON;
 import com.example.thermoshaker.AAChartCoreLib.AAChartCreator.AAChartModel;
 import com.example.thermoshaker.AAChartCoreLib.AAChartCreator.AAChartView;
 import com.example.thermoshaker.AAChartCoreLib.AAChartCreator.AASeriesElement;
@@ -53,6 +54,10 @@ import java.util.Map;
 public class RunActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "RunActivity";
     public final static String MSG = RunActivity.class.getName();
+    //手机连接时发送广播
+    public static final String PHONE_RUN = "PHONE_RUN";
+    private PhoneReceiver phoneReceiver;
+
     private fileRunThread mThread; // 会话线程
     private ConstraintLayout mCltiao,mCldetil;
     private AAChartView AAChartView;
@@ -97,12 +102,17 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         RVStepListAdapter = new RVStepListAdapter(R.layout.gv_step_list_item, this);
         GetViews();
         rv_StepList.setAdapter(RVStepListAdapter);
-        RVStepListAdapter.setList(programInfo.getStepList());
-
+        RVStepListAdapter.setNewData(programInfo.getStepList());
+        initPhoneReceiver();
         handler.sendEmptyMessageDelayed(msg_refresh,2000);
         overDialog = new TipsDialog(RunActivity.this,getString(R.string.runend));
     }
-
+    private void initPhoneReceiver() {
+        phoneReceiver = new PhoneReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(PHONE_RUN);
+        registerReceiver(phoneReceiver, intentFilter);
+    }
     private void GetViews() {
         mThread = new fileRunThread();
         mThread.start();
@@ -145,7 +155,7 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
             lp.leftMargin = (programInfo.getLoopStart() - 1) * Util.dpToPx(this, 150);
             lp.bottomMargin = Util.dpToPx(this, 50);
             tvNum.setLayoutParams(lp);
-            tvNum.setText("x" + programInfo.getLoopNum() + "");
+            tvNum.setText("0/" + programInfo.getLoopNum() + "");
         } else {
             tvNum.setVisibility(View.GONE);
 
@@ -167,13 +177,8 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
                         new AASeriesElement()
                                 .name("曲线")
                                 .data(new Object[]{7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 0.0, 0.0, 0.0, 0.0, 0.0}),
-
                 });
-
         AAChartView.aa_drawChartWithChartModel(aaChartModel);
-
-
-
     }
 
     @Override
@@ -202,13 +207,14 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.ll_pause:
                 if(isPause){
-                    sendBroadcast(new Intent(UartServer.MSG).putExtra("serialport", new UartClass(null, UartType.OT_PAUSE_BYTE)));
-                    isPause = false;
-                    tv_state.setText(getString(R.string.Continue));
-                }else {
                     sendBroadcast(new Intent(UartServer.MSG).putExtra("serialport", new UartClass(null, UartType.OT_RESUME_BYTE)));
-                    isPause = true;
+                    isPause = false;
                     tv_state.setText(getString(R.string.pause));
+                }else {
+
+                    sendBroadcast(new Intent(UartServer.MSG).putExtra("serialport", new UartClass(null, UartType.OT_PAUSE_BYTE)));
+                    isPause = true;
+                    tv_state.setText(getString(R.string.Continue));
                 }
                 break;
             case R.id.ll_next:
@@ -285,22 +291,55 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
             }
         }
     };
+
+    public class PhoneReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case PHONE_RUN:
+                    Log.d(TAG, "走这了");
+
+                    try {
+                        String code = intent.getStringExtra("code");
+                        switch (code){
+                            case "stop":
+                                sendBroadcast(new Intent(UartServer.MSG).putExtra("serialport", new UartClass(null, UartType.OT_STOP_BYTE)));
+                                finish();
+                                break;
+                            case "rewind":
+                                    sendBroadcast(new Intent(UartServer.MSG).putExtra("serialport", new UartClass(null, UartType.OT_RESUME_BYTE)));
+                                    isPause = true;
+                                    tv_state.setText(getString(R.string.pause));
+                                break;
+                            case "pause":
+                                    sendBroadcast(new Intent(UartServer.MSG).putExtra("serialport", new UartClass(null, UartType.OT_PAUSE_BYTE)));
+                                    isPause = false;
+                                    tv_state.setText(getString(R.string.Continue));
+
+                                break;
+                            case "next":
+
+                                break;
+                        }
+
+                    } catch (Exception e) {
+                        Log.d(TAG, e.getMessage() + "");
+                    }
+                    break;
+            }
+        }
+    }
     private void refreshDate() {
 //        try {
         boolean isChange=false;
-
         MyApplication app = MyApplication.getInstance();
-
         if(app.runningClass.getRunState()==0){
             //结束
             over();
-
         }else if(app.runningClass.getRunState()==2){
             //停止
-
         }else if (app.runningClass.getRunState()==1){
-
-
         //当前步骤
         int pos = app.runningClass.getRunStep();
         if(pos==0){
@@ -311,7 +350,7 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         tv_EndTime.setText(app.runningClass.getCUREndTimeStr()+"");
         tv_Temps.setText(app.runningClass.getDispTemp1A()+"");
         tv_StepRadiatorTemp.setText(app.runningClass.getLidDispTemp()+"");
-        tvNum.setText(app.runningClass.getRunCir()+"");
+        tvNum.setText(app.runningClass.getRunCir()+"/"+programInfo.getLoopNum());
         tv_CurrentStep.setText(app.runningClass.getRunStep()+"");
         tv_StepTime.setText(app.runningClass.getStepSurplusStr()+"");
         Log.d(TAG,app.runningClass.getCUREndTimeStr()+""+app.runningClass.getRunCir()+"      "+pos);
@@ -377,6 +416,5 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
             handler.removeMessages(msg_refresh);
         }
         MyApplication.getInstance().isRunWork = false;
-
     }
 }

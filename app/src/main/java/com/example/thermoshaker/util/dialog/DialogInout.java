@@ -26,7 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.fastjson.JSON;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.base.BaseActivity;
 import com.example.thermoshaker.base.Content;
@@ -238,7 +238,7 @@ public class DialogInout extends Dialog {
                 local_data = myApp.getDataRefre();
                 tv_msg.setText(R.string.Transmissioncomplete);
 
-                localAdapter.setList(local_data);
+                localAdapter.setNewData(local_data);
                 usbAdapter.clearSelectedPositionList();
             }else {
                 Toast.makeText(context, context.getResources().getString(R.string.dialog_inout_info_1), Toast.LENGTH_SHORT).show();
@@ -291,7 +291,7 @@ public class DialogInout extends Dialog {
 
                 readUsbData();
                 tv_msg.setText(R.string.Transmissioncomplete);
-                usbAdapter.setList(usb_data);
+                usbAdapter.setNewData(usb_data);
                 localAdapter.clearSelectedPositionList();
 
             }else {
@@ -311,14 +311,14 @@ public class DialogInout extends Dialog {
             local_view.setLayoutManager(linearLayoutManager);
             // 获取数据，向适配器传数据，绑定适配器
             localAdapter = new AdapterInout(R.layout.dialog_input_list_item);
-            localAdapter.setList(local_data);
+            localAdapter.setNewData(local_data);
             local_view.setAdapter(localAdapter);
 
             LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(context);
             usb_view.setLayoutManager(linearLayoutManager2);
             // 获取数据，向适配器传数据，绑定适配器
             usbAdapter = new AdapterUsbInoutlist(R.layout.dialog_input_list_item);
-            usbAdapter.setList(usb_data);
+            usbAdapter.setNewData(usb_data);
             usb_view.setAdapter(usbAdapter);
         }
 

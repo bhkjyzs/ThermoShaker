@@ -235,14 +235,14 @@ public abstract class BaseActivity extends Activity {
         if(getProgramByte(programInfo)){
 
             String jsonOutput = JSON.toJSONString(programInfo);
-            DataUtil.writeData(jsonOutput, DataUtil.data_path + DataUtil.param_name, "temp.Naes", false);
+            DataUtil.writeData(jsonOutput, DataUtil.data_path + DataUtil.param_name, "temp.Tso", false);
             Intent intent = new Intent(this, RunActivity.class);
             intent.putExtra("programInfo", programInfo);
             startActivity(intent);
             overridePendingTransition(0, 0);
             MyApplication.getInstance().isRunWork = true;
 
-        };
+        }
         SystemClock.sleep(500);
         Intent intentRun = new Intent(UartServer.MSG);
         intentRun.putExtra("serialport", new UartClass(null, UartType.OT_RUN_BYTE));
@@ -433,9 +433,6 @@ public abstract class BaseActivity extends Activity {
             Utils.intTobyteArray(Math.round(dateIntermission.getTime()/1000L),bytes,12+index);
             //混合起点
             bytes[14+index] = (byte) programStep.getBlendStart();
-
-
-
         }
 
         /* 发送运行文件 */
@@ -447,16 +444,13 @@ public abstract class BaseActivity extends Activity {
         array[3] = (byte) (size >> 8);
         array[4] = (byte) size;
         System.arraycopy(bytes, 0, array, 5, size);
-
         Intent intent2 = new Intent(UartServer.MSG);
         intent2.putExtra("serialport", new UartClass(null, array));
         sendBroadcast(intent2);
             return true;
-
         }catch (Exception e){
             LogPlus.d(e.getMessage()+"");
         }
-
         return false;
     }
 

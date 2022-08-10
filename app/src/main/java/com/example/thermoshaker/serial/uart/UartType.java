@@ -14,6 +14,8 @@ public class UartType {
 	public static final byte OT_PAUSE_BYTE[] = { (byte) 0xaa, (byte) 0xab, (byte) 0xa3, 0, 0, 0 };
 	// 继续命令
 	public static final byte OT_RESUME_BYTE[] = { (byte) 0xaa, (byte) 0xab, (byte) 0xa4, 0, 0, 0 };
+
+
 	// 按键提示音命令
 	public static final byte OT_KEY_SOUND_BYTE[] = { (byte) 0xaa, (byte) 0xab, (byte) 0xc1, 0, 0, 0 };
 	// IAP升级命令

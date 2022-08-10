@@ -28,7 +28,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
-import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.base.MainType;
 import com.example.thermoshaker.base.MyApplication;

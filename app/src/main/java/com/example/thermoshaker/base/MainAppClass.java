@@ -25,7 +25,7 @@ public class MainAppClass {
         runSetting[0] = sharedPreferences.getInt("TempCtrlMode", 0);
         runSetting[1] = sharedPreferences.getInt("PreHeating", 1);
         runSetting[2] = sharedPreferences.getInt("HeatMode", 0);
-
+        wifiReady = sharedPreferences.getBoolean("wifiReady", false);
         //声音设置
         settingViewSound[0] = sharedPreferences.getBoolean("settingViewSoundKey", false);
         settingViewSound[1] = sharedPreferences.getBoolean("settingViewSoundWarning", true);
@@ -35,7 +35,18 @@ public class MainAppClass {
 
     }
 
+    /* 无线开关 */
+    private boolean wifiReady = false;
 
+    public boolean isWifiReady() {
+        return wifiReady;
+    }
+
+    public void setWifiReady(boolean wifiReady) {
+        app.getSharedPreferences("CC", Context.MODE_PRIVATE).edit().putBoolean("wifiReady", wifiReady).commit();
+        app.exec("sync");
+        this.wifiReady = wifiReady;
+    }
 
     //运行参数设置
     private int[] runSetting = new int[]{0,1,0};

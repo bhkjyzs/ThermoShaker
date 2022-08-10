@@ -16,12 +16,13 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
-import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.base.MainType;
 import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.ProgramStep;
 import com.example.thermoshaker.ui.adapter.MyAdapter;
+import com.example.thermoshaker.util.MutilBtnUtil;
 import com.example.thermoshaker.util.dialog.base.CustomKeyEditDialog;
 import com.example.thermoshaker.util.dialog.base.CustomkeyDialog;
 import com.flyco.tablayout.SlidingTabLayout;
@@ -103,10 +104,10 @@ public class SeniorDialog {
         rv_uplist.setLayoutManager(new GridLayoutManager(context,3));
         rv_downlist.setLayoutManager(new GridLayoutManager(context,3));
          RVListSeniorAdapter rvListSeniorAdapter = new  RVListSeniorAdapter(R.layout.senior_set_layout_list_item,true);
-        rvListSeniorAdapter.setList(listUp);
+        rvListSeniorAdapter.setNewData(listUp);
         rv_uplist.setAdapter(rvListSeniorAdapter);
          RVListSeniorAdapter rvListSeniordownAdapter = new  RVListSeniorAdapter(R.layout.senior_set_layout_list_item,false);
-        rvListSeniordownAdapter.setList(listDown);
+        rvListSeniordownAdapter.setNewData(listDown);
         rv_downlist.setAdapter(rvListSeniordownAdapter);
             for (int i = 0; i < listUp.size(); i++) {
                 if(listUp.get(i).equals(programStep.getUpSpeedStr())){
@@ -121,18 +122,21 @@ public class SeniorDialog {
             }
         }
 
-        rvListSeniorAdapter.setOnItemClickListener(new OnItemClickListener() {
+        rvListSeniorAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                    upPostion=position;
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+                upPostion=position;
                     rvListSeniorAdapter.notifyDataSetChanged();
                     programStep.setUpSpeed(upArray[position]);
             }
         });
-        rvListSeniordownAdapter.setOnItemClickListener(new OnItemClickListener() {
+
+        rvListSeniordownAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener(){
             @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                    downPostion=position;
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+                downPostion=position;
                     rvListSeniordownAdapter.notifyDataSetChanged();
                     programStep.setDownSpeed(downArray[position]);
             }
@@ -142,15 +146,15 @@ public class SeniorDialog {
         RecyclerView rv_directionlist = viewList.get(1).findViewById(R.id.rv_directionlist);
         LinearLayout mll_continuity = viewList.get(1).findViewById(R.id.mll_continuity);
         LinearLayout mll_intermission = viewList.get(1).findViewById(R.id.mll_intermission);
-        TextView tvConTime =viewList.get(1).findViewById(R.id.tvConTime);
-        TextView tvintTime =viewList.get(1).findViewById(R.id.tvintTime);
+        Button tvConTime =viewList.get(1).findViewById(R.id.tvConTime);
+        Button tvintTime =viewList.get(1).findViewById(R.id.tvintTime);
         TextView tvint =viewList.get(1).findViewById(R.id.tvint);
         TextView tvcon =viewList.get(1).findViewById(R.id.tvcon);
         tvConTime.setText(MyApplication.getInstance().dateFormat.format(programStep.getContinued())+"");
         tvintTime.setText(MyApplication.getInstance().dateFormat.format(programStep.getIntermission())+"");
         rv_directionlist.setLayoutManager(new GridLayoutManager(context,2));
         RVListSeniorDicAdapter rvListSeniorAdapterDirection = new  RVListSeniorDicAdapter(R.layout.senior_set_layout_list_item);
-        rvListSeniorAdapterDirection.setList(listDirection);
+        rvListSeniorAdapterDirection.setNewData(listDirection);
         rv_directionlist.setAdapter(rvListSeniorAdapterDirection);
         switch (programStep.getDirection()){
             case Forward:
@@ -185,10 +189,9 @@ public class SeniorDialog {
         rvListSeniorAdapterDirection.notifyDataSetChanged();
 
 
-
-        rvListSeniorAdapterDirection.setOnItemClickListener(new OnItemClickListener() {
+        rvListSeniorAdapterDirection.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener(){
             @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 directionPostion =position;
                 rvListSeniorAdapterDirection.notifyDataSetChanged();
                 switch (position){
@@ -243,6 +246,9 @@ public class SeniorDialog {
         tvConTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!MutilBtnUtil.isFastClick()) {
+                    return;
+                }
                 CustomKeyEditDialog customKeyEditDialog = new CustomKeyEditDialog(context);
                 customKeyEditDialog.show();
                 customKeyEditDialog.init(String.valueOf(MyApplication.getInstance().dateFormat.format(programStep.getContinued())),CustomKeyEditDialog.TYPE.Time,0);
@@ -251,7 +257,7 @@ public class SeniorDialog {
                     public void onConfirm() {
                         try {
                             programStep.setContinued(MyApplication.getInstance().dateFormat.parse(customKeyEditDialog.getOutTime()).getTime());
-                            tvConTime.setText(customKeyEditDialog.getOutTime()+"");
+                            tvConTime.setText(MyApplication.getInstance().dateFormat.format(programStep.getContinued()));
 
                         } catch (ParseException e) {
                             e.printStackTrace();
@@ -266,7 +272,9 @@ public class SeniorDialog {
         tvintTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(programStep.getMixingMode()==1){
+                if (!MutilBtnUtil.isFastClick()) {
+                    return;
+                }
                     CustomKeyEditDialog customKeyEditDialog = new CustomKeyEditDialog(context);
                     customKeyEditDialog.show();
                     customKeyEditDialog.init(String.valueOf(MyApplication.getInstance().dateFormat.format(programStep.getIntermission())),CustomKeyEditDialog.TYPE.Time,0);
@@ -275,15 +283,13 @@ public class SeniorDialog {
                         public void onConfirm() {
                             try {
                                 programStep.setIntermission(MyApplication.getInstance().dateFormat.parse(customKeyEditDialog.getOutTime()).getTime());
-                                tvintTime.setText(customKeyEditDialog.getOutTime()+"");
+                                tvintTime.setText(MyApplication.getInstance().dateFormat.format(programStep.getIntermission()));
 
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
                         }
                     });
-
-                }
             }
         });
 

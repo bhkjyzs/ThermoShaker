@@ -188,7 +188,8 @@ public class CustomKeyEditDialog extends Dialog implements View.OnClickListener 
         try {
             switch (v.getId()) {
                 case R.id.imageButton_back:
-                    setChar("-1");
+                        setChar("-1");
+
                     break;
                 case R.id.textView_hh:
                     setTimeTextView(1);
@@ -454,14 +455,18 @@ public class CustomKeyEditDialog extends Dialog implements View.OnClickListener 
             /* 使用BigDecimal保证乘100精度， 使用NumberFormat保证有无小数时置整数 */
             switch (type) {
                 case RPM://转速1000-3000
-                    setInputText(valStr);
+                   	int valRPM = new BigDecimal(valStr).intValue();
+                    if(valRPM <= 1200){
+                        setInputText(valStr);
+
+                    }
                     if(valStr.endsWith("."))
 					return;
-				int valRPM = new BigDecimal(valStr).intValue();
+
 				if (valRPM == 0) {
 					setInputText("0");
 					once = true;
-				} else if (valRPM >= 1000 && valRPM <= 3000) {
+				} else if (valRPM >= 1000 && valRPM <= 1200) {
 					setInputText(valStr);
 				}
                     break;

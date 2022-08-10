@@ -27,7 +27,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
-import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.base.MainType;
 import com.example.thermoshaker.base.MyApplication;
@@ -222,16 +222,24 @@ public class FactoryDialog {
             }
         });
         List<MainType.CompanyEnum> listOem = new ArrayList<>();
-        listOem.add(MainType.CompanyEnum.NULL);
-        RecyclerView rv_list_oem = viewList.get(1).findViewById(R.id.rv_list_oem);
-        rv_list_oem.setLayoutManager(new GridLayoutManager(context,5));
-        RVListoemAdapter rvListoemAdapter = new RVListoemAdapter(R.layout.list_oem_item_layout);
-        rv_list_oem.setAdapter(rvListoemAdapter);
-        rvListoemAdapter.setList(listOem);
-        rvListoemAdapter.setOnItemClickListener(new OnItemClickListener() {
+        Button btn_one = viewList.get(1).findViewById(R.id.btn_one);
+        btn_one.setText(MainType.CompanyEnum.NULL.name());
+        Button btn_two = viewList.get(1).findViewById(R.id.btn_two);
+        btn_two.setText(MainType.CompanyEnum.himedia.name());
+        btn_one.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+            public void onClick(View v) {
+                Log.d(TAG,btn_one.getText().toString().trim()+"");
+
                 setCompanyLogo("bootanimation.zip", "/td/bootanimation.zip", "nologo",
+                        0);
+            }
+        });
+        btn_two.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG,btn_two.getText().toString().trim()+"");
+                setCompanyLogo("himedia/bootanimation.zip", "/td/himedia/bootanimation.zip", "himedia",
                         0);
             }
         });
@@ -357,17 +365,5 @@ public class FactoryDialog {
 
 
 
-        class  RVListoemAdapter extends BaseQuickAdapter<MainType.CompanyEnum, BaseViewHolder>{
 
-            public RVListoemAdapter(int layoutResId) {
-                super(layoutResId);
-            }
-
-            @Override
-            protected void convert(@NonNull BaseViewHolder baseViewHolder, MainType.CompanyEnum companyEnum) {
-
-                baseViewHolder.setText(R.id.btn_oem,companyEnum.name());
-
-            }
-        }
 }

@@ -1,6 +1,4 @@
 package com.example.thermoshaker.serial.uart.debug;
-
-
 /**
  * @调试模式数据的接口
  * @author LiJ E-mail:newwuxian911@QQ.com
@@ -15,6 +13,5 @@ public interface DebugInterface {
 	public float getTrueTempBlock1();
 
 	public String getTrueTempBlock1Str();
-
 
 }

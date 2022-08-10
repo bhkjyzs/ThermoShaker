@@ -1,4 +1,5 @@
 package com.example.thermoshaker.ui.adapter;
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
@@ -10,7 +11,7 @@ import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.ProgramStep;
@@ -40,6 +41,7 @@ public class RVStepListAdapter extends BaseQuickAdapter<ProgramStep, BaseViewHol
         super(layoutResId);
         this.runActivity = runActivity;
     }
+    @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void convert(@NonNull BaseViewHolder baseViewHolder, ProgramStep programStep) {
@@ -51,7 +53,7 @@ public class RVStepListAdapter extends BaseQuickAdapter<ProgramStep, BaseViewHol
         TextView textView_run_inc = baseViewHolder.getView(R.id.textView_run_inc);
         Button Button_temp = baseViewHolder.getView(R.id.Button_temp);
         Button Button_time = baseViewHolder.getView(R.id.Button_time);
-        textView_title.setText(getContext().getString(R.string.step)+""+(baseViewHolder.getAdapterPosition()+1));
+        textView_title.setText(MyApplication.getInstance().getString(R.string.step)+""+(baseViewHolder.getAdapterPosition()+1));
         textView_run_inc.setText(programStep.getTemperature()+"°C");
         multiWaveHeader.setScaleY(-1f);
         if(runActivity.programInfo.isLoopEnable()){
@@ -68,6 +70,7 @@ public class RVStepListAdapter extends BaseQuickAdapter<ProgramStep, BaseViewHol
         }else {
             mLoop.setVisibility(View.GONE);
         }
+
         if(selectPostion==baseViewHolder.getAdapterPosition()){
 
             if(updateTemp==programStep.getTemperature()){

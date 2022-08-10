@@ -6,7 +6,7 @@ public class MainType {
 
 
     public enum CompanyEnum {
-        NULL, bio_gener,
+        NULL, bio_gener,himedia,
     }
 
     /* 运行的三个槽 */

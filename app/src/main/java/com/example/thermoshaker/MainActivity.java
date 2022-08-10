@@ -33,7 +33,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
-import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.thermoshaker.base.BaseActivity;
 import com.example.thermoshaker.base.Content;
 import com.example.thermoshaker.base.MyApplication;
@@ -411,12 +411,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         });
 
-        rvListFileAdapter.setList(dataRefre);
+        rvListFileAdapter.setNewData(dataRefre);
 //        tv_number.setText(rvListFileAdapter.getData().size()+"/"+ Content.FileNumberNum);
         rv_list.setAdapter(rvListFileAdapter);
-        rvListFileAdapter.setOnItemClickListener(new OnItemClickListener() {
+
+        rvListFileAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 ChooseFilePos = position;
                 rvListFileAdapter.notifyDataSetChanged();
             }
@@ -550,7 +551,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         if(app.runningClass.getARunStateEnum()==TdfileRunType.RunStateEnum.START||app.runningClass.getARunStateEnum()== TdfileRunType.RunStateEnum.STOP){
 
                                     //无文件，获取本地文件，发送下位机
-                                    String tempEmpty = DataUtil.readData(DataUtil.data_path + DataUtil.param_name + "temp.Naes");
+                                    String tempEmpty = DataUtil.readData(DataUtil.data_path + DataUtil.param_name + "temp.Tso");
                                     ProgramInfo programInfoEmpty = JSON.parseObject(tempEmpty, ProgramInfo.class);
                                     runFile(programInfoEmpty);
                         }else {

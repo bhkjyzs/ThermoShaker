@@ -88,8 +88,6 @@
         android:gravity="center_vertical"
         android:layout_height="@dimen/dip_60"
         tools:ignore="MissingConstraints">
-
-
         <TextView
             android:id="@+id/tv_ustomContent"
             android:textSize="@dimen/sp_32"
@@ -99,10 +97,7 @@
             android:layout_marginLeft="@dimen/dip_20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-
         </TextView>
-
-
     </LinearLayout>
 
 
@@ -122,19 +117,21 @@
     </TextView>
 
 
-    <TextView
+    <Button
         android:id="@+id/tvConTime"
-        android:textSize="@dimen/sp_35"
+        android:textSize="@dimen/sp_30"
         android:text=""
         android:paddingLeft="@dimen/dip_50"
         android:paddingRight="@dimen/dip_50"
+        android:background="@drawable/btn_click_shape"
         app:layout_constraintTop_toTopOf="@+id/tvcon"
         app:layout_constraintLeft_toRightOf="@+id/tvcon"
         app:layout_constraintBottom_toBottomOf="@+id/tvcon"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dip_12"
+        android:layout_height="@dimen/dip_60"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -153,9 +150,9 @@
     </TextView>
 
 
-    <TextView
+    <Button
         android:id="@+id/tvintTime"
-        android:textSize="@dimen/sp_35"
+        android:textSize="@dimen/sp_30"
         android:text=""
         android:paddingLeft="@dimen/dip_50"
         android:paddingRight="@dimen/dip_50"
@@ -165,6 +162,8 @@
         android:textColor="@color/black"
         android:textStyle="bold"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dip_12"
+        android:background="@drawable/btn_click_shape"
+        android:layout_height="@dimen/dip_60"
         tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

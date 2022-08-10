@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="@dimen/dip_254"
-    android:gravity="center_vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:gravity="center"
     android:layout_marginTop="@dimen/dip_43"
-    android:id="@+id/mll_settingTab"
-    android:background="@drawable/btn_selector_bg"
-    android:layout_height="@dimen/dip_75">
 
-    <ImageView
-        android:id="@+id/iv_img"
-        android:layout_marginLeft="@dimen/dip_30"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/mll_settingTab"
+        android:gravity="center_vertical"
+        android:background="@drawable/btn_selector_bg"
+        android:layout_width="@dimen/dip_254"
+        android:layout_height="@dimen/dip_75">
+        <ImageView
+            android:id="@+id/iv_img"
+            android:layout_marginLeft="@dimen/dip_30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-    </ImageView>
-    <TextView
-        android:id="@+id/tv_Name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_marginLeft="@dimen/dip_20"
-        android:textColor="@color/white"
-        android:textSize="@dimen/sp_29"
-        />
+        </ImageView>
+        <TextView
+            android:id="@+id/tv_Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_marginLeft="@dimen/dip_20"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_29"
+            />
+
+    </LinearLayout>
 
 </LinearLayout>

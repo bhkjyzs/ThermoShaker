@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.thermoshaker.MainActivity;
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.base.BaseActivity;
@@ -290,16 +290,14 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
         tvTemperatures.setText(programStep.getTemperature()+"");
         tvRevolution.setText(programStep.getZSpeed()+"");
         tvTime.setText(MyApplication.getInstance().dateFormat.format(programStep.getTime())+"");
-
-
         mlistSenior.clear();
         mlistSenior.add(getString(R.string.up_speed)+""+programStep.getUpSpeedStr());
         mlistSenior.add(getString(R.string.down_speed)+""+programStep.getDownSpeedStr());
         mlistSenior.add(getString(R.string.motordirection)+""+programStep.getDirectionStr());
         mlistSenior.add(getString(R.string.mixingmode)+""+programStep.getMixingModeStr());
         mlistSenior.add(getString(R.string.blendstart)+":"+programStep.getBlendStartStr());
-        rvListSeniorAdapter.setList(mlistSenior);
-
+        mlistSenior.add(getString(R.string.mixingtime)+":"+MyApplication.getInstance().dateFormat.format(programStep.getContinued())+"");
+        rvListSeniorAdapter.setNewData(mlistSenior);
     }
 
     @Override
@@ -534,7 +532,7 @@ public class AddAndEditActivity extends BaseActivity implements View.OnClickList
                     case Time:
                         try {
                             programInfo.getStepList().get(ChoosePos).setTime(MyApplication.getInstance().dateFormat.parse(customKeyEditDialog.getOutTime()).getTime());
-                            tvTime.setText(customKeyEditDialog.getOutTime()+"");
+                            tvTime.setText(MyApplication.getInstance().dateFormat.format(programInfo.getStepList().get(ChoosePos).getTime())+"");
 
                         } catch (ParseException e) {
                             e.printStackTrace();

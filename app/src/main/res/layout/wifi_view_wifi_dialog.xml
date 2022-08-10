@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/dip_600"
+    android:layout_height="@dimen/dip_500"
+    android:layout_gravity="center"
+    android:background="@drawable/setting_dialog_bg"
+    android:orientation="vertical">
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dip_55"
+        android:background="@drawable/setting_dialog_title_bg"
+        android:gravity="center"
+        android:text="@string/setting_wifi"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_25">
+
+    </TextView>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dip_55"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="@dimen/dip_600"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_wifi_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:padding="15dp"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/LinearLayout_conn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:id="@+id/txt_label_signal_strength"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signal_strength"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/txt_signal_strength"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signal_strength"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txt_label_security_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/security_level"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/txt_security_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/security_level"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txt_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/password"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/edt_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:labelFor="@+id/edt_password"
+                android:text=""
+                android:textColor="@android:color/black" />
+
+            <CheckBox
+                android:id="@+id/cbx_show_pass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/show_password"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout_connected"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:visibility="gone">
+
+            <!-- 状态 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/conn_status"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/TextView_conn_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/conn_status"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <!-- 信号强度 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/signal_strength"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/TextView_signal_strength"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signal_strength"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- 安全性 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/security_level"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/TextView_security_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/security_level"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- IP地址 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/ip_address"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/TextView_ip_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ip_address"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="3.5"
+        android:layout_height="match_parent"
+        android:gravity="center">
+        <Button
+            android:id="@+id/dialog_language_confirm"
+            android:layout_width="@dimen/dip_150"
+            android:layout_height="@dimen/dip_50"
+            android:background="@drawable/selector_background"
+            android:text="@string/break_off"
+            android:textAllCaps="false"
+            android:gravity="center"
+            android:textColor="@drawable/selector_text"
+            android:textSize="@dimen/sp_20" />
+
+        <Button
+            android:id="@+id/dialog_language_cancel"
+            android:layout_width="@dimen/dip_150"
+            android:layout_height="@dimen/dip_50"
+            android:layout_marginLeft="@dimen/dip_40"
+            android:background="@drawable/selector_background"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:gravity="center"
+            android:textColor="@drawable/selector_text"
+            android:textSize="@dimen/sp_20" />
+
+    </LinearLayout>
+    </LinearLayout>
+    <com.example.thermoshaker.util.key.FloatingKeyboard
+        android:id="@+id/keyboardview"
+        android:layout_width="750dp"
+        android:layout_height="320dp"
+        android:background="@android:color/transparent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:keyTextColor="@color/white"
+        android:keyBackground="@drawable/bio_keyboard_click"
+
+        android:visibility="gone"
+        tools:ignore="MissingConstraints" />
+</RelativeLayout>
+

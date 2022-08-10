@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -13,14 +14,18 @@ import android.Manifest;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiInfo;
 import android.os.Build;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,17 +37,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
-import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.base.BaseActivity;
 import com.example.thermoshaker.base.Content;
@@ -53,8 +60,10 @@ import com.example.thermoshaker.serial.uart.UartClass;
 import com.example.thermoshaker.serial.uart.UartServer;
 import com.example.thermoshaker.serial.uart.upgrade.DialogHardUp;
 import com.example.thermoshaker.ui.adapter.MyAdapter;
+import com.example.thermoshaker.ui.file.AddAndEditActivity;
 import com.example.thermoshaker.util.AppManager;
 import com.example.thermoshaker.util.DataUtil;
+import com.example.thermoshaker.util.LogSaveUtil;
 import com.example.thermoshaker.util.MutilBtnUtil;
 import com.example.thermoshaker.util.custom.SlideButton;
 import com.example.thermoshaker.util.dialog.DebugDialog;
@@ -65,8 +74,14 @@ import com.example.thermoshaker.util.LanguageUtil;
 import com.example.thermoshaker.util.Utils;
 import com.example.thermoshaker.util.dialog.base.CustomKeyEditDialog;
 import com.example.thermoshaker.util.dialog.DialogInout;
+import com.example.thermoshaker.util.key.FloatingKeyboard;
 import com.example.thermoshaker.util.usb.USBBroadCastReceiver;
 import com.example.thermoshaker.util.usb.UsbHelper;
+import com.example.thermoshaker.util.wifi.wifiLibrary.OnWifiConnectListener;
+import com.example.thermoshaker.util.wifi.wifiLibrary.OnWifiEnabledListener;
+import com.example.thermoshaker.util.wifi.wifiLibrary.OnWifiScanResultsListener;
+import com.example.thermoshaker.util.wifi.wifiLibrary.WiFiManager;
+import com.example.thermoshaker.util.wifi.wifiLibrary.WifiConnDialog;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.github.mjdev.libaums.UsbMassStorageDevice;
 import com.github.mjdev.libaums.fs.FileSystem;
@@ -94,6 +109,7 @@ import java.util.Locale;
 
 public class SettingActivity extends BaseActivity {
     private static final String TAG = "SettingActivity";
+    public final static String MSG = SettingActivity.class.getName();
     private RecyclerView rv_list;
     private TextView tv_times;
     private RVSettingListAdapter rvSettingListAdapter;
@@ -103,6 +119,8 @@ public class SettingActivity extends BaseActivity {
     private List<SettingListBean> mList = new ArrayList<>();
 
     private Locale locale;
+    //wifi
+    private WiFiManager mWiFiManager;
 
     @Override
     protected int getLayout() {
@@ -113,6 +131,11 @@ public class SettingActivity extends BaseActivity {
     protected void initView() {
         GetViews();
 //        initUsb();
+        wifiInit();
+    }
+    //wifi初始化
+    private void wifiInit() {
+        mWiFiManager = WiFiManager.getInstance(this);
     }
 
 
@@ -125,6 +148,8 @@ public class SettingActivity extends BaseActivity {
         listNames.add(getString(R.string.setting_factory));
         listNames.add(getString(R.string.ImportExport) + "");
         listNames.add(getString(R.string.Runsettings) + "");
+        listNames.add(getString(R.string.setting_wifi) + "");
+
         listNames.add(getString(R.string.returnname) + "");
 
         listImgs.add(R.drawable.echangec);
@@ -135,8 +160,8 @@ public class SettingActivity extends BaseActivity {
         listImgs.add(R.drawable.setting);
         listImgs.add(R.drawable.input);
         listImgs.add(R.drawable.runsetting_img);
+        listImgs.add(R.drawable.setting_wifi);
         listImgs.add(R.drawable.return_img);
-
         tv_times = findViewById(R.id.tv_times);
         rv_list = findViewById(R.id.rv_list);
         updateSystemTime(tv_times);
@@ -147,11 +172,12 @@ public class SettingActivity extends BaseActivity {
             SettingListBean settingListBean = new SettingListBean(listNames.get(i), listImgs.get(i));
             mList.add(settingListBean);
         }
-        rvSettingListAdapter.setList(mList);
-        rvSettingListAdapter.setOnItemClickListener(new OnItemClickListener() {
+        rvSettingListAdapter.setNewData(mList);
+
+        rvSettingListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (!MutilBtnUtil.isFastClick()) {
                     return;
                 }
@@ -174,26 +200,183 @@ public class SettingActivity extends BaseActivity {
                     case 4:
                         nativeInformation();
                         break;
-
                     case 5:
                         factoryDialog();
                         break;
-
                     case 6:
                         inout();
-
                         break;
                     case 7:
                         runSetting();
                         break;
                     case 8:
+                        showWifi();
+                        break;
+                    case 9:
                         finish();
                         overridePendingTransition(0, 0);
                         break;
-
                 }
             }
         });
+
+    }
+
+    private void showWifi() {
+
+        CustomDialog wifiDialog = new CustomDialog.Builder(this)
+                .view(R.layout.setting_wifi_layout)
+                .style(R.style.CustomDialog)
+                .build();
+        wifiDialog.show();
+        RecyclerView rv_list_wifi = wifiDialog.findViewById(R.id.rv_list_wifi);
+        rv_list_wifi.setLayoutManager(new LinearLayoutManager(this));
+        RvWifiListAdapter adapter =  new RvWifiListAdapter(R.layout.wifi_info_item);
+        rv_list_wifi.setAdapter(adapter);
+        // 添加监听
+        mWiFiManager.setOnWifiEnabledListener(new OnWifiEnabledListener() {
+            @Override
+            public void onWifiEnabled(boolean enabled) {
+
+            }
+        });
+        mWiFiManager.setOnWifiScanResultsListener(new OnWifiScanResultsListener() {
+            @Override
+            public void onScanResults(List<ScanResult> scanResults) {
+                adapter.setNewData(scanResults);
+            }
+        });
+        mWiFiManager.setOnWifiConnectListener(new OnWifiConnectListener() {
+            @Override
+            public void onWiFiConnectLog(String log) {
+
+            }
+
+            @Override
+            public void onWiFiConnectSuccess(String SSID) {
+
+            }
+
+            @Override
+            public void onWiFiConnectFailure(String SSID) {
+
+            }
+        });
+
+            if (mWiFiManager.isWifiEnabled()) {
+                wifiDialog.findViewById(R.id.wifi_opn).setVisibility(View.INVISIBLE);
+                wifiDialog.findViewById(R.id.wifi_close).setVisibility(View.VISIBLE);
+            } else {
+                wifiDialog.findViewById(R.id.wifi_opn).setVisibility(View.VISIBLE);
+                wifiDialog.findViewById(R.id.wifi_close).setVisibility(View.INVISIBLE);
+            }
+            wifiDialog.findViewById(R.id.wifi_close).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mWiFiManager.closeWiFi()) {
+                        MyApplication.getInstance().appClass.setWifiReady(false);
+                        wifiDialog.findViewById(R.id.wifi_opn).clearAnimation();
+                        wifiDialog.findViewById(R.id.wifi_opn).setVisibility(View.VISIBLE);
+                        wifiDialog.findViewById(R.id.wifi_close).clearAnimation();
+                        wifiDialog.findViewById(R.id.wifi_close).setVisibility(View.INVISIBLE);
+                        adapter.getData().clear();
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            });
+            wifiDialog.findViewById(R.id.wifi_opn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mWiFiManager.openWiFi()) {
+                        MyApplication.getInstance().appClass.setWifiReady(true);
+                        wifiDialog.findViewById(R.id.wifi_opn).clearAnimation();
+                        wifiDialog.findViewById(R.id.wifi_opn).setVisibility(View.INVISIBLE);
+                        wifiDialog.findViewById(R.id.wifi_close).clearAnimation();
+                        wifiDialog.findViewById(R.id.wifi_close).setVisibility(View.VISIBLE);
+                        List<ScanResult> scanResults = mWiFiManager.getScanResults();
+                        adapter.setNewData(scanResults);
+                    }
+
+                }
+            });
+
+        List<ScanResult> scanResults = mWiFiManager.getScanResults();
+        adapter.setNewData(scanResults);
+        wifiDialog.findViewById(R.id.dialog_language_confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wifiDialog.dismiss();
+            }
+        });
+        wifiDialog.findViewById(R.id.dialog_language_refre).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<ScanResult> scanResults = mWiFiManager.getScanResults();
+                adapter.setNewData(scanResults);
+            }
+        });
+
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ScanResult scanResult =  (ScanResult) adapter.getData().get(position);
+                CustomDialog customDialog = new CustomDialog.Builder(SettingActivity.this)
+                        .view(R.layout.wifi_view_wifi_dialog)
+                        .style(R.style.CustomDialog).build();
+                customDialog.show();
+                customDialog.findViewById(R.id.dialog_language_cancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        customDialog.dismiss();
+                    }
+                });
+                Button dialog_language_confirm = customDialog.findViewById(R.id.dialog_language_confirm);
+                if(mWiFiManager.isConnectSSID(scanResult)){
+                    final WifiConnDialog mStatusDialog = new WifiConnDialog(scanResult, true,customDialog);
+                    mStatusDialog.setip(Utils.ipIntToString(mWiFiManager.getConnectionInfo().getIpAddress()));
+                    dialog_language_confirm.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // 断开连接
+                            final String ssid = scanResult.SSID;
+                            WifiInfo connectionInfo = mWiFiManager.getConnectionInfo();
+                            Log.i(TAG, "onClick: connectionInfo :" + connectionInfo.getSSID());
+                            if (mWiFiManager.addDoubleQuotation(ssid).equals(connectionInfo.getSSID())) {
+                                mWiFiManager.disconnectWifi(connectionInfo.getNetworkId());
+                            }
+                        }
+                    });
+                }else {
+
+                    final WifiConnDialog mStatusDialog = new WifiConnDialog(scanResult, false,customDialog);
+                    dialog_language_confirm.setText(R.string.connect);
+
+                    dialog_language_confirm.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String str = mStatusDialog.edtPassword.getText().toString();
+
+                            if (!str.equals("")) {
+                                switch (mWiFiManager.getSecurityMode(scanResult)) {
+                                    case WPA:
+                                    case WPA2:
+                                        mWiFiManager.connectWPA2Network(scanResult.SSID, str);
+                                        break;
+                                    case WEP:
+                                        mWiFiManager.connectWEPNetwork(scanResult.SSID, str);
+                                        break;
+                                    case OPEN: // 开放网络
+                                        mWiFiManager.connectOpenNetwork(scanResult.SSID);
+                                        break;
+                                }
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
+
 
     }
 
@@ -285,6 +468,9 @@ public class SettingActivity extends BaseActivity {
         ll_lid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!MutilBtnUtil.isFastClick()) {
+                    return;
+                }
                 CustomKeyEditDialog customKeyEditDialog = new CustomKeyEditDialog(runSettingDialog.getContext());
                 customKeyEditDialog.show();
                 customKeyEditDialog.init(String.valueOf(0),CustomKeyEditDialog.TYPE.Temp,0);
@@ -423,6 +609,7 @@ public class SettingActivity extends BaseActivity {
                 .build();
         nativeInformationDialog.show();
         TextView tv_version = nativeInformationDialog.findViewById(R.id.tv_version);
+        EditText edt_localName = nativeInformationDialog.findViewById(R.id.edt_localName);
         TextView tv_Uiversion = nativeInformationDialog.findViewById(R.id.tv_Uiversion);
         try {
             tv_version.setText(getString(R.string.softer_version) + "  " + this.getPackageManager().getPackageInfo(
@@ -434,10 +621,23 @@ public class SettingActivity extends BaseActivity {
         nativeInformationDialog.findViewById(R.id.dialog_language_confirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LogSaveUtil.setName(SettingActivity.this, edt_localName.getText().toString());
                 nativeInformationDialog.dismiss();
+
             }
         });
         DialogDisMiss(nativeInformationDialog);
+        FloatingKeyboard keyboardview = nativeInformationDialog.findViewById(R.id.keyboardview);
+
+        edt_localName.setText(LogSaveUtil.getName(this));
+        keyboardview.setfocusCurrent(nativeInformationDialog.getWindow());
+        keyboardview.setKeyboardInt(FloatingKeyboard.KEYBOARD.number);
+        keyboardview.setPreviewEnabled(false);
+        keyboardview.setFinishAction(MSG);
+        keyboardview.registerEditText(edt_localName);
+
+
+
     }
 
 
@@ -742,18 +942,7 @@ public class SettingActivity extends BaseActivity {
 //            Toast.makeText(SettingActivity.this, getText(R.string.update_failed), Toast.LENGTH_SHORT).show();
             LogPlus.d(TAG + "Software updates exception." + e.getMessage());
         }
-//        CustomDialog firmwareDialog = new CustomDialog.Builder(this)
-//                .view(R.layout.change_firmware_layout)
-//                .style(R.style.CustomDialog)
-//                .build();
-//        firmwareDialog.show();
-//        firmwareDialog.findViewById(R.id.dialog_language_confirm).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
-//        DialogDisMiss(firmwareDialog);
+
 
 
     }
@@ -920,6 +1109,66 @@ public class SettingActivity extends BaseActivity {
 
         }
     }
+
+
+
+    class RvWifiListAdapter extends BaseQuickAdapter<ScanResult, BaseViewHolder>{
+
+        public RvWifiListAdapter(int layoutResId) {
+            super(layoutResId);
+        }
+
+        @Override
+        protected void convert(@NonNull BaseViewHolder baseViewHolder, ScanResult scanResult) {
+            baseViewHolder.setText(R.id.txt_wifi_name,scanResult.SSID+"");
+            // Wifi 描述
+            String desc = "";
+            String descOri = scanResult.capabilities;
+            if (descOri.toUpperCase().contains("WPA-PSK")) {
+                desc = "WPA";
+            }
+            if (descOri.toUpperCase().contains("WPA2-PSK")) {
+                desc = "WPA2";
+            }
+            if (descOri.toUpperCase().contains("WPA-PSK") && descOri.toUpperCase().contains("WPA2-PSK")) {
+                desc = "WPA/WPA2";
+            }
+
+            if (TextUtils.isEmpty(desc)) {
+                desc = MyApplication.getInstance().getString(R.string.unprotected_networks);
+            } else {
+                desc = MyApplication.getInstance().getString(R.string.pass) + desc
+                        + MyApplication.getInstance().getString(R.string.to_protect);
+            }
+
+            // 是否连接
+            if(mWiFiManager.isConnectSSID(scanResult)){
+                desc = MyApplication.getInstance().getString(R.string.setting_wifi_ok);
+            }
+
+            baseViewHolder.setText(R.id.txt_wifi_desc,desc);
+
+            // 网络信号强度
+            int level = scanResult.level;
+            int imgId = R.drawable.wifi05;
+            if (Math.abs(level) > 100) {
+                imgId = R.drawable.wifi05;
+            } else if (Math.abs(level) > 80) {
+                imgId = R.drawable.wifi04;
+            } else if (Math.abs(level) > 70) {
+                imgId = R.drawable.wifi04;
+            } else if (Math.abs(level) > 60) {
+                imgId = R.drawable.wifi03;
+            } else if (Math.abs(level) > 50) {
+                imgId = R.drawable.wifi02;
+            } else {
+                imgId = R.drawable.wifi01;
+            }
+            ImageView imgWifiLevelIco = baseViewHolder.getView(R.id.img_wifi_level_ico);
+            imgWifiLevelIco.setImageResource(imgId);
+        }
+    }
+
 
 
 }

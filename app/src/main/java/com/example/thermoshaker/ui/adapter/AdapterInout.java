@@ -10,8 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.thermoshaker.R;
+import com.example.thermoshaker.base.MyApplication;
 import com.example.thermoshaker.model.ProgramInfo;
 
 import java.util.ArrayList;
@@ -48,11 +49,11 @@ public class AdapterInout extends BaseQuickAdapter<ProgramInfo, BaseViewHolder> 
         if (positionList.contains(String.valueOf(baseViewHolder.getAdapterPosition()))) {
             num.setTextColor(Color.parseColor("#FFFFFF"));
             name.setTextColor(Color.parseColor("#FFFFFF"));
-            view.setBackground(getContext().getResources().getDrawable(R.drawable.shape_background_focus));
+            view.setBackground(MyApplication.getInstance().getResources().getDrawable(R.drawable.shape_background_focus));
         } else {
             num.setTextColor(Color.parseColor("#000000"));
             name.setTextColor(Color.parseColor("#000000"));
-            view.setBackground(getContext().getResources().getDrawable(R.drawable.shape_background_no2));
+            view.setBackground(MyApplication.getInstance().getResources().getDrawable(R.drawable.shape_background_no2));
         }
 
     }

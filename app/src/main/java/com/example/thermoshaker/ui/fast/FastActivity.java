@@ -28,6 +28,7 @@ import com.example.thermoshaker.serial.uart.UartType;
 import com.example.thermoshaker.serial.uart.running.TdfileRunType;
 import com.example.thermoshaker.ui.run.RunActivity;
 import com.example.thermoshaker.util.DataUtil;
+import com.example.thermoshaker.util.MutilBtnUtil;
 import com.example.thermoshaker.util.dialog.base.CustomKeyEditDialog;
 
 import java.text.ParseException;
@@ -87,6 +88,9 @@ public class FastActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        if (!MutilBtnUtil.isFastClick()) {
+            return;
+        }
         switch (v.getId()){
             case R.id.Btn_SetTM:
                 showkeyDialog(CustomKeyEditDialog.TYPE.Temp,String.valueOf(37));
@@ -133,7 +137,7 @@ public class FastActivity extends BaseActivity implements View.OnClickListener {
 
             String jsonOutput = JSON.toJSONString(programInfo);
 
-            DataUtil.writeData(jsonOutput, DataUtil.data_path + DataUtil.fast_param_name, "temp.Naes", false);
+            DataUtil.writeData(jsonOutput, DataUtil.data_path + DataUtil.fast_param_name, "temp.Tso", false);
             run_flag=1;
             Btn_SetTM.setEnabled(false);
             Btn_SetTM.setTextColor(getResources().getColor(R.color.gray));
@@ -185,14 +189,16 @@ public class FastActivity extends BaseActivity implements View.OnClickListener {
 
                         break;
                     case Temp:
-                        Btn_SetTM.setText(customKeyEditDialog.getOutStr()+"");
+                        Btn_SetTM.setText(customKeyEditDialog.getOutStr()+"°C");
                         programInfo.getStepList().get(0).setTemperature(Float.parseFloat(customKeyEditDialog.getOutStr()));
                         break;
                     case Time:
-                        Btn_SetTime.setText(customKeyEditDialog.getOutTime()+"");
+
                         try {
 
                             programInfo.getStepList().get(0).setTime(MyApplication.getInstance().dateFormat.parse(customKeyEditDialog.getOutTime()).getTime());
+                            programInfo.getStepList().get(0).setContinued(MyApplication.getInstance().dateFormat.parse(customKeyEditDialog.getOutTime()).getTime());
+                            Btn_SetTime.setText((MyApplication.getInstance().dateFormat.format(  programInfo.getStepList().get(0).getTime())+""));
 
                         } catch (ParseException e) {
                             e.printStackTrace();
@@ -214,7 +220,7 @@ public class FastActivity extends BaseActivity implements View.OnClickListener {
             super.run();
             try {
 
-                int stopInt = TdfileRunType.RunStateEnum.OVER.getValue();
+                int stopInt = TdfileRunType.RunStateEnum.STOP.getValue();
                 /* 查询一次 */
                 MyApplication app = MyApplication.getInstance();
                 Intent intentData = new Intent(UartServer.MSG);
@@ -258,7 +264,7 @@ public class FastActivity extends BaseActivity implements View.OnClickListener {
                 case msg_refresh:
                     tv_time.setText(app.runningClass.getStepSurplusStr()+"");
                     tv_Tamp.setText(app.runningClass.getDispTemp1A()+"°C");
-
+                    tv_ZSpeed.setText(programInfo.getStepList().get(0).getZSpeed()+"");
                     handler.sendEmptyMessageDelayed(msg_refresh,1000);
                     break;
 

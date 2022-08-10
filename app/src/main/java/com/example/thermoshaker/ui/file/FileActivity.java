@@ -16,8 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
-import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.example.thermoshaker.R;
 import com.example.thermoshaker.base.BaseActivity;
 import com.example.thermoshaker.base.Content;
@@ -29,6 +29,7 @@ import com.example.thermoshaker.serial.CommandDateUtil;
 import com.example.thermoshaker.serial.ControlParam;
 import com.example.thermoshaker.serial.DataUtils;
 import com.example.thermoshaker.util.BroadcastManager;
+import com.example.thermoshaker.util.DataUtil;
 import com.example.thermoshaker.util.MutilBtnUtil;
 import com.example.thermoshaker.util.ToastUtil;
 import com.example.thermoshaker.util.dialog.base.CustomkeyDialog;
@@ -39,6 +40,7 @@ import com.example.thermoshaker.util.key.Util;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 public class FileActivity extends BaseActivity implements View.OnClickListener {
     public final static String MSG = FileActivity.class.getName();
@@ -49,6 +51,7 @@ public class FileActivity extends BaseActivity implements View.OnClickListener {
     private RVListFileAdapter rvListFileAdapter;
     private LinearLayout ll_add,ll_saveAs,ll_edit,ll_run,ll_del,ll_return;
     private int ChooseFilePos = -1;
+    private boolean isNew = true;
     @Override
     protected int getLayout() {
         return R.layout.activity_file;
@@ -83,7 +86,7 @@ public class FileActivity extends BaseActivity implements View.OnClickListener {
         super.onResume();
         if(rv_list!=null){
             List<ProgramInfo> dataRefre = MyApplication.getInstance().getDataRefre();
-            rvListFileAdapter.setList(dataRefre);
+            rvListFileAdapter.setNewData(dataRefre);
             tv_number.setText(rvListFileAdapter.getData().size()+"/"+ Content.FileNumberNum);
         }
     }
@@ -95,6 +98,10 @@ public class FileActivity extends BaseActivity implements View.OnClickListener {
         }
         switch (v.getId()){
             case R.id.ll_add:
+                if(rvListFileAdapter.getData().size()>50){
+                    return;
+                }
+                isNew = true;
                 showAddFileNameDialog();
                 break;
             case R.id.ll_saveAs:
@@ -102,7 +109,8 @@ public class FileActivity extends BaseActivity implements View.OnClickListener {
                     ToastUtil.show(this,getString(R.string.pleasechoosefile));
                     return;
                 }
-
+                isNew = false;
+                showAddFileNameDialog();
                 break;
             case R.id.ll_edit:
                 if(ChooseFilePos==-1){
@@ -211,18 +219,17 @@ public class FileActivity extends BaseActivity implements View.OnClickListener {
     protected void initDate() {
         updateSystemTime(tv_times);
         rvListFileAdapter = new RVListFileAdapter(R.layout.file_list_item);
-//        List<ProgramInfo> data = MyApplication.getInstance().getData();
-//        rvListFileAdapter.setList(data);
         rv_list.setAdapter(rvListFileAdapter);
         View view = LayoutInflater.from(this).inflate(R.layout.empty_layout,null,false);
         rvListFileAdapter.setEmptyView(view);
-        rvListFileAdapter.setOnItemClickListener(new OnItemClickListener() {
+        rvListFileAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 ChooseFilePos = position;
                 rvListFileAdapter.notifyDataSetChanged();
             }
         });
+
         BroadCast();
     }
     private void BroadCast() {
@@ -235,11 +242,22 @@ public class FileActivity extends BaseActivity implements View.OnClickListener {
                         //获取json结果
                         String json = intent.getStringExtra("result");
                         if(!TextUtils.isEmpty(json)){
-                            ProgramInfo programInfo = new ProgramInfo(json);
-                            GoEditPage(programInfo,false);
+                            if(isNew){
+                                ProgramInfo programInfo = new ProgramInfo(json);
+                                GoEditPage(programInfo,false);
+                            }else {
+                                try {
+                                    DataUtil.fileCopy(rvListFileAdapter.getData().get(ChooseFilePos).getFilePath(),DataUtil.data_path+ DataUtil.data_name+json+".Tso");
+                                    List<ProgramInfo> dataRefre = MyApplication.getInstance().getDataRefre();
+                                    rvListFileAdapter.setNewData(dataRefre);
+                                    tv_number.setText(rvListFileAdapter.getData().size()+"/"+ Content.FileNumberNum);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
                         }
-                        //做你该做的事情
-//                        Toast.makeText(FileActivity.this, json+"", Toast.LENGTH_SHORT).show();
+
                     }
                 }
             }

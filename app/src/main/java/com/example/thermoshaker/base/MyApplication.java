@@ -1,11 +1,16 @@
 package com.example.thermoshaker.base;
 
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.serialport.SerialPort;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
+import com.example.thermoshaker.MainActivity;
+import com.example.thermoshaker.R;
 import com.example.thermoshaker.model.ProgramInfo;
 import com.example.thermoshaker.model.StepDefault;
 import com.example.thermoshaker.serial.CommandDateUtil;
@@ -22,9 +27,12 @@ import com.example.thermoshaker.serial.uart.running.TdfileRunClass;
 import com.example.thermoshaker.serial.uart.running.TdfileRunInterface;
 import com.example.thermoshaker.serial.uart.system.DefaultSystemClass;
 import com.example.thermoshaker.serial.uart.system.SystemInterface;
+import com.example.thermoshaker.ui.file.FileActivity;
 import com.example.thermoshaker.util.DataUtil;
 import com.example.thermoshaker.util.Utils;
+import com.example.thermoshaker.util.dialog.TipsDialog;
 import com.example.thermoshaker.util.service.BioHeartService;
+import com.example.thermoshaker.util.websocketClass;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,7 +74,7 @@ public class MyApplication extends Application {
     //设备是否正在运行程序
     public boolean isRunWork = false;
 
-
+    public websocketClass websocket;
     public static MyApplication getInstance() {
         return instance;
     }
@@ -82,6 +90,11 @@ public class MyApplication extends Application {
         Log.d(TAG, "onTerminate");
         super.onTerminate();
     }
+    public void websocket() {
+        websocket = new websocketClass(7572);
+        websocket.start();
+
+    }
     @Override
     public void onCreate() {
         super.onCreate();
@@ -96,6 +109,7 @@ public class MyApplication extends Application {
         openSerialPort();
         initData();
         initConfig();
+        websocket();
 //        initSystemParam();
 
 //        serviceIntent = new Intent(this, BioHeartService.class);
@@ -180,10 +194,38 @@ public class MyApplication extends Application {
             } else {//其他错误
 //                defaultUncaughtExceptionHandler.uncaughtException(t, e);
                 saveErrorFile("exception", JSON.toJSONString(e));
-//                restartApp();
+//                restart();
             }
         }
     };
+
+    public void showError(){
+        TipsDialog tipsDialog = new TipsDialog(this,getString(R.string.error));
+        tipsDialog.setOnDialogLister(new TipsDialog.onDialogLister() {
+            @Override
+            public void onCancel() {
+                restart();
+            }
+
+            @Override
+            public void onConfirm() {
+                restart();
+            }
+        });
+
+    }
+
+    private void restart() {
+        Intent intent = new Intent(this, MainActivity.class);
+        //重启应用，得使用PendingIntent
+        PendingIntent restartIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        AlarmManager mAlarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        mAlarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 1000,
+                restartIntent); // 1秒钟后重启应用
+        //退出程序
+        android.os.Process.killProcess(android.os.Process.myPid());  //结束当前进程
+    }
 
     private void saveErrorFile(String head, String data) {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");

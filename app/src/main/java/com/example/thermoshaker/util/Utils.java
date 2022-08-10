@@ -31,6 +31,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -55,7 +56,22 @@ public class Utils {
 //./keytool-importkeypair -k ./platform.jks -p 123456 -pk8 platform.pk8 -cert platform.x509.pem -alias platform
 
     }
+    /**
+     * Function: 将int类型的IP转换成字符串形式的IP<br>
+     */
+    public static String ipIntToString(int ip) {
 
+        try {
+            byte[] bytes = new byte[4];
+            bytes[0] = (byte) (0xff & ip);
+            bytes[1] = (byte) ((0xff00 & ip) >> 8);
+            bytes[2] = (byte) ((0xff0000 & ip) >> 16);
+            bytes[3] = (byte) ((0xff000000 & ip) >> 24);
+            return Inet4Address.getByAddress(bytes).getHostAddress();
+        } catch (Exception e) {
+            return "";
+        }
+    }
 
     /* byte转int */
     public static int byteArrayToInt( final byte[] buffer, int offset){

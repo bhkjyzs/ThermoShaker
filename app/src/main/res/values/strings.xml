@@ -10,6 +10,8 @@
     <string name="run">运行</string>
     <string name="inching">点动</string>
     <string name="Runsettings">运行设置</string>
+    <string name="setting_wifi">WIFI连接</string>
+
     <!--对话框 声音设置-->
     <string name="dialog_voice_1">按键提示音</string>
     <string name="dialog_voice_2">报警提示音</string>
@@ -41,6 +43,8 @@
     <string name="softwareupgrade">软件升级</string>
     <string name="nativeinformation">本机信息</string>
     <string name="cancel">取消</string>
+    <string name="refre">刷新</string>
+
     <string name="sure">确定</string>
     <string name="chinese">中文</string>
     <string name="english">英文</string>
@@ -83,7 +87,7 @@
     <string name="savefilesdialog">确定保存文件</string>
     <string name="isdelete">确定要删除吗</string>
     <string name="isRun">确定要运行吗</string>
-
+    <string name="error">报错了，点击重启</string>
     <string name="upperlimit">步骤超过上限</string>
     <string name="nostepdelfile">没有创建步骤，文件自动删除</string>
     <string name="issave">是否保存</string>
@@ -100,6 +104,8 @@
     <string name="dialog_inout_info_2">未选择本地程序</string>
     <string name="success">完成</string>
     <string name="deviceno">设备编号:</string>
+    <string name="Localname">本机名称:</string>
+
     <string name="udrive">U盘</string>
     <string name="local">本地</string>
     <string name="pleasechoosefile">请选择程序</string>
@@ -133,6 +139,8 @@
     <string name="motordirection">电机方向:</string>
     <string name="mixingmode">混匀方式:</string>
     <string name="blendstart">混匀起点</string>
+    <string name="mixingtime">混匀时间</string>
+
     <string name="debugmodule">调试模块</string>
     <string name="Temperaturecorrection">温度修正</string>
     <string name="Localcorrelation">本机相关</string>
@@ -183,7 +191,28 @@
     <string name="debug_fan">风扇:</string>
     <string name="Motor">电机:</string>
     <string name="led">led:</string>
+    <string name="unprotected_networks">未受保护的网络</string>
+    <string name="pass">通过&#8194;</string>
+    <string name="to_protect">&#8194;进行保护</string>
+    <string name="setting_wifi_ok">已连接</string>
 
+    <!-- wifi -->
+    <string name="signal_strength">信号强度</string>
+    <string name="security_level">安全性</string>
+    <string name="password">密码</string>
+    <string name="show_password">显示密码</string>
+    <string name="connect">连接</string>
+    <string name="disconnect">断开连接</string>
+    <string name="forget">忘记配置</string>
+    <string name="conn_status">连接状态</string>
+    <string name="ip_address">IP地址</string>
+
+
+
+    <string name="weak">弱</string>
+    <string name="strong">强</string>
+    <string name="stronger">较强</string>
+    <string name="strongest">极强</string>
     <string name="Lid">Lid:</string>
     <string name="dialog_hardup_running">正在升级...</string>
     <string name="dialog_hardup_stop">升级结束</string>
@@ -298,6 +327,7 @@
     <string name="err_SEC_CONTROLTOOHEAT">主控板温度过高</string>
     <string name="err_SEC_MODEMPTY">模块未放置 </string>
     <string name="exit">退出</string>
+    <string name="break_off">断开</string>
 
 
 </resources>

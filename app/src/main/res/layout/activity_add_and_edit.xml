@@ -517,7 +517,7 @@
             app:layout_constraintLeft_toLeftOf="@+id/tvLoorBegin"
             android:layout_marginLeft="@dimen/dip_2"
             app:layout_constraintRight_toRightOf="@+id/tvLoorBegin"
-
+            android:textSize="@dimen/sp_22"
             android:layout_width="@dimen/dip_120"
             android:layout_height="wrap_content"
             tools:ignore="MissingConstraints">
@@ -543,6 +543,7 @@
             android:id="@+id/edLoorOver"
             android:gravity="center"
             android:digits="12345"
+            android:textSize="@dimen/sp_22"
 
             android:textColorHint="@color/gray"
             app:layout_constraintTop_toBottomOf="@+id/tvLoorOver"
@@ -577,7 +578,7 @@
             app:layout_constraintLeft_toLeftOf="@+id/tvLoorNum"
             android:layout_marginLeft="@dimen/dip_2"
             app:layout_constraintRight_toRightOf="@+id/tvLoorNum"
-
+            android:textSize="@dimen/sp_22"
             android:layout_width="@dimen/dip_120"
             android:layout_height="wrap_content"
             tools:ignore="MissingConstraints">

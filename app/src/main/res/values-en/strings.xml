@@ -2,14 +2,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">震荡混匀仪</string>
     <string name="welcome_main">Welcome to this product</string>
-    <string name="file">file</string>
-    <string name="setting">set up</string>
+    <string name="file">File</string>
+    <string name="setting">Set up</string>
     <string name="showfast">Show</string>
     <string name="bio_hh">h</string>
     <string name="bio_mm">m</string>
     <string name="run">run</string>
     <string name="Fast">Fast</string>
     <string name="Runsettings">Run settings</string>
+    <string name="setting_wifi">WiFi connection</string>
+
     <!--对话框 声音设置-->
     <string name="dialog_voice_1">Key prompt tone</string>
     <string name="dialog_voice_2">Alarm tone</string>
@@ -19,7 +21,7 @@
     <string name="dialog_hardup_running">Running...</string>
     <string name="dialog_hardup_stop">Finish</string>
     <string name="dialog_hardup_fail">Failed</string>
-    <string name="inching">inching</string>
+    <string name="inching">Inching</string>
     <string name="addfile">add</string>
     <string name="saveas">Save As</string>
     <string name="addstep">+ Step</string>
@@ -46,6 +48,7 @@
     <string name="pause">Pause</string>
     <string name="Continue">Continue</string>
     <string name="dialog_info_program_stop" translatable="true">Whether to stop？</string>
+    <string name="refre">Refresh</string>
 
     <string name="nextSection">Next Section</string>
     <string name="stopit">Stop it</string>
@@ -79,8 +82,28 @@
     <string name="msgdialog">Message</string>
     <string name="savefilesdialog">OK to save the file</string>
     <string name="isdelete">Delete?</string>
+    <string name="error">An error is reported. Click restart</string>
+    <string name="unprotected_networks">unprotected network</string>
+    <string name="pass">Pass&#8194;</string>
+    <string name="to_protect">&#8194;Protect</string>
     <string name="isRun">Do you want to run?</string>
     <string name="runend">End of operation</string>
+    <string name="setting_wifi_ok">Connected</string>
+
+    <!-- wifi -->
+    <string name="signal_strength">Signal intensity</string>
+    <string name="security_level">Secure</string>
+    <string name="password">password</string>
+    <string name="show_password">Show</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="forget">Forget config</string>
+    <string name="conn_status">Connection status</string>
+    <string name="ip_address">Ip address</string>
+    <string name="weak">Weak</string>
+    <string name="strong">Strong</string>
+    <string name="stronger">Stronger</string>
+    <string name="strongest">Strongest</string>
 
     <string name="upperlimit">upper limit</string>
     <string name="nostepdelfile">There is no creation step, and the file is automatically deleted</string>
@@ -109,6 +132,7 @@
     <string name="pleasechoosefile">Please select a program</string>
     <string name="step">Step</string>
     <string name="noDelete">Cannot delete</string>
+    <string name="Localname">Local Name:</string>
 
     <string name="step1">Step1</string>
     <string name="step2">Step2</string>
@@ -134,6 +158,8 @@
     <string name="motordirection">Motor Direction:</string>
     <string name="mixingmode">Mixing Mode:</string>
     <string name="blendstart">Blend Start</string>
+    <string name="mixingtime">Mixing Time</string>
+
     <string name="continued">Continued:</string>
     <string name="interval">Interval:</string>
     <string name="Temperaturerisesetting">Temperature Setting</string>
@@ -293,6 +319,7 @@
     <string name="err_SEC_CONTROLTOOHEAT">Motherboard temperature is too high</string>
     <string name="err_SEC_MODEMPTY">Module not placed</string>
     <string name="exit">Exit</string>
+    <string name="break_off">break off</string>
 
 
 </resources>

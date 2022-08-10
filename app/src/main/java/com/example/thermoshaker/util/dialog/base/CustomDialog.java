@@ -17,10 +17,15 @@ public class CustomDialog extends Dialog {
     private Object tag;
 
     public CustomDialog(Builder builder){
+
         super(builder.context);
+
         context = builder.context;
+
         cancelTouchout = builder.cancelTouchout;
+
         view = builder.view;
+
     }
 
 
@@ -72,19 +77,30 @@ public class CustomDialog extends Dialog {
                 getWindow().getDecorView().setSystemUiVisibility(uiOptions);
             }
         });
-
+        /* 隐藏键盘 */
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM,
+                WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        hideBottomUIMenu();
     }
+    /**
 
+     * 隐藏虚拟按键，并且全屏
+     */
+    protected void hideBottomUIMenu() {
+        //隐藏虚拟按键，并且全屏
+        if (Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) { // lower api
+            View v = this.getWindow().getDecorView();
+            v.setSystemUiVisibility(View.GONE);
+        } else if (Build.VERSION.SDK_INT >= 19) {
+            //for new api versions.
+            View decorView = getWindow().getDecorView();
+            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN;
+            decorView.setSystemUiVisibility(uiOptions);
+        }
+    }
     @Override
     public void show() {
-//        if (this.getWindow() != null) {
-//
-//            this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-//                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-//            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-//            super.show();
-//            this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-//        }
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         super.show();
